@@ -323,7 +323,6 @@ export const PROVIDERS_DATA: Provider[] = [
     imageUrl:
       "https://i.ibb.co/GQL580QM/Gemini-Generated-Image-p1pgdwp1pgdwp1pg.png",
     imagePosition: "center 40%",
-    videoUrl: "https://youtu.be/-0Ibyw2PcE8",
   },
 ];
 
@@ -351,7 +350,6 @@ export const PODCAST_DATA: PodcastItem[] = [
     duration: "14:43",
     description:
       "A general overview of what kidneys do and what chronic kidney disease is.",
-    type: "AUDIO",
     url: "/podcasts/Chronic_Kidney_Disease_Overview.mp3",
   },
   {
@@ -360,14 +358,12 @@ export const PODCAST_DATA: PodcastItem[] = [
     description:
       "A general overview of food and diets for people with chronic kidney disease not on dialysis",
     url: "https://youtu.be/-0Ibyw2PcE8", // Paste your Unlisted YouTube link
-    type: "VIDEO",
   },
   {
     title: "Hemodialysis and Peritoneal Dialysis",
     duration: "6:09",
     description: "A general overview of hemodialysis vs peritoneal dialysis",
     url: "https://tinyurl.com/dialysiseducation",
-    type: "video",
   },
   {
     title: "What Should I Eat?",
@@ -375,14 +371,12 @@ export const PODCAST_DATA: PodcastItem[] = [
     description:
       "A discussion about diet in chronic kidney disease not on dialysis.",
     url: "https://res.cloudinary.com/dsajzdzge/video/upload/v1766196118/CKD_Nutrition_Protein_Sodium_and_Phosphorus_1_bihoru.mp3",
-    type: "AUDIO",
   },
   {
     title: "The Science of Kidney Stones",
     duration: "12:10",
     description: "Understanding Kidney Stones",
     url: "https://res.cloudinary.com/dsajzdzge/video/upload/v1766196797/The_Science_of_Stopping_Kidney_Stones_ao6jj4.mp4",
-    type: "AUDIO",
   },
 ];
 

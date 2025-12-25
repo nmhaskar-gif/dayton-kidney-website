@@ -53,6 +53,7 @@ export interface PodcastItem {
   duration: string;
   description: string;
   url?: string;
+  type?: string;
 }
 
 export interface FormItem {
