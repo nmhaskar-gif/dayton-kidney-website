@@ -1,0 +1,14 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+/* Fix for Tailwind vs Leaflet map conflict */
+.leaflet-pane img,
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+  max-width: none !important;
+  max-height: none !important;
+  width: auto;
+  height: auto;
+}
