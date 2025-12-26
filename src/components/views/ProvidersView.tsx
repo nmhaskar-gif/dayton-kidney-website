@@ -1,4 +1,5 @@
 // src/components/views/ProvidersView.tsx
+/* eslint-disable */
 import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { PROVIDERS_DATA } from "../../constants";
 import { Provider } from "../../types";
@@ -124,6 +125,19 @@ const ProvidersView: React.FC = () => {
     viewMode === "3D" && filter === "MGMT" ? "GRID" : viewMode;
 
   const [activeIndex, setActiveIndex] = useState(0);
+  // --- NEW: Spin to random doctor on load ---
+  useEffect(() => {
+    // 1. Pick a random number based on how many providers we have
+    const randomIndex = Math.floor(Math.random() * PROVIDERS_DATA.length);
+
+    // 2. Wait a tiny moment (100ms) so the carousel loads first, then spin!
+    const timer = setTimeout(() => {
+      setActiveIndex(randomIndex);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+  // ------------------------------------------
   const carouselRef = useRef<HTMLDivElement>(null);
 
   // ✅ Gate first paint to prevent initial iPhone “smear”

@@ -9,19 +9,20 @@
   ],
   "main": "src/index.tsx",
   "dependencies": {
+    "@types/leaflet": "1.9.21",
+    "gsap": "3.13.0",
+    "leaflet": "1.9.4",
     "loader-utils": "3.2.1",
+    "lucide-react": "0.556.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-scripts": "5.0.1",
-    "lucide-react": "0.556.0",
-    "gsap": "3.13.0",
-    "leaflet": "1.9.4",
-    "@types/leaflet": "1.9.21",
     "tailwindcss": "4.1.17"
   },
   "devDependencies": {
     "@types/react": "18.2.38",
     "@types/react-dom": "18.2.15",
+    "eslint-plugin-react-hooks": "^7.0.1",
     "typescript": "4.4.4"
   },
   "scripts": {

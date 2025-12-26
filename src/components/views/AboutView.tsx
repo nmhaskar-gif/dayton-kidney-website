@@ -157,7 +157,7 @@ const AboutView: React.FC = () => {
           title="The Foundation"
           align="left"
           icon={Flag}
-          imgSrc="https://i.ibb.co/8nNgTh39/IMG-2793.jpg"
+          imgSrc="/images/about-us-Feller.jpg"
           imgAlt="Dr. Allen Feller"
         >
           <p className="text-slate-700 leading-relaxed">
@@ -188,7 +188,7 @@ const AboutView: React.FC = () => {
           title="A New Standard"
           align="right"
           icon={Users}
-          imgSrc="https://i.ibb.co/V001RYv1/Gemini-Generated-Image-hlu7yxhlu7yxhlu7.png"
+          imgSrc="/images/about-us-Mark-and-Larry.planting"
           imgAlt="Nephrology Associates Team"
         >
           <p className="text-slate-700 leading-relaxed">
@@ -250,7 +250,7 @@ const AboutView: React.FC = () => {
           title="Transplant Legacy"
           align="right"
           icon={Stethoscope}
-          imgSrc="https://i.ibb.co/vG3ZFX0/Gemini-Generated-Image-413xb7413xb7413x.png"
+          imgSrc="/images/about-us-transplant.png"
           imgAlt="Kidney Transplant Program"
         >
           <p className="text-slate-700 leading-relaxed">
@@ -286,7 +286,7 @@ const AboutView: React.FC = () => {
           title="Interventional Nephrology"
           align="left"
           icon={Activity}
-          imgSrc="https://i.ibb.co/5XM5599k/Gemini-Generated-Image-qvtduaqvtduaqvtd.png"
+          imgSrc="/images/about-us-interventional-nephrology.png"
           imgAlt="Interventional Nephrology Procedure"
         >
           <p className="text-slate-700 leading-relaxed">

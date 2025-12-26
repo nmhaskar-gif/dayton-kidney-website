@@ -23,7 +23,7 @@ export const NEPHRO_AI_API_URL =
   "https://nephro-chat-server.onrender.com/api/nephro-chat";
 
 // Z-Axis positions for our journey elements
-export const SCROLL_HEIGHT = 8000; // Total scrollable height in px
+export const SCROLL_HEIGHT = 12000; // Total scrollable height in px
 export const DEPTH_SCALE = 1; // Multiplier for scroll-to-z mapping
 
 export const POSITIONS = {
@@ -52,13 +52,12 @@ export const SATELLITES: SatelliteItem[] = [
 
 export const ASSETS = {
   // High-Res Skyline
-  skyline: "https://i.ibb.co/93YdWhP4/i-Stock-529983003.jpg",
+  skyline: "/images/dayton-skyline.jpg",
   // New logo URL from request
-  logo: "https://i.ibb.co/1Ytt2dRy/DKbackgroundremoved.png",
+  logo: "/images/DK-Logo.png",
   // Updated Renal Physicians logo
-  renalLogo:
-    "https://i.ibb.co/LXbch8Wz/Screenshot-2025-12-04-at-8-39-30-PM.png",
-  nephrologyLogo: "",
+  renalLogo: "/images/RPI-Logo.png",
+  nephrologyLogo: "NAOD Logo.jpg",
 };
 
 // --- NEW DATA ---
@@ -310,8 +309,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "Practice Manager",
     role: "MGMT",
     specialties: ["Operations"],
-    imageUrl:
-      "https://i.ibb.co/pBvc2WfF/Gemini-Generated-Image-62hkbs62hkbs62hk-1.png",
+    imageUrl: "/images/rachel-ary.png",
     imagePosition: "center 40%",
   },
   {
@@ -320,8 +318,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "Practice Manager",
     role: "MGMT",
     specialties: ["Operations"],
-    imageUrl:
-      "https://i.ibb.co/GQL580QM/Gemini-Generated-Image-p1pgdwp1pgdwp1pg.png",
+    imageUrl: "/images/jill-combs.png",
     imagePosition: "center 40%",
   },
 ];
