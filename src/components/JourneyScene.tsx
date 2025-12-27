@@ -128,17 +128,19 @@ const JourneyScene: React.FC<JourneySceneProps> = ({ scrollY }) => {
     }
   }
 
-  const revealStart = climaxStart + climaxFadeIn + climaxHold - 200;
-  const revealRamp = 1100;
+  const revealStart = climaxStart + climaxFadeIn + climaxHold - 50;
+  const revealRamp = 250;
   const revealLayerOpacity = smoothstep(
     clamp01((postSign2Dist - revealStart) / revealRamp)
   );
   const isRevealActive = revealLayerOpacity > 0.95;
 
   const fogIntensity = smoothstep(
-    clamp01((postSign2Dist - (climaxStart + 200)) / (climaxFadeIn + climaxHold))
+    clamp01(
+      (postSign2Dist - (climaxStart + 400)) / (climaxFadeIn + climaxHold * 0.5)
+    )
   );
-  const fogOpacity = clamp01(fogIntensity * (1 - revealLayerOpacity * 1.1));
+  const fogOpacity = clamp01(fogIntensity * (1 - revealLayerOpacity));
   const fogDriftY = Math.max(-12, Math.min(12, worldZ * 0.006));
   const fogScale = 1 + Math.max(0, Math.min(0.04, worldZ * 0.000007));
   const fogCenter = 55;
@@ -174,7 +176,7 @@ const JourneyScene: React.FC<JourneySceneProps> = ({ scrollY }) => {
         >
           {/* INTRO WORDS */}
           <div
-            className="absolute top-[60%] md:top-1/2 left-1/2 text-center w-full max-w-[90%] md:max-w-3xl lg:max-w-4xl px-6 py-8 md:p-10 bg-black/30 backdrop-blur-sm rounded-3xl border border-white/10 shadow-2xl"
+            className="absolute top-[62%] md:top-[55%] left-1/2 text-center w-full max-w-[90%] md:max-w-3xl lg:max-w-4xl px-6 py-8 md:p-10 bg-black/30 backdrop-blur-sm rounded-3xl border border-white/10 shadow-2xl"
             style={{
               transform: `translate(-50%, -50%) translate3d(0, -100px, ${
                 POSITIONS.START_TEXT + 450
@@ -204,7 +206,9 @@ const JourneyScene: React.FC<JourneySceneProps> = ({ scrollY }) => {
               }px, ${panel1Z}px) translateZ(0)`,
               opacity: panel1State.opacity,
               zIndex: panel1State.zIndex,
-              display: panel1State.opacity <= 0.001 ? "none" : "block",
+              visibility: panel1State.opacity > 0.02 ? "visible" : "hidden",
+              pointerEvents: panel1State.opacity > 0.02 ? "auto" : "none",
+              willChange: "transform, opacity",
             }}
           >
             <div
@@ -253,7 +257,9 @@ const JourneyScene: React.FC<JourneySceneProps> = ({ scrollY }) => {
               }px, ${panel2Z}px) translateZ(0)`,
               opacity: panel2State.opacity,
               zIndex: panel2State.zIndex + 1,
-              display: panel2State.opacity <= 0.001 ? "none" : "block",
+              visibility: panel2State.opacity > 0.02 ? "visible" : "hidden",
+              pointerEvents: panel2State.opacity > 0.02 ? "auto" : "none",
+              willChange: "transform, opacity",
             }}
           >
             <div
@@ -304,10 +310,15 @@ const JourneyScene: React.FC<JourneySceneProps> = ({ scrollY }) => {
         style={{
           opacity: fogOpacity,
           transform: `translate3d(0, ${fogDriftY}px, 0) scale(${fogScale})`,
-          background: `radial-gradient(circle at 50% 55%, 
-            transparent 0%,           // Smaller 'hole' makes fog feel closer
-            rgba(255,255,255,0.25) 60%, // Thicker white mist
-            rgba(255,255,255,0.45) 100%)`,
+          background: `radial-gradient(
+            circle at 50% 55%,
+            rgba(255,255,255,0.05) 0%,
+            rgba(255,255,255,0.20) 6%,
+            rgba(255,255,255,0.55) 18%,
+            rgba(255,255,255,0.85) 45%,
+            rgba(255,255,255,0.98) 100%
+          )`,
+          filter: "blur(3px)",
         }}
       />
 
@@ -320,7 +331,7 @@ const JourneyScene: React.FC<JourneySceneProps> = ({ scrollY }) => {
           <Handshake size={isMobile ? 48 : 64} />
         </div>
         <h1 className="text-3xl md:text-7xl font-serif text-white font-bold drop-shadow-2xl">
-          Now, our paths unite.
+          Now, our paths unite - for your future.
         </h1>
       </div>
 

@@ -23,7 +23,7 @@ export const NEPHRO_AI_API_URL =
   "https://nephro-chat-server.onrender.com/api/nephro-chat";
 
 // Z-Axis positions for our journey elements
-export const SCROLL_HEIGHT = 12000; // Total scrollable height in px
+export const SCROLL_HEIGHT = 10000; // Total scrollable height in px
 export const DEPTH_SCALE = 1; // Multiplier for scroll-to-z mapping
 
 export const POSITIONS = {
