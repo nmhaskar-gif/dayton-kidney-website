@@ -57,7 +57,7 @@ export const ASSETS = {
   logo: "/images/DK-Logo.png",
   // Updated Renal Physicians logo
   renalLogo: "/images/RPI-Logo.png",
-  nephrologyLogo: "NAOD Logo.jpg",
+  nephrologyLogo: "/images/NAOD Logo.jpg",
 };
 
 // --- NEW DATA ---
@@ -348,6 +348,7 @@ export const PODCAST_DATA: PodcastItem[] = [
     description:
       "A general overview of what kidneys do and what chronic kidney disease is.",
     url: "/podcasts/Chronic_Kidney_Disease_Overview.mp3",
+    type: "audio",
   },
   {
     title: "Demystifying Diets for CKD",
@@ -355,12 +356,14 @@ export const PODCAST_DATA: PodcastItem[] = [
     description:
       "A general overview of food and diets for people with chronic kidney disease not on dialysis",
     url: "https://youtu.be/-0Ibyw2PcE8", // Paste your Unlisted YouTube link
+    type: "video",
   },
   {
     title: "Hemodialysis and Peritoneal Dialysis",
     duration: "6:09",
     description: "A general overview of hemodialysis vs peritoneal dialysis",
     url: "https://tinyurl.com/dialysiseducation",
+    type: "video",
   },
   {
     title: "What Should I Eat?",
@@ -368,12 +371,14 @@ export const PODCAST_DATA: PodcastItem[] = [
     description:
       "A discussion about diet in chronic kidney disease not on dialysis.",
     url: "https://res.cloudinary.com/dsajzdzge/video/upload/v1766196118/CKD_Nutrition_Protein_Sodium_and_Phosphorus_1_bihoru.mp3",
+    type: "audio",
   },
   {
     title: "The Science of Kidney Stones",
     duration: "12:10",
     description: "Understanding Kidney Stones",
     url: "https://res.cloudinary.com/dsajzdzge/video/upload/v1766196797/The_Science_of_Stopping_Kidney_Stones_ao6jj4.mp4",
+    type: "audio",
   },
 ];
 

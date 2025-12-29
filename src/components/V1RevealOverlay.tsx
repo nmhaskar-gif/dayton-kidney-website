@@ -28,6 +28,7 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
 }) => {
   const [currentView, setCurrentView] = useState<ViewState>(ViewState.HOME);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // --- PRELOAD/DECODE BIG IMAGES USED AT REVEAL TIME (reduces transition stutter) ---
   useEffect(() => {
@@ -66,8 +67,10 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
             ${isActive ? "scale-105" : "scale-100"}`}
           style={{
             backgroundImage: `url('${ASSETS.skyline}')`,
-            willChange: "transform",
-            transform: isActive
+            willChange: isModalOpen ? "auto" : "transform",
+            transform: isModalOpen
+              ? "none"
+              : isActive
               ? "scale(1.05) translateZ(0)"
               : "scale(1) translateZ(0)",
           }}
@@ -238,7 +241,9 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
         {currentView === ViewState.ABOUT && <AboutView />}
         {currentView === ViewState.SERVICES && <ServicesView />}
         {currentView === ViewState.PROVIDERS && <ProvidersView />}
-        {currentView === ViewState.EDUCATION && <EducationView />}
+        {currentView === ViewState.EDUCATION && (
+          <EducationView setIsModalOpen={setIsModalOpen} />
+        )}
         {currentView === ViewState.LOCATIONS && <LocationsView />}
         {currentView === ViewState.FORMS && <FormsView />}
         {currentView === ViewState.CONTACT && <ContactView />}

@@ -10,8 +10,11 @@ import {
   Headphones,
   Video,
 } from "lucide-react";
+type Props = {
+  setIsModalOpen?: (open: boolean) => void;
+};
 
-const EducationView: React.FC = () => {
+const EducationView: React.FC<Props> = ({ setIsModalOpen }) => {
   // --- STATE ---
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
@@ -34,6 +37,37 @@ const EducationView: React.FC = () => {
     },
   ]);
   const [chatLoading, setChatLoading] = useState(false);
+  useEffect(() => {
+    const html = document.documentElement;
+    const body = document.body;
+
+    if (chatOpen) {
+      // Lock scroll on both html + body
+      html.style.overflow = "hidden";
+      body.style.overflow = "hidden";
+
+      // Optional: prevent iOS/mac overscroll bounce
+      html.style.overscrollBehavior = "none";
+      body.style.overscrollBehavior = "none";
+    } else {
+      html.style.overflow = "";
+      body.style.overflow = "";
+      html.style.overscrollBehavior = "";
+      body.style.overscrollBehavior = "";
+    }
+
+    return () => {
+      html.style.overflow = "";
+      body.style.overflow = "";
+      html.style.overscrollBehavior = "";
+      body.style.overscrollBehavior = "";
+    };
+  }, [chatOpen]);
+  useEffect(() => {
+    setIsModalOpen?.(chatOpen);
+    return () => setIsModalOpen?.(false);
+  }, [chatOpen, setIsModalOpen]);
+
   const [chatError, setChatError] = useState<string | null>(null);
 
   // Define the list of podcasts (you can add search filtering here later if needed)
@@ -130,7 +164,11 @@ const EducationView: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-full overflow-y-auto pt-32 pb-20 px-4 md:px-12 lg:px-20 animate-fade-in custom-scrollbar">
+    <div
+      className={`w-full h-full pt-32 pb-20 px-4 md:px-12 lg:px-20 animate-fade-in custom-scrollbar ${
+        chatOpen ? "overflow-hidden" : "overflow-y-auto"
+      }`}
+    >
       <div className="max-w-6xl mx-auto space-y-16">
         {/* Section 1: AI Assistant */}
         <div className="bg-gradient-to-br from-blue-900 to-indigo-900 rounded-3xl p-8 md:p-12 text-white shadow-2xl relative overflow-hidden">
@@ -393,7 +431,7 @@ const EducationView: React.FC = () => {
             </div>
 
             {/* Messages */}
-            <div className="h-[420px] overflow-y-auto px-4 py-4 space-y-3 bg-white">
+            <div className="h-[420px] overflow-y-auto overscroll-contain px-4 py-4 space-y-3 bg-white">
               {chatMessages.length === 0 ? (
                 <div className="text-sm text-slate-600">
                   Ask a simple question about kidney labs (e.g., creatinine,

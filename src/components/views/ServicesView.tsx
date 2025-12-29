@@ -197,8 +197,9 @@ const ServicesView: React.FC = () => {
               Plasmapheresis
             </h3>
             <p className="text-slate-700 leading-relaxed mb-4">
-              Through our sister organization,{" "}
-              <strong>Southwest Ohio Apheresis Services</strong>, we provide
+              Under the leadership of <strong>Dr. Melissa Schnell</strong>, our
+              sister organization{" "}
+              <strong>Southwest Ohio Apheresis Services</strong> provides
               specialized therapeutic plasma exchange treatments for a variety
               of autoimmune and neurologic conditions.
             </p>
