@@ -65,7 +65,7 @@
   div.fixed.inset-0.z-\[9999\] > div {
     max-height: 70dvh !important; /* Shorter height to ensure safety */
     width: 95% !important;
-    margin-top: -50px !important; /* Lifts it away from the bottom thumb bar */
+    margin-top: 0px !important; /* Lifts it away from the bottom thumb bar */
   }
 
   .h-\[420px\].overflow-y-auto {
