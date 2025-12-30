@@ -85,35 +85,35 @@ const ServicesView: React.FC = () => {
               <ul className="space-y-3 text-sm md:text-base font-medium flex flex-col items-center">
                 <li className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 bg-white/50 rounded-full"></span>
-                  Main Campus
+                  Kettering Health Main Campus
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 bg-white/50 rounded-full"></span>
-                  Miamisburg
+                  Kettering Health Miamisburg
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 bg-white/50 rounded-full"></span>
-                  Dayton
+                  Kettering Health Dayton
                 </li>
               </ul>
             </div>
 
             <div className="flex flex-col items-center">
               <h4 className="text-teal-400 font-bold mb-4 border-b border-white/10 pb-2 inline-block px-8">
-                Miami Valley
+                Premier Health
               </h4>
               <ul className="space-y-3 text-sm md:text-base font-medium flex flex-col items-center">
                 <li className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 bg-white/50 rounded-full"></span>
-                  Main
+                  Miami Valley Hospital Main Campus
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 bg-white/50 rounded-full"></span>
-                  North
+                  Miami Valley Hospital North
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 bg-white/50 rounded-full"></span>
-                  South
+                  Miami Valley Hospital South
                 </li>
               </ul>
             </div>
