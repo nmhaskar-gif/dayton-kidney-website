@@ -388,7 +388,7 @@ const ProvidersView: React.FC = () => {
         /* LIST VIEW: Fixed alignment and scrollbar */
         <div
           key="list-container"
-          className="w-full flex-grow overflow-hidden px-4 max-w-7xl mx-auto flex gap-6 mt-16 md:mt-24"
+          className="w-full flex-grow overflow-hidden px-4 max-w-7xl mx-auto flex gap-6 mt-8 md:mt-10"
         >
           <div className="w-full lg:w-1/3 xl:w-1/4 h-full flex flex-col overflow-hidden">
             <div className="flex-grow overflow-y-auto custom-scrollbar pr-2 space-y-2 pb-20">
