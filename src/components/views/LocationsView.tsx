@@ -310,7 +310,6 @@ const DIALYSIS_LOCATIONS: LocationItem[] = [
     lng: -84.3475,
   },
 ];
-];
 
 type TabType = "OFFICES" | "DIALYSIS" | "ACCESS";
 type MobilePane = "LIST" | "MAP";
