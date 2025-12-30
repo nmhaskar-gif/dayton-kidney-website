@@ -133,8 +133,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "MD",
     role: "MD",
     specialties: ["General Nephrology"],
-    imageUrl:
-      "https://i.ibb.co/GYXKDCb/Gemini-Generated-Image-al4uehal4uehal4u.png",
+    imageUrl: "/images/nilesh-mhaskar.png",
     imagePosition: "center 60%",
   },
   {
