@@ -133,7 +133,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "MD",
     role: "MD",
     specialties: ["General Nephrology"],
-    imageUrl: "/images/nilesh-mhaskar.png",
+    imageUrl: "/images/nilesh-mhaskar1.png",
     imagePosition: "center 60%",
   },
   {
