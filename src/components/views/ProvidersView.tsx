@@ -153,6 +153,7 @@ const ProvidersView: React.FC = () => {
      ======================= */
   const [activeIndex, setActiveIndex] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
+  const gridScrollRef = useRef<HTMLDivElement>(null);
   const [carouselReady, setCarouselReady] = useState(false);
   const prevIndexRef = useRef(0);
   const rotationRef = useRef(0);
@@ -184,7 +185,28 @@ const ProvidersView: React.FC = () => {
     setSelectedProvider(provider);
     if (effectiveViewMode === "3D") goToIndex(index);
   };
-
+  useEffect(() => {
+    const onWheel = (e: WheelEvent) => {
+      // ONLY affect Physicians + APPs in TILE (GRID) view
+      if (effectiveViewMode !== "GRID") return;
+      if (filter === "MGMT") return;
+      if (!gridScrollRef.current) return;
+      if (selectedProvider) return; // don't interfere when modal is open
+  
+      const target = gridScrollRef.current;
+  
+      // If it can't scroll, do nothing
+      if (target.scrollHeight <= target.clientHeight) return;
+  
+      // Stop page/body scroll and push scroll into the grid container
+      e.preventDefault();
+      target.scrollTop += e.deltaY;
+    };
+  
+    window.addEventListener("wheel", onWheel, { passive: false });
+    return () => window.removeEventListener("wheel", onWheel as any);
+  }, [effectiveViewMode, filter, selectedProvider]);
+  
   useEffect(() => {
     setActiveIndex(0);
     prevIndexRef.current = 0;
@@ -252,6 +274,7 @@ const ProvidersView: React.FC = () => {
       : "Select a team member";
 
 <div
+ref={gridScrollRef}
       className={`w-full flex flex-col pt-24 pb-4 animate-fade-in relative 
         ${
           effectiveViewMode === "GRID"
