@@ -457,14 +457,71 @@ const ProvidersView: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex-1 overflow-y-auto p-8 custom-scrollbar bg-white">
-                  <h3 className="flex items-center gap-2 text-lg font-bold text-blue-900 mb-3 border-b pb-2">
-                    <BookOpen size={20} className="text-teal-600" />
-                    Biography
-                  </h3>
-                  <p className="text-slate-700 text-sm leading-relaxed">
-                    {getProviderOverrides(previewProvider).bio ||
-                      "No biography available."}
-                  </p>
+                  {(() => {
+                    const d = getProviderOverrides(previewProvider);
+                    const bio = d.bio || "No biography available.";
+                    const education = Array.isArray(d.education)
+                      ? d.education
+                      : [];
+                    const interests = Array.isArray(d.interests)
+                      ? d.interests
+                      : [];
+
+                    return (
+                      <>
+                        <h3 className="flex items-center gap-2 text-lg font-bold text-blue-900 mb-3 border-b pb-2">
+                          <BookOpen size={20} className="text-teal-600" />
+                          Biography
+                        </h3>
+                        <p className="text-slate-700 text-sm leading-relaxed mb-8">
+                          {bio}
+                        </p>
+
+                        <h3 className="flex items-center gap-2 text-lg font-bold text-blue-900 mb-3 border-b pb-2">
+                          <GraduationCap size={20} className="text-teal-600" />
+                          Education &amp; Training
+                        </h3>
+                        {education.length ? (
+                          <ul className="space-y-3 mb-8">
+                            {education.map((item, i) => (
+                              <li
+                                key={i}
+                                className="flex items-start gap-3 text-slate-700 text-sm group"
+                              >
+                                <span className="w-1.5 h-1.5 rounded-full bg-teal-400 mt-2 flex-shrink-0 group-hover:scale-150 transition-transform" />
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p className="text-slate-500 text-sm mb-8">
+                            No education information available.
+                          </p>
+                        )}
+
+                        <h3 className="flex items-center gap-2 text-lg font-bold text-blue-900 mb-3 border-b pb-2">
+                          <Heart size={20} className="text-teal-600" />
+                          Interests &amp; Hobbies
+                        </h3>
+                        {interests.length ? (
+                          <div className="flex flex-wrap gap-2">
+                            {interests.map((item, i) => (
+                              <span
+                                key={i}
+                                className="px-4 py-1.5 bg-white border border-blue-100 text-blue-800 rounded-full text-xs font-bold shadow-sm hover:bg-blue-50 transition-colors"
+                              >
+                                {item}
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-slate-500 text-sm">
+                            No interests listed.
+                          </p>
+                        )}
+                      </>
+                    );
+                  })()}
                 </div>
               </div>
             ) : (
@@ -575,8 +632,8 @@ const ProfileModal: React.FC<{ provider: Provider; onClose: () => void }> = ({
   const overlayRef = useRef<HTMLDivElement>(null);
   const details = getProviderOverrides(provider);
 
-  const education = details.education || ["Medical Degree: Unknown"];
-  const interests = details.interests || ["General Nephrology"];
+  const education = details.education || [];
+  const interests = details.interests || [];
   const bio = details.bio || "No biography available.";
 
   useLayoutEffect(() => {

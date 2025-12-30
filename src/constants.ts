@@ -300,8 +300,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "Practice Administrator",
     role: "MGMT",
     specialties: ["Administration"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400",
+    imageUrl: "/images/lisa-pouliot.png",
   },
   {
     id: "mgmt-ary",
