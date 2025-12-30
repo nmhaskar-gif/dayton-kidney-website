@@ -153,7 +153,9 @@ const ProvidersView: React.FC = () => {
      ======================= */
   const [activeIndex, setActiveIndex] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
-  const gridScrollRef = useRef<HTMLDivElement>(null);
+  const gridWrapperRef = useRef<HTMLDivElement>(null); // outer page wrapper
+  const gridScrollRef = useRef<HTMLDivElement>(null); // the grid scroll container
+
   const [carouselReady, setCarouselReady] = useState(false);
   const prevIndexRef = useRef(0);
   const rotationRef = useRef(0);
@@ -192,21 +194,21 @@ const ProvidersView: React.FC = () => {
       if (filter === "MGMT") return;
       if (!gridScrollRef.current) return;
       if (selectedProvider) return; // don't interfere when modal is open
-  
+
       const target = gridScrollRef.current;
-  
+
       // If it can't scroll, do nothing
       if (target.scrollHeight <= target.clientHeight) return;
-  
+
       // Stop page/body scroll and push scroll into the grid container
       e.preventDefault();
       target.scrollTop += e.deltaY;
     };
-  
+
     window.addEventListener("wheel", onWheel, { passive: false });
     return () => window.removeEventListener("wheel", onWheel as any);
   }, [effectiveViewMode, filter, selectedProvider]);
-  
+
   useEffect(() => {
     setActiveIndex(0);
     prevIndexRef.current = 0;
@@ -273,18 +275,18 @@ const ProvidersView: React.FC = () => {
       ? "Browse detailed profiles"
       : "Select a team member";
 
-<div
-  ref={gridScrollRef}
-  className={`w-full flex flex-col pt-24 pb-4 animate-fade-in relative 
-    ${
-      effectiveViewMode === "GRID" && filter !== "MGMT"
-        ? "h-[100dvh] overflow-hidden"
-        : "h-full overflow-hidden"
-    }
-    ${effectiveViewMode === "3D" ? "perspective-container" : ""}
-  `}
->
-
+  return (
+    <div
+      ref={gridWrapperRef}
+      className={`w-full flex flex-col pt-24 pb-4 animate-fade-in relative 
+      ${
+        effectiveViewMode === "GRID" && filter !== "MGMT"
+          ? "h-[100dvh] overflow-hidden"
+          : "h-full overflow-hidden"
+      }
+      ${effectiveViewMode === "3D" ? "perspective-container" : ""}
+    `}
+    >
       {/* BACKGROUND */}
       <div className="fixed inset-0 -z-30">
         <img
@@ -389,12 +391,12 @@ const ProvidersView: React.FC = () => {
             ))}
           </div>
         </div>
-     ) : effectiveViewMode === "GRID" ? (
-      <div
-  key="grid-container"
-  className="w-full flex-1 min-h-0 overflow-y-auto custom-scrollbar mt-24 px-4 pb-20"
->
-
+      ) : effectiveViewMode === "GRID" ? (
+        <div
+          key="grid-container"
+          ref={gridScrollRef}
+          className="w-full flex-1 min-h-0 overflow-y-auto custom-scrollbar mt-24 px-4 pb-20"
+        >
           <div className="w-full flex justify-center">
             <div
               className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 ${
