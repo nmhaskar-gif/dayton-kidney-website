@@ -17,7 +17,7 @@
   /* 1. PROVIDER GRID: Targeting the layout classes directly */
   /* This moves the grid up */
   .w-full.flex-grow.mt-32.overflow-y-auto {
-    margin-top: 4rem !important;
+    margin-top: 2rem !important;
   }
 
   /* This forces 2 columns */
