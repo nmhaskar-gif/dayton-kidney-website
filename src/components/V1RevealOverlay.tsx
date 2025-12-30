@@ -92,6 +92,14 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
             : "bg-white/5 backdrop-blur-md border-b border-white/10 shadow-sm"
         }`}
       >
+        {/* THE WHITE SCRIM: Added here. 
+            It fades from white (top) to transparent (bottom) to let the logo pop. */}
+        <div
+          className={`absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-white/90 via-white/40 to-transparent pointer-events-none transition-opacity duration-300 ${
+            currentView === ViewState.HOME ? "opacity-100" : "opacity-0"
+          }`}
+        />
+
         <div className="w-full px-4 md:px-8 lg:px-12 h-full relative">
           <div className="flex items-center h-full pt-4 gap-3">
             {/* 1. LOGO (Far Left) */}
