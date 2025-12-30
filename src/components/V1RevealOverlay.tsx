@@ -96,9 +96,7 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
           <div className="flex items-center h-full pt-4 gap-3">
             {/* 1. LOGO (Far Left) */}
             <div
-              /* -mt-4 pulls the logo UP to counteract the navbar's pt-4 padding. 
-                 This lets the logo use the full vertical space of the bar. */
-              className={`z-50 flex-shrink-0 mr-4 -mt-2 md:-mt-4 ${
+              className={`z-50 flex-shrink-0 mr-4 ${
                 currentView === ViewState.HOME
                   ? "cursor-default"
                   : "cursor-pointer transition-transform duration-300 hover:scale-105"
@@ -112,16 +110,7 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
               <img
                 src={ASSETS.logo}
                 alt="Dayton Kidney"
-                /* 1. h-16 md:h-24: 
-                      Sets the logo to match the full height of the navbar (h-24 = 96px).
-                   2. scale-110: 
-                      "Zooms" the image slightly to maximize visibility within that space 
-                      (useful if your logo image file has empty whitespace around the edges).
-                */
-                className="h-16 md:h-24 w-auto object-contain 
-                           transform scale-110 origin-left
-                           drop-shadow-[0_2px_4px_rgba(255,255,255,0.5)] 
-                           filter brightness-105"
+                className="h-20 md:h-28 lg:h-32 w-auto object-contain drop-shadow-[0_2px_6px_rgba(255,255,255,0.8)] filter brightness-105"
                 style={{ transform: "translateZ(0)", willChange: "transform" }}
               />
             </div>
