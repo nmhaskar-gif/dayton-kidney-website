@@ -84,7 +84,7 @@ const getProviderOverrides = (provider: Provider) => {
       credentials,
       bio: "Dr Mhaskar joined Renal Physicians in 2007 and is a founding partner of Dayton Kidney. He served as the President of Renal Physicians from 2019-2025 and Chairman of Dayton Kidney from 2026-2027. His interests include General Nephrology, Hypertension, and Glomerular Diseases.",
       education: [
-        "Needham Elementary, Lodi, California",
+        "High School: Fountain Valley High School, California - GO BARONS!",
         "Undergraduate: University of California, Berkeley",
         "Medical School: University of Southern California",
         "Residency: New York Presbyterian Hospital- Cornell",
@@ -111,7 +111,7 @@ const getProviderOverrides = (provider: Provider) => {
 
 const ProvidersView: React.FC = () => {
   const [filter, setFilter] = useState<"MD" | "APP" | "MGMT">("MD");
-  const [viewMode, setViewMode] = useState<"3D" | "GRID" | "LIST">("3D");
+  const [viewMode, setViewMode] = useState<"3D" | "GRID" | "LIST">("LIST");
   const [selectedProvider, setSelectedProvider] = useState<Provider | null>(
     null
   );
@@ -120,30 +120,40 @@ const ProvidersView: React.FC = () => {
   const filteredProviders = PROVIDERS_DATA.filter((p) => p.role === filter);
   const count = filteredProviders.length;
 
-  // Only override MGMT when user is in the 3D carousel view
+  /* =======================
+     MGMT VIEW ENFORCEMENT (FIXED)
+     ======================= */
+  const lastNonMgmtViewRef = useRef<"GRID" | "LIST">("LIST");
+  const prevFilterRef = useRef<"MD" | "APP" | "MGMT">("MD");
+
+  // 1. SAVE: Update our memory only when the user manually toggles view on MD/APP tabs
+  useEffect(() => {
+    if (filter !== "MGMT") {
+      lastNonMgmtViewRef.current = viewMode as "GRID" | "LIST";
+    }
+  }, [viewMode, filter]);
+
+  // 2. SWITCH: Only run when the tab changes
+  useEffect(() => {
+    if (prevFilterRef.current !== filter) {
+      if (filter === "MGMT") {
+        setViewMode("GRID");
+      } else if (prevFilterRef.current === "MGMT") {
+        // Restore whatever they were looking at before they entered MGMT
+        setViewMode(lastNonMgmtViewRef.current);
+      }
+      prevFilterRef.current = filter;
+    }
+  }, [filter]); // Only trigger on tab (filter) changes
   const effectiveViewMode: "3D" | "GRID" | "LIST" =
     viewMode === "3D" && filter === "MGMT" ? "GRID" : viewMode;
 
+  /* =======================
+     CAROUSEL STATE (UNCHANGED)
+     ======================= */
   const [activeIndex, setActiveIndex] = useState(0);
-  // --- NEW: Spin to random doctor on load ---
-  useEffect(() => {
-    // 1. Pick a random number based on how many providers we have
-    const randomIndex = Math.floor(Math.random() * PROVIDERS_DATA.length);
-
-    // 2. Wait a tiny moment (100ms) so the carousel loads first, then spin!
-    const timer = setTimeout(() => {
-      setActiveIndex(randomIndex);
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, []);
-  // ------------------------------------------
   const carouselRef = useRef<HTMLDivElement>(null);
-
-  // ✅ Gate first paint to prevent initial iPhone “smear”
   const [carouselReady, setCarouselReady] = useState(false);
-
-  // ✅ Keep rotation smooth by animating relative deltas (prevents jump vs rotate mismatch)
   const prevIndexRef = useRef(0);
   const rotationRef = useRef(0);
 
@@ -156,7 +166,6 @@ const ProvidersView: React.FC = () => {
   const RADIUS = Math.max(MIN_RADIUS, calculatedRadius);
   const THETA = count > 0 ? 360 / count : 0;
 
-  // --- Helpers ---
   const clampIndex = (idx: number) => {
     if (count <= 0) return 0;
     return ((idx % count) + count) % count;
@@ -171,35 +180,26 @@ const ProvidersView: React.FC = () => {
   const handlePrev = () => goToIndex(activeIndex - 1);
 
   const handleCardClick = (index: number, provider: Provider) => {
-    if (provider.role === "MGMT") {
-      if (viewMode === "3D") goToIndex(index);
-      return;
-    }
+    if (provider.role === "MGMT") return;
     setSelectedProvider(provider);
-    if (viewMode === "3D") goToIndex(index);
+    if (effectiveViewMode === "3D") goToIndex(index);
   };
 
-  // Keep index safe when switching filters/modes (DO NOT REMOVE)
   useEffect(() => {
     setActiveIndex(0);
     prevIndexRef.current = 0;
     rotationRef.current = 0;
   }, [filter, effectiveViewMode]);
 
-  // ✅ Reset readiness when leaving/entering carousel or count changes
   useEffect(() => {
     setCarouselReady(false);
   }, [effectiveViewMode, filter, count, RADIUS]);
 
-  // ✅ BEFORE-PAINT: hard set transform so first visible frame is correct
   useLayoutEffect(() => {
     if (effectiveViewMode !== "3D") return;
     const el = carouselRef.current;
     if (!el || count === 0) return;
 
-    setCarouselReady(false);
-
-    // Reset refs on mount/re-entry
     prevIndexRef.current = clampIndex(activeIndex);
     rotationRef.current = -prevIndexRef.current * THETA;
 
@@ -215,28 +215,22 @@ const ProvidersView: React.FC = () => {
     requestAnimationFrame(() => {
       requestAnimationFrame(() => setCarouselReady(true));
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [effectiveViewMode, filter, RADIUS, THETA, count]);
 
-  // ✅ Smooth rotation: animate delta steps (shortest path)
   useEffect(() => {
-    if (!carouselReady) return;
-    if (effectiveViewMode !== "3D") return;
+    if (!carouselReady || effectiveViewMode !== "3D") return;
     const el = carouselRef.current;
     if (!el || count === 0) return;
 
     const next = clampIndex(activeIndex);
     const prev = clampIndex(prevIndexRef.current);
 
-    // compute shortest delta around circle
     let delta = next - prev;
     const half = count / 2;
     if (delta > half) delta -= count;
     if (delta < -half) delta += count;
 
     prevIndexRef.current = next;
-
-    // update continuous rotation target
     rotationRef.current += -delta * THETA;
 
     gsap.killTweensOf(el);
@@ -251,19 +245,19 @@ const ProvidersView: React.FC = () => {
   }, [carouselReady, activeIndex, effectiveViewMode, RADIUS, THETA, count]);
 
   const headerSubtitle =
-    viewMode === "3D"
+    effectiveViewMode === "3D"
       ? "Spin to meet the experts"
-      : viewMode === "LIST"
+      : effectiveViewMode === "LIST"
       ? "Browse detailed profiles"
       : "Select a team member";
 
   return (
     <div
-      className={`w-full h-full overflow-hidden flex flex-col pt-24 pb-4 animate-fade-in relative 
-        ${effectiveViewMode === "3D" ? "perspective-container" : ""} 
-      `}
+      className={`w-full h-full overflow-hidden flex flex-col pt-24 pb-4 animate-fade-in relative ${
+        effectiveViewMode === "3D" ? "perspective-container" : ""
+      }`}
     >
-      {/* --- BACKGROUND LAYER --- */}
+      {/* BACKGROUND */}
       <div className="fixed inset-0 -z-30">
         <img
           src="https://i.ibb.co/93YdWhP4/i-Stock-529983003.jpg"
@@ -273,17 +267,14 @@ const ProvidersView: React.FC = () => {
       </div>
       <div className="fixed inset-0 bg-white/40 backdrop-blur-[1px] -z-20" />
 
-      {/* =========================================================
-         MOBILE-SAFE HEADER STACK (NO ABSOLUTE TOP OFFSETS)
-         ========================================================= */}
+      {/* HEADER */}
       <div
         className={`relative z-30 w-full px-4 pt-2 pb-2 transition-opacity duration-300 ${
           selectedProvider ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
       >
-        {/* Line 1: Title + subtitle */}
         <div className="text-center">
-          <h2 className="text-2xl md:text-4xl font-extrabold text-blue-900 drop-shadow-sm leading-tight">
+          <h2 className="text-2xl md:text-4xl font-extrabold text-blue-900 leading-tight">
             The Region&apos;s Most Trusted Team
           </h2>
           <p className="text-blue-900/80 text-[10px] md:text-xs font-bold uppercase tracking-widest mt-2">
@@ -291,382 +282,202 @@ const ProvidersView: React.FC = () => {
           </p>
         </div>
 
-        {/* Lines 2–4: Controls */}
         <div className="mt-4 flex flex-col items-center gap-3">
-          {/* Line 2: Provider / APP / MGMT switcher */}
-          <div className="w-full flex justify-center">
-            <div className="flex bg-white/60 backdrop-blur-md rounded-full p-1.5 border border-white/50 shadow-inner max-w-full overflow-x-auto no-scrollbar">
-              {(["MD", "APP", "MGMT"] as const).map((type) => (
-                <button
-                  key={type}
-                  onClick={() => setFilter(type)}
-                  className={`px-4 md:px-5 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
-                    filter === type
-                      ? "bg-blue-900 text-white shadow-md transform scale-105"
-                      : "text-blue-900 hover:bg-white/50"
-                  }`}
-                >
-                  {type === "MD"
-                    ? "Physicians"
-                    : type === "APP"
-                    ? "APPs"
-                    : "Management"}
-                </button>
-              ))}
-            </div>
+          <div className="flex bg-white/60 backdrop-blur-md rounded-full p-1.5 border border-white/50 shadow-inner">
+            {(["MD", "APP", "MGMT"] as const).map((type) => (
+              <button
+                key={type}
+                onClick={() => {
+                  // 1. If moving TO Management, force Grid
+                  if (type === "MGMT") {
+                    setViewMode("GRID");
+                  }
+                  // 2. If moving AWAY from Management, restore the last user choice
+                  else if (filter === "MGMT") {
+                    setViewMode(lastNonMgmtViewRef.current);
+                  }
+
+                  // 3. Update the filter state
+                  setFilter(type);
+                }}
+                className={`px-4 md:px-5 py-2 rounded-full text-xs font-bold transition-all ${
+                  filter === type
+                    ? "bg-blue-900 text-white shadow-md transform scale-105"
+                    : "text-blue-900 hover:bg-white/50"
+                }`}
+              >
+                {type === "MD"
+                  ? "Physicians"
+                  : type === "APP"
+                  ? "APPs"
+                  : "Management"}
+              </button>
+            ))}
           </div>
 
-          {/* Line 3: View switcher */}
           <div className="flex bg-white/60 backdrop-blur-md rounded-full p-1.5 border border-white/50 shadow-inner">
-            <button
-              onClick={() => setViewMode("3D")}
-              className={`p-2 rounded-full transition-all ${
-                viewMode === "3D"
-                  ? "bg-teal-600 text-white shadow-md"
-                  : "text-blue-900 hover:bg-white/50"
-              }`}
-              title="Carousel View"
-            >
-              <Vote size={18} />
-            </button>
             <button
               onClick={() => setViewMode("GRID")}
               className={`p-2 rounded-full transition-all ${
-                viewMode === "GRID"
+                effectiveViewMode === "GRID"
                   ? "bg-teal-600 text-white shadow-md"
                   : "text-blue-900 hover:bg-white/50"
               }`}
-              title="Grid View"
             >
               <LayoutGrid size={18} />
             </button>
             <button
               onClick={() => setViewMode("LIST")}
               className={`p-2 rounded-full transition-all ${
-                viewMode === "LIST"
+                effectiveViewMode === "LIST"
                   ? "bg-teal-600 text-white shadow-md"
                   : "text-blue-900 hover:bg-white/50"
               }`}
-              title="List View"
             >
               <LayoutList size={18} />
             </button>
           </div>
-
-          {/* Line 4: “Narrow width” chevrons row (flip above carousel) */}
-          {effectiveViewMode === "3D" && (
-            <div className="hidden [@media(max-width:1190px)]:flex w-full max-w-md items-center justify-between px-1">
-              <button
-                onClick={handlePrev}
-                className="p-3 rounded-full bg-white/80 backdrop-blur-md shadow-xl text-blue-900 border border-white/50 transition-all active:scale-95 hover:bg-teal-500 hover:text-white"
-                aria-label="Previous"
-              >
-                <ChevronLeft size={24} />
-              </button>
-
-              <button
-                onClick={handleNext}
-                className="p-3 rounded-full bg-white/80 backdrop-blur-md shadow-xl text-blue-900 border border-white/50 transition-all active:scale-95 hover:bg-teal-500 hover:text-white"
-                aria-label="Next"
-              >
-                <ChevronRight size={24} />
-              </button>
-            </div>
-          )}
         </div>
       </div>
 
-      {/* --- CONTENT AREA --- */}
+      {/* MAIN CONTENT SWITCHER */}
       {effectiveViewMode === "3D" ? (
-        // --- 3D CAROUSEL VIEW ---
         <div
-          key="3d-container"
-          className={`flex-grow w-full flex items-center justify-center relative overflow-visible perspective-container transition-all duration-500 ${
-            selectedProvider
-              ? // ✅ iPhone blur smear fix: no blur on base breakpoint
-                "scale-95 opacity-60 pointer-events-none sm:blur-sm"
-              : "scale-100 opacity-100"
+          className={`flex-grow w-full flex items-center justify-center relative overflow-visible transition-all duration-500 ${
+            selectedProvider ? "scale-95 opacity-60 sm:blur-sm" : ""
           }`}
-          style={{
-            // ✅ iOS: keep a stable compositor layer
-            transform: "translateZ(0)",
-            WebkitTransform: "translateZ(0)",
-          }}
         >
-          {/* ✅ DESKTOP-ONLY OVERLAY CHEVRONS (hidden at <=1190px to prevent overlap) */}
-          <div
-            className="
-              hidden [@media(min-width:1191px)]:flex
-              absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
-              z-50 items-center justify-between
-              pointer-events-none
-              w-[min(1180px,88vw)]
-            "
-          >
-            <button
-              onClick={handlePrev}
-              className="
-                pointer-events-auto
-                p-3 md:p-4 rounded-full
-                bg-white/80 backdrop-blur-md shadow-xl
-                text-blue-900 border border-white/50
-                transition-all transform active:scale-95
-                hover:bg-teal-500 hover:text-white
-              "
-              aria-label="Previous"
-            >
-              <ChevronLeft size={24} />
-            </button>
-
-            <button
-              onClick={handleNext}
-              className="
-                pointer-events-auto
-                p-3 md:p-4 rounded-full
-                bg-white/80 backdrop-blur-md shadow-xl
-                text-blue-900 border border-white/50
-                transition-all transform active:scale-95
-                hover:bg-teal-500 hover:text-white
-              "
-              aria-label="Next"
-            >
-              <ChevronRight size={24} />
-            </button>
-          </div>
-
-          {/* Carousel */}
-          <div
-            ref={carouselRef}
-            className={`relative preserve-3d will-change-transform ${
-              carouselReady ? "opacity-100" : "opacity-0"
-            }`}
-            style={{
-              width: `${CARD_WIDTH}px`,
-              height: `${CARD_HEIGHT}px`,
-              transition: "opacity 120ms linear",
-            }}
-          >
-            {filteredProviders.map((provider, i) => {
-              const angle = i * THETA;
-
-              return (
-                <div
-                  key={`3d-${provider.id}`}
-                  onPointerUp={(e) => {
-                    e.preventDefault();
-                    handleCardClick(i, provider);
-                  }}
-                  className={`absolute top-0 left-0 w-full h-full transition-[filter] duration-300 hover:brightness-110 ${
-                    provider.role === "MGMT"
-                      ? "cursor-default"
-                      : "cursor-pointer"
-                  }`}
-                  style={{
-                    transform: `rotateY(${angle}deg) translateZ(${RADIUS}px)`,
-                    backfaceVisibility: "hidden",
-                    WebkitBackfaceVisibility: "hidden",
-                    transformStyle: "preserve-3d",
-                    WebkitTransformStyle: "preserve-3d",
-                    willChange: "transform",
-                    touchAction: "manipulation",
-                  }}
-                >
-                  <ProviderCard provider={provider} />
-                </div>
-              );
-            })}
+          <div ref={carouselRef} className="relative preserve-3d">
+            {filteredProviders.map((p, i) => (
+              <div
+                key={p.id}
+                className="absolute"
+                style={{
+                  transform: `rotateY(${i * THETA}deg) translateZ(${RADIUS}px)`,
+                }}
+              >
+                <ProviderCard provider={p} />
+              </div>
+            ))}
           </div>
         </div>
       ) : effectiveViewMode === "GRID" ? (
-        // --- GRID VIEW ---
         <div
           key="grid-container"
-          className={`w-full flex-grow mt-26 md:mt-32 overflow-y-auto px-4 pb-20 custom-scrollbar transition-opacity duration-300 ${
-            selectedProvider ? "opacity-0" : "opacity-100"
-          }`}
+          className="w-full flex-grow mt-32 overflow-y-auto px-4 pb-20 custom-scrollbar"
         >
           <div className="w-full flex justify-center">
             <div
-              className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 justify-items-center w-fit ${
+              className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 ${
                 filter === "MD" ? "xl:grid-cols-4" : "xl:grid-cols-3"
               }`}
             >
-              {filteredProviders.map((provider, i) => (
+              {filteredProviders.map((p, i) => (
                 <div
-                  key={`grid-${provider.id}`}
-                  onClick={() => handleCardClick(i, provider)}
-                  style={{ transform: "none" }}
-                  className={`h-96 transition-transform duration-300 hover:-translate-y-2 ${
-                    provider.role === "MGMT"
-                      ? "cursor-default"
-                      : "cursor-pointer"
-                  } ${filter === "MD" ? "w-[16rem]" : "w-[18rem]"}`}
+                  key={p.id}
+                  onClick={() => handleCardClick(i, p)}
+                  className="h-96 w-[16rem] cursor-pointer hover:-translate-y-2 transition-transform"
                 >
-                  <ProviderCard provider={provider} />
+                  <ProviderCard provider={p} />
                 </div>
               ))}
             </div>
           </div>
         </div>
       ) : (
-        // --- MASTER DETAIL (LIST) VIEW ---
+        /* LIST VIEW: Fixed alignment and scrollbar */
         <div
           key="list-container"
-          className="w-full flex-grow overflow-hidden px-4 pb-4 max-w-7xl mx-auto flex gap-6 pt-6"
+          className="w-full flex-grow overflow-hidden px-4 max-w-7xl mx-auto flex gap-6 mt-16 md:mt-24"
         >
-          {/* LEFT COLUMN: THE LIST */}
-          <div className="w-full lg:w-1/3 xl:w-1/4 h-full overflow-y-auto custom-scrollbar pr-2 space-y-2 pb-20">
-            <div className="block lg:hidden p-3 rounded-xl border border-blue-200 bg-blue-50/80 mb-2 flex items-center gap-3 shadow-sm">
-              <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
-                <Info size={20} />
-              </div>
-              <div>
-                <h4 className="font-bold text-xs text-blue-900 uppercase tracking-wide">
-                  Instructions
-                </h4>
-                <p className="text-[10px] text-slate-600 leading-tight">
-                  Tap a provider below to open their profile.
-                </p>
-              </div>
-            </div>
-
-            {filteredProviders.map((provider) => {
-              const details = getProviderOverrides(provider);
-              const isActive = previewProvider?.id === provider.id;
-
-              return (
-                <div
-                  key={provider.id}
-                  onClick={() => {
-                    if (window.innerWidth < 1024) {
-                      setSelectedProvider(provider);
-                    } else {
-                      setPreviewProvider(provider);
+          <div className="w-full lg:w-1/3 xl:w-1/4 h-full flex flex-col overflow-hidden">
+            <div className="flex-grow overflow-y-auto custom-scrollbar pr-2 space-y-2 pb-20">
+              {filteredProviders.map((provider) => {
+                const details = getProviderOverrides(provider);
+                const isActive = previewProvider?.id === provider.id;
+                return (
+                  <div
+                    key={provider.id}
+                    onClick={() =>
+                      window.innerWidth < 1024
+                        ? setSelectedProvider(provider)
+                        : setPreviewProvider(provider)
                     }
-                  }}
-                  className={`group flex items-center gap-3 p-2.5 rounded-xl border transition-all cursor-pointer
-                    ${
+                    className={`flex items-center gap-3 p-2.5 rounded-xl border transition-all cursor-pointer ${
                       isActive
-                        ? "bg-blue-900 border-blue-900 shadow-md"
-                        : "bg-white/80 hover:bg-white border-white/50 hover:border-teal-200"
-                    }
-                  `}
-                >
-                  <div className="h-10 w-10 rounded-full overflow-hidden border-2 border-white shadow-sm flex-shrink-0 bg-slate-200">
-                    <img
-                      src={provider.imageUrl}
-                      alt={provider.name}
-                      className="w-full h-full object-cover object-top"
-                    />
+                        ? "bg-blue-900 border-blue-900 text-white shadow-md scale-[1.02]"
+                        : "bg-white/80 border-white/50 hover:border-teal-200"
+                    }`}
+                  >
+                    <div className="h-10 w-10 rounded-full overflow-hidden flex-shrink-0 bg-slate-200 border-2 border-white shadow-sm">
+                      <img
+                        src={provider.imageUrl}
+                        className="w-full h-full object-cover"
+                        alt=""
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-bold text-sm truncate">
+                        {details.cardName}
+                      </h4>
+                      <p
+                        className={`text-[10px] truncate ${
+                          isActive ? "text-teal-200" : "text-slate-500"
+                        }`}
+                      >
+                        {details.cardTitle}
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <h4
-                      className={`font-bold text-sm truncate ${
-                        isActive ? "text-white" : "text-blue-900"
-                      }`}
-                    >
-                      {details.cardName}
-                    </h4>
-                    <p
-                      className={`text-[10px] truncate ${
-                        isActive ? "text-teal-200" : "text-slate-500"
-                      }`}
-                    >
-                      {details.cardTitle}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
 
-          {/* RIGHT COLUMN: THE DETAIL CARD (Desktop Only) */}
-          <div className="hidden lg:flex lg:w-2/3 xl:w-3/4 h-full pb-20 items-center justify-center">
+          <div className="hidden lg:flex lg:w-2/3 xl:w-3/4 h-full pb-20 items-start justify-center">
             {previewProvider ? (
-              <div className="w-full h-[600px] bg-white/95 backdrop-blur-xl rounded-3xl border border-white/60 shadow-xl overflow-hidden flex flex-row animate-fade-in">
+              <div className="w-full h-[600px] bg-white/95 rounded-3xl border border-white/60 shadow-xl overflow-hidden flex flex-row animate-fade-in">
                 <div className="w-2/5 h-full relative bg-slate-800 flex-shrink-0">
                   <img
                     src={previewProvider.imageUrl}
-                    alt={previewProvider.name}
                     className="w-full h-full object-cover object-top"
+                    alt=""
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-blue-900/90 via-transparent to-transparent opacity-80" />
-                  <div className="absolute bottom-0 left-0 w-full p-8">
-                    <h2 className="text-3xl font-extrabold text-white leading-tight mb-1">
+                  <div className="absolute bottom-0 left-0 w-full p-8 z-10 text-white">
+                    <h2 className="text-3xl font-extrabold leading-tight mb-1">
                       {getProviderOverrides(previewProvider).cardName}
                     </h2>
-                    <p className="text-teal-400 font-bold uppercase tracking-wider text-xs mb-1">
+                    <p className="text-teal-400 font-bold uppercase text-xs mb-1">
                       {getProviderOverrides(previewProvider).credentials}
                     </p>
-                    <p className="text-white/90 text-lg font-medium">
+                    <p className="text-lg font-medium">
                       {getProviderOverrides(previewProvider).cardTitle}
                     </p>
                   </div>
                 </div>
-
                 <div className="flex-1 overflow-y-auto p-8 custom-scrollbar bg-white">
-                  <div className="mb-8">
-                    <h3 className="flex items-center gap-2 text-lg font-bold text-blue-900 mb-3 border-b border-blue-100 pb-2">
-                      <BookOpen size={20} className="text-teal-600" />
-                      Biography
-                    </h3>
-                    <p className="text-slate-700 leading-relaxed text-sm">
-                      {getProviderOverrides(previewProvider).bio ||
-                        "No biography available."}
-                    </p>
-                  </div>
-
-                  <div className="mb-8">
-                    <h3 className="flex items-center gap-2 text-lg font-bold text-blue-900 mb-3 border-b border-blue-100 pb-2">
-                      <GraduationCap size={20} className="text-teal-600" />
-                      Education & Training
-                    </h3>
-                    <ul className="space-y-2">
-                      {(
-                        getProviderOverrides(previewProvider).education || []
-                      ).map((edu, idx) => (
-                        <li
-                          key={idx}
-                          className="flex items-start gap-3 text-slate-700 text-sm group"
-                        >
-                          <span className="w-1.5 h-1.5 rounded-full bg-teal-400 mt-2 flex-shrink-0"></span>
-                          <span>{edu}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h3 className="flex items-center gap-2 text-lg font-bold text-blue-900 mb-3 border-b border-blue-100 pb-2">
-                      <Heart size={20} className="text-teal-600" />
-                      Interests & Hobbies
-                    </h3>
-                    <div className="flex flex-wrap gap-2">
-                      {(
-                        getProviderOverrides(previewProvider).interests || []
-                      ).map((int, idx) => (
-                        <span
-                          key={idx}
-                          className="px-4 py-1.5 bg-white border border-blue-100 text-blue-800 rounded-full text-xs font-bold shadow-sm"
-                        >
-                          {int}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+                  <h3 className="flex items-center gap-2 text-lg font-bold text-blue-900 mb-3 border-b pb-2">
+                    <BookOpen size={20} className="text-teal-600" />
+                    Biography
+                  </h3>
+                  <p className="text-slate-700 text-sm leading-relaxed">
+                    {getProviderOverrides(previewProvider).bio ||
+                      "No biography available."}
+                  </p>
                 </div>
               </div>
             ) : (
-              <div className="h-full w-full flex flex-col items-center justify-center text-center p-8 bg-white/30 backdrop-blur-md rounded-3xl border-2 border-dashed border-blue-900/20">
-                <div className="bg-white/60 p-4 rounded-full mb-4 shadow-sm animate-bounce">
-                  <MousePointerClick size={48} className="text-teal-600" />
-                </div>
-                <h3 className="text-2xl font-bold text-blue-900 mb-2">
+              <div className="h-[600px] w-full flex flex-col items-center justify-center text-center p-8 bg-white/30 rounded-3xl border-2 border-dashed border-blue-900/20">
+                <MousePointerClick
+                  size={48}
+                  className="text-teal-600 mb-4 animate-bounce"
+                />
+                <h3 className="text-2xl font-bold text-blue-900">
                   Meet Our Experts
                 </h3>
-                <p className="text-slate-600 max-w-sm">
-                  Scroll through the list on the left and click on a provider to
-                  view their full profile, biography, and areas of expertise.
+                <p className="text-slate-600">
+                  Select a provider to view their profile.
                 </p>
               </div>
             )}
@@ -685,7 +496,6 @@ const ProvidersView: React.FC = () => {
     </div>
   );
 };
-
 // --- ProviderCard ---
 const ProviderCard: React.FC<{ provider: Provider }> = ({ provider }) => {
   const details = getProviderOverrides(provider);
