@@ -92,14 +92,6 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
             : "bg-white/5 backdrop-blur-md border-b border-white/10 shadow-sm"
         }`}
       >
-        {/* THE WHITE SCRIM: Added here. 
-            It fades from white (top) to transparent (bottom) to let the logo pop. */}
-        <div
-          className={`absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-white/90 via-white/40 to-transparent pointer-events-none transition-opacity duration-300 ${
-            currentView === ViewState.HOME ? "opacity-100" : "opacity-0"
-          }`}
-        />
-
         <div className="w-full px-4 md:px-8 lg:px-12 h-full relative">
           <div className="flex items-center h-full pt-4 gap-3">
             {/* 1. LOGO (Far Left) */}
@@ -118,7 +110,17 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
               <img
                 src={ASSETS.logo}
                 alt="Dayton Kidney"
-                className="h-20 md:h-28 lg:h-32 w-auto object-contain drop-shadow-[0_2px_6px_rgba(255,255,255,0.8)] filter brightness-105"
+                /* 1. h-16 md:h-20: 
+        This is the KEY fix. h-20 (80px) fits exactly into your h-24 navbar 
+        (accounting for the top padding) without getting squished.
+     
+     2. drop-shadow-[...]: 
+        I increased the blur radius (10px) to create a stronger "glow" effect, 
+        which separates the dark logo from the background.
+  */
+                className="h-16 md:h-20 w-auto object-contain 
+             drop-shadow-[0_0_10px_rgba(255,255,255,0.9)] 
+             filter brightness-110"
                 style={{ transform: "translateZ(0)", willChange: "transform" }}
               />
             </div>
