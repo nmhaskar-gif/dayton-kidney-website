@@ -274,16 +274,17 @@ const ProvidersView: React.FC = () => {
       : "Select a team member";
 
 <div
-ref={gridScrollRef}
-      className={`w-full flex flex-col pt-24 pb-4 animate-fade-in relative 
-        ${
-          effectiveViewMode === "GRID"
-            ? "h-full overflow-y-auto custom-scrollbar" // FIXED: Uses h-full to stay in view, but allows scrolling here
-            : "h-full overflow-hidden"
-        }
-        ${effectiveViewMode === "3D" ? "perspective-container" : ""}
-      `}
-    >
+  ref={gridScrollRef}
+  className={`w-full flex flex-col pt-24 pb-4 animate-fade-in relative 
+    ${
+      effectiveViewMode === "GRID" && filter !== "MGMT"
+        ? "h-[100dvh] overflow-hidden"
+        : "h-full overflow-hidden"
+    }
+    ${effectiveViewMode === "3D" ? "perspective-container" : ""}
+  `}
+>
+
       {/* BACKGROUND */}
       <div className="fixed inset-0 -z-30">
         <img
@@ -390,10 +391,10 @@ ref={gridScrollRef}
         </div>
      ) : effectiveViewMode === "GRID" ? (
       <div
-        key="grid-container"
-        // CHANGE: Margin reduced to mt-24 (moves tiles up). Removed overflow/scroll (handled by parent now).
-        className="w-full flex-grow mt-24 px-4 pb-20"
-      >
+  key="grid-container"
+  className="w-full flex-1 min-h-0 overflow-y-auto custom-scrollbar mt-24 px-4 pb-20"
+>
+
           <div className="w-full flex justify-center">
             <div
               className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 ${
