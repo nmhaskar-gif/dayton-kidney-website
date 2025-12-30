@@ -12,47 +12,57 @@
   width: auto;
   height: auto;
 }
-/* --- IPHONE OPTIMIZATION --- */
+/* --- IPHONE OPTIMIZATION (FINAL VERSION) --- */
 @media only screen and (max-width: 430px) {
-  /* 1. PROVIDER GRID: Targeting the layout classes directly */
-  /* This moves the grid up */
+  /* 1. PROVIDER GRID: SCOOTCH UP & 2-ACROSS */
   .w-full.flex-grow.mt-32.overflow-y-auto {
-    margin-top: 2rem !important;
+    margin-top: 2rem !important; /* Lifts the grid up */
   }
 
-  /* This forces 2 columns */
   .w-full.flex-grow.mt-32.overflow-y-auto .grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 8px !important;
     padding: 0 8px !important;
   }
 
-  /* This resizes the individual profile cards */
   .w-full.flex-grow.mt-32.overflow-y-auto .h-96.w-\[16rem\] {
     width: 100% !important;
     height: 260px !important;
   }
 
-  /* Adjusting text size so names don't overlap */
   .w-full.flex-grow.mt-32.overflow-y-auto h3 {
     font-size: 1rem !important;
   }
 
-  /* 2. CHATBOT ADJUSTMENTS */
-  /* This shrinks the main chat box so it's not "stuck" to the top/bottom */
-  div.fixed.inset-0.z-\[9999\] > div {
-    max-height: 75vh !important; /* Shorter height ensures exit is visible */
-    width: 92% !important;
-    margin: auto !important;
+  /* 2. EDUCATION VIEW: STOP THE SLIDING/WIGGLE */
+  /* This targets the specific container for the Education page */
+  .w-full.h-full.pt-32.pb-20.px-4.animate-fade-in.custom-scrollbar {
+    overflow-x: hidden !important; /* Locks left-to-right movement */
     position: relative !important;
+    width: 100% !important;
   }
 
-  /* This shrinks the scrolling message area inside the chat */
+  .max-w-6xl.mx-auto.space-y-16 {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Hides the background circles that cause the "ghost" width */
+  .animate-blob {
+    display: none !important;
+  }
+
+  /* 3. CHATBOT: WINDOW SIZE & EXIT BUTTON */
+  div.fixed.inset-0.z-\[9999\] > div {
+    max-height: 75vh !important;
+    width: 92% !important;
+    margin: auto !important;
+  }
+
   .h-\[420px\].overflow-y-auto {
     height: 250px !important;
   }
 
-  /* This makes the "Close" text look more like a button you can tap */
   button.text-white\/80.hover\:text-white {
     background: rgba(255, 255, 255, 0.2) !important;
     padding: 5px 12px !important;
