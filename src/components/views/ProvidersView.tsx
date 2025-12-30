@@ -253,9 +253,15 @@ const ProvidersView: React.FC = () => {
 
   return (
     <div
-      className={`w-full h-full overflow-hidden flex flex-col pt-24 pb-4 animate-fade-in relative ${
-        effectiveViewMode === "3D" ? "perspective-container" : ""
-      }`}
+      className={`w-full flex flex-col pt-24 pb-4 animate-fade-in relative 
+            ${
+              /* CHANGE: Allow window scrolling for Grid view, keep fixed for others */
+              effectiveViewMode === "GRID"
+                ? "min-h-screen overflow-x-hidden overflow-y-visible"
+                : "h-full overflow-hidden"
+            }
+            ${effectiveViewMode === "3D" ? "perspective-container" : ""}
+          `}
     >
       {/* BACKGROUND */}
       <div className="fixed inset-0 -z-30">
@@ -364,7 +370,8 @@ const ProvidersView: React.FC = () => {
       ) : effectiveViewMode === "GRID" ? (
         <div
           key="grid-container"
-          className="w-full flex-grow mt-32 overflow-y-auto px-4 pb-20 custom-scrollbar"
+          /* CHANGE: Reduced top margin and removed internal scroll/overflow */
+          className="w-full flex-grow mt-20 md:mt-24 px-4 pb-20"
         >
           <div className="w-full flex justify-center">
             <div
