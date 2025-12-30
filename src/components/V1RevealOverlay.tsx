@@ -99,7 +99,7 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
               className={`z-50 flex-shrink-0 mr-4 ${
                 currentView === ViewState.HOME
                   ? "cursor-default"
-                  : "cursor-pointer transition-transform duration-300 hover:scale-105"
+                  : "cursor-pointer"
               }`}
               onClick={
                 currentView === ViewState.HOME
@@ -110,7 +110,16 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
               <img
                 src={ASSETS.logo}
                 alt="Dayton Kidney"
-                className="h-20 md:h-28 lg:h-32 w-auto object-contain drop-shadow-[0_2px_6px_rgba(255,255,255,0.8)] filter brightness-105"
+                /* UPDATES FOR PROMINENCE WITHIN CONSTRAINTS:
+                   1. h-16 md:h-20: Fits perfectly inside the h-24 navbar (accounting for pt-4).
+                   2. drop-shadow-xl: Creates a strong "lift" effect so it stands out against the glass.
+                   3. brightness-110: Makes the logo slightly more radiant than the surrounding text.
+                   4. hover:scale-110: Adds interaction prominence without permanent clutter.
+                */
+                className="h-16 md:h-20 w-auto object-contain 
+                           transition-transform duration-300 hover:scale-110
+                           drop-shadow-[0_2px_10px_rgba(255,255,255,0.6)] 
+                           filter brightness-110"
                 style={{ transform: "translateZ(0)", willChange: "transform" }}
               />
             </div>
