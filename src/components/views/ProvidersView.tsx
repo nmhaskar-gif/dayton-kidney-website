@@ -251,17 +251,15 @@ const ProvidersView: React.FC = () => {
       ? "Browse detailed profiles"
       : "Select a team member";
 
-  return (
-    <div
+<div
       className={`w-full flex flex-col pt-24 pb-4 animate-fade-in relative 
-            ${
-              /* CHANGE: Allow window scrolling for Grid view, keep fixed for others */
-              effectiveViewMode === "GRID"
-                ? "min-h-screen overflow-x-hidden overflow-y-visible"
-                : "h-full overflow-hidden"
-            }
-            ${effectiveViewMode === "3D" ? "perspective-container" : ""}
-          `}
+        ${
+          effectiveViewMode === "GRID"
+            ? "h-full overflow-y-auto custom-scrollbar" // FIXED: Uses h-full to stay in view, but allows scrolling here
+            : "h-full overflow-hidden"
+        }
+        ${effectiveViewMode === "3D" ? "perspective-container" : ""}
+      `}
     >
       {/* BACKGROUND */}
       <div className="fixed inset-0 -z-30">
@@ -367,12 +365,12 @@ const ProvidersView: React.FC = () => {
             ))}
           </div>
         </div>
-      ) : effectiveViewMode === "GRID" ? (
-        <div
-          key="grid-container"
-          /* CHANGE: Reduced top margin and removed internal scroll/overflow */
-          className="w-full flex-grow mt-20 md:mt-24 px-4 pb-20"
-        >
+     ) : effectiveViewMode === "GRID" ? (
+      <div
+        key="grid-container"
+        // CHANGE: Margin reduced to mt-24 (moves tiles up). Removed overflow/scroll (handled by parent now).
+        className="w-full flex-grow mt-24 px-4 pb-20"
+      >
           <div className="w-full flex justify-center">
             <div
               className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 ${
