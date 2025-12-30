@@ -118,9 +118,10 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
         I increased the blur radius (10px) to create a stronger "glow" effect, 
         which separates the dark logo from the background.
   */
-                className="h-16 md:h-60 w-auto object-contain 
-             drop-shadow-[0_0_50px_rgba(255,255,255,0.9)] 
-             filter brightness-110"
+                className="h-20 md:h-60 w-auto object-contain 
+                drop-shadow-[0_0_2px_rgba(255,255,255,1)]
+                drop-shadow-[0_0_15px_rgba(255,255,255,0.8)] 
+                filter brightness-110 contrast-125"
                 style={{ transform: "translateZ(0)", willChange: "transform" }}
               />
             </div>
