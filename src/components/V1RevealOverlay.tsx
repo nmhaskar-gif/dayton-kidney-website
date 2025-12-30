@@ -119,7 +119,7 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
         which separates the dark logo from the background.
   */
                 className="h-16 md:h-60 w-auto object-contain 
-             drop-shadow-[0_0_20px_rgba(255,255,255,0.9)] 
+             drop-shadow-[0_0_50px_rgba(255,255,255,0.9)] 
              filter brightness-110"
                 style={{ transform: "translateZ(0)", willChange: "transform" }}
               />
