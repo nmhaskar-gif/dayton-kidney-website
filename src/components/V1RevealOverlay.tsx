@@ -96,7 +96,8 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
           <div className="flex items-center h-full pt-4 gap-3">
             {/* 1. LOGO (Far Left) */}
             <div
-              className={`z-50 flex-shrink-0 mr-4 ${
+              className={`relative z-50 flex-shrink-0 mr-4 ${
+                /* Added 'relative' for positioning */
                 currentView === ViewState.HOME
                   ? "cursor-default"
                   : "cursor-pointer transition-transform duration-300 hover:scale-105"
@@ -107,6 +108,10 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
                   : () => navigateTo(ViewState.HOME)
               }
             >
+              {/* --- SPOTLIGHT ADDITION START --- */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] bg-white/30 rounded-full blur-3xl -z-10 pointer-events-none" />
+              {/* --- SPOTLIGHT ADDITION END --- */}
+
               <img
                 src={ASSETS.logo}
                 alt="Dayton Kidney"
