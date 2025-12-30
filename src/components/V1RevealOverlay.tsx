@@ -96,10 +96,12 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
           <div className="flex items-center h-full pt-4 gap-3">
             {/* 1. LOGO (Far Left) */}
             <div
-              className={`z-50 flex-shrink-0 mr-4 ${
+              /* -mt-4 pulls the logo UP to counteract the navbar's pt-4 padding. 
+                 This lets the logo use the full vertical space of the bar. */
+              className={`z-50 flex-shrink-0 mr-4 -mt-2 md:-mt-4 ${
                 currentView === ViewState.HOME
                   ? "cursor-default"
-                  : "cursor-pointer"
+                  : "cursor-pointer transition-transform duration-300 hover:scale-105"
               }`}
               onClick={
                 currentView === ViewState.HOME
@@ -110,16 +112,16 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
               <img
                 src={ASSETS.logo}
                 alt="Dayton Kidney"
-                /* UPDATES FOR PROMINENCE WITHIN CONSTRAINTS:
-                   1. h-16 md:h-20: Fits perfectly inside the h-24 navbar (accounting for pt-4).
-                   2. drop-shadow-xl: Creates a strong "lift" effect so it stands out against the glass.
-                   3. brightness-110: Makes the logo slightly more radiant than the surrounding text.
-                   4. hover:scale-110: Adds interaction prominence without permanent clutter.
+                /* 1. h-16 md:h-24: 
+                      Sets the logo to match the full height of the navbar (h-24 = 96px).
+                   2. scale-110: 
+                      "Zooms" the image slightly to maximize visibility within that space 
+                      (useful if your logo image file has empty whitespace around the edges).
                 */
-                className="h-16 md:h-20 w-auto object-contain 
-                           transition-transform duration-300 hover:scale-110
-                           drop-shadow-[0_2px_10px_rgba(255,255,255,0.6)] 
-                           filter brightness-110"
+                className="h-16 md:h-24 w-auto object-contain 
+                           transform scale-110 origin-left
+                           drop-shadow-[0_2px_4px_rgba(255,255,255,0.5)] 
+                           filter brightness-105"
                 style={{ transform: "translateZ(0)", willChange: "transform" }}
               />
             </div>
