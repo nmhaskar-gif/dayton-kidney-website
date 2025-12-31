@@ -338,7 +338,7 @@ const ProvidersView: React.FC = () => {
             ))}
           </div>
 
-          </div>
+         
         </div>
       </div>
 
