@@ -62,8 +62,9 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
       <div className="absolute inset-0 z-0">
         <div
           className={`w-full h-full bg-no-repeat transition-transform duration-[20s] ease-linear
-            bg-[length:auto_175vh] bg-[position:center_top]
-            md:bg-cover md:bg-[position:80%_top]
+          bg-cover bg-center
+          md:bg-cover md:bg-[position:80%_top]
+          
             ${isActive ? "scale-105" : "scale-100"}`}
           style={{
             backgroundImage: `url('${ASSETS.skyline}')`,
