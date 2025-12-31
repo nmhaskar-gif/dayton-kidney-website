@@ -82,18 +82,23 @@ const HomeView: React.FC<HomeViewProps> = ({ setView, isActive }) => {
           {/* Body Text */}
           <div ref={bodyRef} className="mb-8 md:mb-10 mx-auto">
             <p className="text-slate-900 font-bold leading-relaxed text-sm sm:text-base md:text-lg lg:text-xl drop-shadow-[0_0_15px_rgba(255,255,255,0.9)]">
-              The unrivaled expertise and compassionate care of
-              <br className="block my-1" />
-              {/* FIX 2: Normalized Font Size 
-                  Removed 'text-lg md:text-xl' etc.
-                  Now it inherits the exact size from the parent <p> tag.
-                  Kept 'font-extrabold' so the names still pop slightly.
-              */}
+              The unrivaled expertise and
+              <br className="block sm:hidden" />
+              compassionate care of
+              <br className="block sm:hidden" />
               <span className="text-teal-900 font-extrabold">
-                Renal Physicians and Nephrology Associates of Dayton
+                Renal Physicians
               </span>
-              <br className="block my-1" />
-              have come together to form <strong>Dayton Kidney</strong>.
+              <br className="block sm:hidden" />
+              and
+              <br className="block sm:hidden" />
+              <span className="text-teal-900 font-extrabold">
+                Nephrology Associates of Dayton
+              </span>
+              <br className="block sm:hidden" />
+              have come together to form
+              <br className="block sm:hidden" />
+              <strong>Dayton Kidney</strong>
             </p>
 
             <p className="mt-4 sm:mt-6 text-blue-950 font-extrabold text-xs sm:text-sm md:text-base lg:text-lg drop-shadow-[0_0_20px_rgba(255,255,255,1)] max-w-xl mx-auto">
