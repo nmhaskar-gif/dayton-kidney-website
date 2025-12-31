@@ -111,7 +111,7 @@ const getProviderOverrides = (provider: Provider) => {
 
 const ProvidersView: React.FC = () => {
   const [filter, setFilter] = useState<"MD" | "APP" | "MGMT">("MD");
-  const [viewMode, setViewMode] = useState<"3D" | "GRID" | "LIST">("LIST");
+  const [viewMode, setViewMode] = useState<"3D" | "GRID" | "LIST">("GRID");
   const [selectedProvider, setSelectedProvider] = useState<Provider | null>(
     null
   );
@@ -187,27 +187,27 @@ const ProvidersView: React.FC = () => {
     setSelectedProvider(provider);
     if (effectiveViewMode === "3D") goToIndex(index);
   };
-  useEffect(() => {
-    const onWheel = (e: WheelEvent) => {
+ // useEffect(() => {
+    //const onWheel = (e: WheelEvent) => {
       // ONLY affect Physicians + APPs in TILE (GRID) view
-      if (effectiveViewMode !== "GRID") return;
-      if (filter === "MGMT") return;
-      if (!gridScrollRef.current) return;
-      if (selectedProvider) return; // don't interfere when modal is open
+     // if (effectiveViewMode !== "GRID") return;
+     // if (filter === "MGMT") return;
+     // if (!gridScrollRef.current) return;
+     // if (selectedProvider) return; // don't interfere when modal is open
 
-      const target = gridScrollRef.current;
+     // const target = gridScrollRef.current;
 
       // If it can't scroll, do nothing
-      if (target.scrollHeight <= target.clientHeight) return;
+     /// if (target.scrollHeight <= target.clientHeight) return;
 
       // Stop page/body scroll and push scroll into the grid container
-      e.preventDefault();
-      target.scrollTop += e.deltaY;
-    };
+      //e.preventDefault();
+      //target.scrollTop += e.deltaY;
+   //};
 
-    window.addEventListener("wheel", onWheel, { passive: false });
-    return () => window.removeEventListener("wheel", onWheel as any);
-  }, [effectiveViewMode, filter, selectedProvider]);
+    //window.addEventListener("wheel", onWheel, { passive: false });
+    //return () => window.removeEventListener("wheel", onWheel as any);
+ // }, [effectiveViewMode, filter, selectedProvider]);
 
   useEffect(() => {
     setActiveIndex(0);
@@ -275,18 +275,11 @@ const ProvidersView: React.FC = () => {
       ? "Browse detailed profiles"
       : "Select a team member";
 
-  return (
-    <div
-      ref={gridWrapperRef}
-      className={`w-full flex flex-col pt-24 pb-4 animate-fade-in relative 
-      ${
-        effectiveViewMode === "GRID" && filter !== "MGMT"
-          ? "h-[100dvh] overflow-hidden"
-          : "h-full overflow-hidden"
-      }
-      ${effectiveViewMode === "3D" ? "perspective-container" : ""}
-    `}
-    >
+      return (
+        <div
+          ref={gridWrapperRef}
+          className="w-full flex flex-col pt-24 pb-20 animate-fade-in relative min-h-screen"
+        >
       {/* BACKGROUND */}
       <div className="fixed inset-0 -z-30">
         <img
@@ -345,30 +338,30 @@ const ProvidersView: React.FC = () => {
             ))}
           </div>
 
-          <div className="flex bg-white/60 backdrop-blur-md rounded-full p-1.5 border border-white/50 shadow-inner">
-            <button
-              onClick={() => setViewMode("GRID")}
-              className={`p-2 rounded-full transition-all ${
-                effectiveViewMode === "GRID"
-                  ? "bg-teal-600 text-white shadow-md"
-                  : "text-blue-900 hover:bg-white/50"
-              }`}
-            >
-              <LayoutGrid size={18} />
-            </button>
-            <button
-              onClick={() => setViewMode("LIST")}
-              className={`p-2 rounded-full transition-all ${
-                effectiveViewMode === "LIST"
-                  ? "bg-teal-600 text-white shadow-md"
-                  : "text-blue-900 hover:bg-white/50"
-              }`}
-            >
-              <LayoutList size={18} />
-            </button>
-          </div>
-        </div>
-      </div>
+       // </div>   <div className="flex bg-white/60 backdrop-blur-md rounded-full p-1.5 border border-white/50 shadow-inner">
+           // <button
+            //  onClick={() => setViewMode("GRID")}
+             // className={`p-2 rounded-full transition-all ${
+               // effectiveViewMode === "GRID"
+                //  ? "bg-teal-600 text-white shadow-md"
+                //  : "text-blue-900 hover:bg-white/50"
+            //  }`}
+           // >
+            //</div>  <LayoutGrid size={18} />
+           // </button>
+           // <button
+            //  onClick={() => setViewMode("LIST")}
+            //  className={`p-2 rounded-full transition-all ${
+             //   effectiveViewMode === "LIST"
+             //     ? "bg-teal-600 text-white shadow-md"
+              //    : "text-blue-900 hover:bg-white/50"
+             // }`}
+           // >
+             //</div> <LayoutList size={18} />
+           // </button>
+         // </div>
+       // </div>
+     // </div>
 
       {/* MAIN CONTENT SWITCHER */}
       {effectiveViewMode === "3D" ? (
@@ -391,12 +384,12 @@ const ProvidersView: React.FC = () => {
             ))}
           </div>
         </div>
-      ) : effectiveViewMode === "GRID" ? (
-        <div
-          key="grid-container"
-          ref={gridScrollRef}
-          className="w-full flex-1 min-h-0 overflow-y-auto custom-scrollbar mt-24 px-4 pb-20"
-        >
+     ) : effectiveViewMode === "GRID" ? (
+      <div
+        key="grid-container"
+        ref={gridScrollRef}
+        className="w-full mt-10 px-4"
+      >
           <div className="w-full flex justify-center">
             <div
               className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 ${
