@@ -109,7 +109,7 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
               }
             >
               {/* --- SPOTLIGHT ADDITION START --- */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-white/40 rounded-full blur-3xl -z-10 pointer-events-none" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-white/50 rounded-full blur-3xl -z-10 pointer-events-none" />
               {/* --- SPOTLIGHT ADDITION END --- */}
 
               <img
