@@ -338,30 +338,9 @@ const ProvidersView: React.FC = () => {
             ))}
           </div>
 
-       </div>   <div className="flex bg-white/60 backdrop-blur-md rounded-full p-1.5 border border-white/50 shadow-inner">
-            <button
-            //  onClick={() => setViewMode("GRID")}
-             // className={`p-2 rounded-full transition-all ${
-               // effectiveViewMode === "GRID"
-                //  ? "bg-teal-600 text-white shadow-md"
-                //  : "text-blue-900 hover:bg-white/50"
-            //  }`}
-           // >
-            //</div>  <LayoutGrid size={18} />
-           // </button>
-           // <button
-            //  onClick={() => setViewMode("LIST")}
-            //  className={`p-2 rounded-full transition-all ${
-             //   effectiveViewMode === "LIST"
-             //     ? "bg-teal-600 text-white shadow-md"
-              //    : "text-blue-900 hover:bg-white/50"
-             // }`}
-           // >
-             //</div> <LayoutList size={18} />
-           // </button>
-         // </div>
-       // </div>
-     // </div>
+          </div>
+        </div>
+      </div>
 
       {/* MAIN CONTENT SWITCHER */}
       {effectiveViewMode === "3D" ? (
