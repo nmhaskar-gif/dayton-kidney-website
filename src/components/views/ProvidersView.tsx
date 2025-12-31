@@ -338,8 +338,8 @@ const ProvidersView: React.FC = () => {
             ))}
           </div>
 
-       // </div>   <div className="flex bg-white/60 backdrop-blur-md rounded-full p-1.5 border border-white/50 shadow-inner">
-           // <button
+       </div>   <div className="flex bg-white/60 backdrop-blur-md rounded-full p-1.5 border border-white/50 shadow-inner">
+            <button
             //  onClick={() => setViewMode("GRID")}
              // className={`p-2 rounded-full transition-all ${
                // effectiveViewMode === "GRID"
