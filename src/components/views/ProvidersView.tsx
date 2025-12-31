@@ -613,7 +613,7 @@ const ProviderCard: React.FC<{ provider: Provider }> = ({ provider }) => {
               objectPosition: isMgmt
                 ? "center center"
                 : provider.name.includes("Mhaskar")
-                ? "center 40%"
+                ? "center 50%"
                 : provider.imagePosition || "center top",
               transform: "translateZ(0)",
               WebkitTransform: "translateZ(0)",
@@ -715,7 +715,7 @@ const ProfileModal: React.FC<{ provider: Provider; onClose: () => void }> = ({
       <div
         ref={modalRef}
         onMouseDown={(e) => e.stopPropagation()}
-        className="bg-white/95 w-[90%] md:w-[80%] lg:w-full max-w-4xl h-auto max-h-[85vh] lg:h-[600px] rounded-3xl shadow-2xl flex flex-col lg:flex-row overflow-hidden relative border border-white/50"
+        className="bg-white/95 w-[90%] md:w-[80%] lg:w-full max-w-5xl h-auto max-h-[90vh] lg:h-[700px] rounded-3xl shadow-2xl flex flex-col lg:flex-row overflow-hidden relative border border-white/50"
       >
         <button
           onClick={handleClose}
