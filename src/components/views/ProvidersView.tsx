@@ -421,7 +421,7 @@ const ProvidersView: React.FC = () => {
           key="list-container"
           className="w-full flex-grow overflow-hidden px-4 max-w-7xl mx-auto flex gap-6 mt-8 md:mt-10"
         >
-          <div className="w-full lg:w-1/3 xl:w-1/4 h-[600px] flex flex-col overflow-hidden">
+          <div className="w-full lg:w-1/3 xl:w-1/4 h-[650px] flex flex-col overflow-hidden">
             <div className="flex-grow overflow-y-auto custom-scrollbar pr-2 space-y-2 pb-20">
               {filteredProviders.map((provider) => {
                 const details = getProviderOverrides(provider);
@@ -467,7 +467,7 @@ const ProvidersView: React.FC = () => {
 
           <div className="hidden lg:flex lg:w-2/3 xl:w-3/4 h-full pb-20 items-start justify-center">
             {previewProvider ? (
-              <div className="w-full h-[600px] bg-white/95 rounded-3xl border border-white/60 shadow-xl overflow-hidden flex flex-row animate-fade-in">
+              <div className="w-full h-[650px] bg-white/95 rounded-3xl border border-white/60 shadow-xl overflow-hidden flex flex-row animate-fade-in">
                 <div className="w-2/5 h-full relative bg-slate-800 flex-shrink-0">
                   <img
                     src={previewProvider.imageUrl}
@@ -556,7 +556,7 @@ const ProvidersView: React.FC = () => {
                 </div>
               </div>
             ) : (
-              <div className="h-[600px] w-full flex flex-col items-center justify-center text-center p-8 bg-white/30 rounded-3xl border-2 border-dashed border-blue-900/20">
+              <div className="h-[650px] w-full flex flex-col items-center justify-center text-center p-8 bg-white/30 rounded-3xl border-2 border-dashed border-blue-900/20">
                 <MousePointerClick
                   size={48}
                   className="text-teal-600 mb-4 animate-bounce"
@@ -613,7 +613,7 @@ const ProviderCard: React.FC<{ provider: Provider }> = ({ provider }) => {
               objectPosition: isMgmt
                 ? "center center"
                 : provider.name.includes("Mhaskar")
-                ? "center 25%"
+                ? "center 40%"
                 : provider.imagePosition || "center top",
               transform: "translateZ(0)",
               WebkitTransform: "translateZ(0)",
