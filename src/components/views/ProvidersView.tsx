@@ -246,7 +246,7 @@ const ProvidersView: React.FC = () => {
   return (
     <div
       ref={gridWrapperRef}
-      className="w-full h-full overflow-y-auto pt-24 pb-20 animate-fade-in relative custom-scrollbar"
+      className="w-full h-full overflow-y-auto relative custom-scrollbar"
     >
       {/* BACKGROUND */}
       <div className="fixed inset-0 -z-30">
@@ -257,112 +257,115 @@ const ProvidersView: React.FC = () => {
         />
       </div>
       <div className="fixed inset-0 bg-white/40 backdrop-blur-[1px] -z-20" />
-
-      {/* HEADER */}
-      <div
-        className={`relative z-30 w-full px-4 pt-2 pb-2 transition-opacity duration-300 ${
-          selectedProvider ? "opacity-0 pointer-events-none" : "opacity-100"
-        }`}
-      >
-        <div className="text-center">
-          <h2 className="text-2xl md:text-4xl font-extrabold text-blue-900 leading-tight">
-            The Region&apos;s Most Trusted Team
-          </h2>
-          <p className="text-blue-900/80 text-[10px] md:text-xs font-bold uppercase tracking-widest mt-2">
-            {headerSubtitle}
-          </p>
-        </div>
-
-        <div className="mt-4 flex flex-col items-center gap-3">
-          <div className="flex bg-white/60 backdrop-blur-md rounded-full p-1.5 border border-white/50 shadow-inner">
-            {(["MD", "APP", "MGMT"] as const).map((type) => (
-              <button
-                key={type}
-                onClick={() => {
-                  if (type === "MGMT") {
-                    setViewMode("GRID");
-                  } else if (filter === "MGMT") {
-                    setViewMode(lastNonMgmtViewRef.current);
-                  }
-                  setFilter(type);
-                }}
-                className={`px-4 md:px-5 py-2 rounded-full text-xs font-bold transition-all ${
-                  filter === type
-                    ? "bg-blue-900 text-white shadow-md transform scale-105"
-                    : "text-blue-900 hover:bg-white/50"
-                }`}
-              >
-                {type === "MD"
-                  ? "Physicians"
-                  : type === "APP"
-                  ? "APPs"
-                  : "Management"}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* MAIN CONTENT SWITCHER */}
-      {effectiveViewMode === "3D" ? (
+      <div className="w-full flex flex-col pt-24 pb-20 animate-fade-in relative">
+        {/* HEADER */}
         <div
-          className={`flex-grow w-full flex items-center justify-center relative overflow-visible transition-all duration-500 ${
-            selectedProvider ? "scale-95 opacity-60 sm:blur-sm" : ""
+          className={`relative z-30 w-full px-4 pt-2 pb-2 transition-opacity duration-300 ${
+            selectedProvider ? "opacity-0 pointer-events-none" : "opacity-100"
           }`}
         >
-          <div ref={carouselRef} className="relative preserve-3d">
-            {filteredProviders.map((p, i) => (
-              <div
-                key={p.id}
-                className="absolute"
-                style={{
-                  transform: `rotateY(${i * THETA}deg) translateZ(${RADIUS}px)`,
-                }}
-              >
-                <ProviderCard provider={p} />
-              </div>
-            ))}
+          <div className="text-center">
+            <h2 className="text-2xl md:text-4xl font-extrabold text-blue-900 leading-tight">
+              The Region&apos;s Most Trusted Team
+            </h2>
+            <p className="text-blue-900/80 text-[10px] md:text-xs font-bold uppercase tracking-widest mt-2">
+              {headerSubtitle}
+            </p>
+          </div>
+
+          <div className="mt-4 flex flex-col items-center gap-3">
+            <div className="flex bg-white/60 backdrop-blur-md rounded-full p-1.5 border border-white/50 shadow-inner">
+              {(["MD", "APP", "MGMT"] as const).map((type) => (
+                <button
+                  key={type}
+                  onClick={() => {
+                    if (type === "MGMT") {
+                      setViewMode("GRID");
+                    } else if (filter === "MGMT") {
+                      setViewMode(lastNonMgmtViewRef.current);
+                    }
+                    setFilter(type);
+                  }}
+                  className={`px-4 md:px-5 py-2 rounded-full text-xs font-bold transition-all ${
+                    filter === type
+                      ? "bg-blue-900 text-white shadow-md transform scale-105"
+                      : "text-blue-900 hover:bg-white/50"
+                  }`}
+                >
+                  {type === "MD"
+                    ? "Physicians"
+                    : type === "APP"
+                    ? "APPs"
+                    : "Management"}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-      ) : effectiveViewMode === "GRID" ? (
-        <div
-          key="grid-container"
-          ref={gridScrollRef}
-          className="w-full mt-10 px-4"
-        >
-          <div className="w-full flex justify-center">
-            <div
-              className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 ${
-                filter === "MD" ? "xl:grid-cols-4" : "xl:grid-cols-3"
-              }`}
-            >
+
+        {/* MAIN CONTENT SWITCHER */}
+        {effectiveViewMode === "3D" ? (
+          <div
+            className={`flex-grow w-full flex items-center justify-center relative overflow-visible transition-all duration-500 ${
+              selectedProvider ? "scale-95 opacity-60 sm:blur-sm" : ""
+            }`}
+          >
+            <div ref={carouselRef} className="relative preserve-3d">
               {filteredProviders.map((p, i) => (
                 <div
                   key={p.id}
-                  onClick={() => handleCardClick(i, p)}
-                  className="h-96 w-[16rem] cursor-pointer hover:-translate-y-2 transition-transform"
+                  className="absolute"
+                  style={{
+                    transform: `rotateY(${
+                      i * THETA
+                    }deg) translateZ(${RADIUS}px)`,
+                  }}
                 >
                   <ProviderCard provider={p} />
                 </div>
               ))}
             </div>
           </div>
-        </div>
-      ) : (
-        /* LIST VIEW fallback */
-        <div className="w-full flex items-center justify-center p-20">
-          List View Hidden
-        </div>
-      )}
+        ) : effectiveViewMode === "GRID" ? (
+          <div
+            key="grid-container"
+            ref={gridScrollRef}
+            className="w-full mt-10 px-4"
+          >
+            <div className="w-full flex justify-center">
+              <div
+                className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 ${
+                  filter === "MD" ? "xl:grid-cols-4" : "xl:grid-cols-3"
+                }`}
+              >
+                {filteredProviders.map((p, i) => (
+                  <div
+                    key={p.id}
+                    onClick={() => handleCardClick(i, p)}
+                    className="h-96 w-[16rem] cursor-pointer hover:-translate-y-2 transition-transform"
+                  >
+                    <ProviderCard provider={p} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : (
+          /* LIST VIEW fallback */
+          <div className="w-full flex items-center justify-center p-20">
+            List View Hidden
+          </div>
+        )}
 
-      {selectedProvider && (
-        <ModalPortal>
-          <ProfileModal
-            provider={selectedProvider}
-            onClose={() => setSelectedProvider(null)}
-          />
-        </ModalPortal>
-      )}
+        {selectedProvider && (
+          <ModalPortal>
+            <ProfileModal
+              provider={selectedProvider}
+              onClose={() => setSelectedProvider(null)}
+            />
+          </ModalPortal>
+        )}
+      </div>
     </div>
   );
 };
