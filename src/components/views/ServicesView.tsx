@@ -82,7 +82,7 @@ const ServicesView: React.FC = () => {
             className={cardClass}
             icon={Microscope}
             title="Glomerular Diseases"
-            description="Diagnosis and treatment of a wide variety of glomerular diseases, complications of the disease and treatments, and co-management with tertiary care centers when appropriate."
+            description="Expert diagnosis and treatment of a wide variety of primary and secondary glomerular diseases, and co-management with tertiary care centers when appropriate."
           />
           {/* New Service 2 */}
           <ServiceCard

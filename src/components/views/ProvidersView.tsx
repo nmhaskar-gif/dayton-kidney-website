@@ -421,7 +421,7 @@ const ProvidersView: React.FC = () => {
           key="list-container"
           className="w-full flex-grow overflow-hidden px-4 max-w-7xl mx-auto flex gap-6 mt-8 md:mt-10"
         >
-          <div className="w-full lg:w-1/3 xl:w-1/4 h-full flex flex-col overflow-hidden">
+          <div className="w-full lg:w-1/3 xl:w-1/4 h-[600px] flex flex-col overflow-hidden">
             <div className="flex-grow overflow-y-auto custom-scrollbar pr-2 space-y-2 pb-20">
               {filteredProviders.map((provider) => {
                 const details = getProviderOverrides(provider);
@@ -612,6 +612,8 @@ const ProviderCard: React.FC<{ provider: Provider }> = ({ provider }) => {
             style={{
               objectPosition: isMgmt
                 ? "center center"
+                : provider.name.includes("Mhaskar")
+                ? "center 25%"
                 : provider.imagePosition || "center top",
               transform: "translateZ(0)",
               WebkitTransform: "translateZ(0)",
