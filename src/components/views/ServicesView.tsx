@@ -94,7 +94,7 @@ const ServicesView: React.FC = () => {
         </div>
 
         {/* Hospital Affiliations (Full Width & Centered) */}
-        <div className="bg-blue-900 text-white rounded-3xl p-8 shadow-xl text-center flex flex-col items-center">
+        <div className="bg-blue-900 text-white rounded-3xl p-8 shadow-xl text-center flex flex-col items-center max-w-5xl mx-auto">
           <h3 className="text-2xl font-bold mb-6 flex items-center justify-center gap-3">
             <Hospital size={24} className="text-teal-400" />
             Hospital Affiliations
