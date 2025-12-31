@@ -13,6 +13,7 @@ import {
   LucideStethoscope,
   FlaskConical,
   Scale,
+  Dna, // Added for Genetic Disorders
 } from "lucide-react";
 
 const ServicesView: React.FC = () => {
@@ -62,6 +63,18 @@ const ServicesView: React.FC = () => {
             icon={Scale}
             title="Electrolyte Disorders"
             description="Diagnosis and treatment of abnormalities of electrolytes and minerals like sodium, potassium, calcium, and magnesium."
+          />
+          {/* New Service 1 */}
+          <ServiceCard
+            icon={Microscope}
+            title="Glomerular Diseases"
+            description="Diagnosis and treatment of a wide variety of glomerular diseases, complications of the disease and treatments, and co-management with tertiary care centers when appropriate."
+          />
+          {/* New Service 2 */}
+          <ServiceCard
+            icon={Dna}
+            title="Genetic Disorders"
+            description="Management and screening for genetic causes of kidney disease including conditions such as Autosomal Polycystic Kidney Disease."
           />
         </div>
 
