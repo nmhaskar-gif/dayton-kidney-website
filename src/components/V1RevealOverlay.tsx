@@ -80,7 +80,7 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
           className={`absolute inset-0 transition-all duration-1000 ${
             currentView === ViewState.HOME
               ? `
-        bg-white/35 backdrop-blur-[6px]
+        bg-white/35 backdrop-blur-[4px]
         md:bg-gradient-to-r md:from-white/20 md:via-transparent md:to-transparent
         md:bg-transparent
         md:backdrop-blur-0
