@@ -34,7 +34,7 @@ const ServicesView: React.FC = () => {
           </h2>
           <p className="text-lg text-slate-700 leading-relaxed">
             From early diagnosis to advanced interventions, we provide the full
-            spectrum of renal health services using the latest medical
+            spectrum of kidney health services using the latest medical
             advancements and a compassionate, patient-centered approach.
           </p>
         </div>
