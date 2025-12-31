@@ -397,106 +397,107 @@ const EducationView: React.FC<Props> = ({ setIsModalOpen }) => {
         </div>
       </div>
 
-      {/* Chat modal */}
-      {chatOpen && (
-        <div
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4"
+  {/* Chat modal */}
+{chatOpen && (
+  <div
+    className="fixed inset-0 z-[9999] bg-black/60 p-3 sm:p-4"
+    onClick={() => setChatOpen(false)}
+  >
+    <div
+      className="
+        mx-auto w-full max-w-xl
+        rounded-2xl bg-white shadow-2xl overflow-hidden
+        flex flex-col
+        max-h-[92dvh]
+      "
+      onClick={(e) => e.stopPropagation()}
+    >
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-blue-900 to-indigo-900 text-white flex-shrink-0">
+        <div className="flex items-center gap-2">
+          <Bot size={18} className="text-teal-300" />
+          <div className="font-semibold">Dayton Kidney AI Assistant</div>
+        </div>
+        <button
+          className="text-white/80 hover:text-white text-sm"
           onClick={() => setChatOpen(false)}
         >
-          <div
-            className="w-full max-w-xl rounded-2xl bg-white shadow-2xl overflow-hidden"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-blue-900 to-indigo-900 text-white">
-              <div className="flex items-center gap-2">
-                <Bot size={18} className="text-teal-300" />
-                <div className="font-semibold">Dayton Kidney AI Assistant</div>
-              </div>
-              <button
-                className="text-white/80 hover:text-white text-sm"
-                onClick={() => setChatOpen(false)}
-              >
-                Close
-              </button>
-            </div>
+          Close
+        </button>
+      </div>
 
-            {/* Disclaimer */}
-            <div className="px-4 py-3 text-xs text-slate-700 bg-slate-50 border-b">
-              Educational only. Not medical advice. In an emergency, call 911 or
-              go to the nearest emergency department. For questions about your
-              own health, ask your nephrologist. Do not enter personal or
-              identifying health information (such as names, dates of birth, or
-              medical record numbers).
-            </div>
+      {/* Disclaimer */}
+      <div className="px-4 py-3 text-xs text-slate-700 bg-slate-50 border-b flex-shrink-0">
+        This is educational only and not meant to be used for medical advice. In an emergency, call 911 or go to
+        the nearest emergency department. For questions about your own health,
+        ask your nephrologist. Do not enter personal or identifying health
+        information (such as names, dates of birth, or medical record numbers).
+      </div>
 
-            {/* Messages */}
-            <div className="h-[420px] overflow-y-auto overscroll-contain px-4 py-4 space-y-3 bg-white">
-              {chatMessages.length === 0 ? (
-                <div className="text-sm text-slate-600">
-                  Ask a simple question about kidney labs (e.g., creatinine,
-                  eGFR, potassium). The assistant cannot diagnose, stage CKD, or
-                  interpret your personal results.
-                </div>
-              ) : (
-                chatMessages.map((m, idx) => (
-                  <div
-                    key={idx}
-                    className={`flex ${
-                      m.role === "user" ? "justify-end" : "justify-start"
-                    }`}
-                  >
-                    <div
-                      className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm whitespace-pre-wrap ${
-                        m.role === "user"
-                          ? "bg-blue-600 text-white"
-                          : "bg-slate-100 text-slate-900"
-                      }`}
-                    >
-                      {m.content}
-                    </div>
-                  </div>
-                ))
-              )}
-
-              {chatLoading && (
-                <div className="text-xs text-slate-500">
-                  Assistant is typing…
-                </div>
-              )}
-              {chatError && (
-                <div className="text-xs text-red-600">{chatError}</div>
-              )}
-            </div>
-
-            {/* Input */}
-            <div className="px-4 py-3 border-t bg-white">
-              <div className="flex gap-2">
-                <input
-                  className="flex-1 rounded-xl border border-slate-300 px-3 py-2 text-sm"
-                  placeholder="Type your question..."
-                  value={chatInput}
-                  onChange={(e) => setChatInput(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      sendMessage();
-                    }
-                  }}
-                  disabled={chatLoading}
-                />
-                <button
-                  className="rounded-xl px-4 py-2 text-sm font-semibold text-white bg-teal-600 hover:bg-teal-500"
-                  onClick={sendMessage}
-                  disabled={chatLoading}
-                >
-                  Send
-                </button>
-              </div>
-            </div>
+      {/* Messages (flexes; never forces input off-screen) */}
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-4 py-4 space-y-3 bg-white">
+        {chatMessages.length === 0 ? (
+          <div className="text-sm text-slate-600">
+            Ask a simple question about kidney labs (e.g., creatinine, eGFR,
+            potassium). The assistant cannot diagnose, stage CKD, or interpret
+            your personal results.
           </div>
+        ) : (
+          chatMessages.map((m, idx) => (
+            <div
+              key={idx}
+              className={`flex ${
+                m.role === "user" ? "justify-end" : "justify-start"
+              }`}
+            >
+              <div
+                className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm whitespace-pre-wrap ${
+                  m.role === "user"
+                    ? "bg-blue-600 text-white"
+                    : "bg-slate-100 text-slate-900"
+                }`}
+              >
+                {m.content}
+              </div>
+            </div>
+          ))
+        )}
+
+        {chatLoading && (
+          <div className="text-xs text-slate-500">Assistant is typing…</div>
+        )}
+        {chatError && <div className="text-xs text-red-600">{chatError}</div>}
+      </div>
+
+      {/* Input (safe-area aware) */}
+      <div className="px-4 pt-3 border-t bg-white flex-shrink-0 pb-[calc(env(safe-area-inset-bottom)+12px)]">
+        <div className="flex gap-2">
+          <input
+            className="flex-1 rounded-xl border border-slate-300 px-3 py-2 text-sm"
+            placeholder="Type your question..."
+            value={chatInput}
+            onChange={(e) => setChatInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                sendMessage();
+              }
+            }}
+            disabled={chatLoading}
+          />
+          <button
+            className="rounded-xl px-4 py-2 text-sm font-semibold text-white bg-teal-600 hover:bg-teal-500"
+            onClick={sendMessage}
+            disabled={chatLoading}
+          >
+            Send
+          </button>
         </div>
-      )}
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };
