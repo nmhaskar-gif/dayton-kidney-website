@@ -246,7 +246,7 @@ const ProvidersView: React.FC = () => {
   return (
     <div
       ref={gridWrapperRef}
-      className="w-full flex flex-col pt-24 pb-20 animate-fade-in relative min-h-screen"
+      className="w-full flex flex-col pt-24 pb-20 animate-fade-in relative"
     >
       {/* BACKGROUND */}
       <div className="fixed inset-0 -z-30">
