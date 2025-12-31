@@ -290,8 +290,8 @@ const ProvidersView: React.FC = () => {
       </div>
       <div className="fixed inset-0 bg-white/40 backdrop-blur-[1px] -z-20" />
 
-      {/* HEADER */}
-      <div
+    {/* HEADER */}
+    <div
         className={`relative z-30 w-full px-4 pt-2 pb-2 transition-opacity duration-300 ${
           selectedProvider ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
@@ -311,16 +311,11 @@ const ProvidersView: React.FC = () => {
               <button
                 key={type}
                 onClick={() => {
-                  // 1. If moving TO Management, force Grid
                   if (type === "MGMT") {
                     setViewMode("GRID");
-                  }
-                  // 2. If moving AWAY from Management, restore the last user choice
-                  else if (filter === "MGMT") {
+                  } else if (filter === "MGMT") {
                     setViewMode(lastNonMgmtViewRef.current);
                   }
-
-                  // 3. Update the filter state
                   setFilter(type);
                 }}
                 className={`px-4 md:px-5 py-2 rounded-full text-xs font-bold transition-all ${
@@ -337,8 +332,7 @@ const ProvidersView: React.FC = () => {
               </button>
             ))}
           </div>
-
-         
+          {/* View toggle buttons removed */}
         </div>
       </div>
 
