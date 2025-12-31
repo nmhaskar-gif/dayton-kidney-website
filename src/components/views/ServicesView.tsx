@@ -13,10 +13,17 @@ import {
   LucideStethoscope,
   FlaskConical,
   Scale,
-  Dna, // Added for Genetic Disorders
+  Dna,
 } from "lucide-react";
 
 const ServicesView: React.FC = () => {
+  // This class handles the responsive width math to emulate a grid
+  // while allowing the last row to center.
+  // gap-6 is 1.5rem.
+  // lg: 3 cols = (100% - 2 gaps) / 3 -> calc(33.33% - 1rem)
+  // md: 2 cols = (100% - 1 gap) / 2  -> calc(50% - 0.75rem)
+  const cardClass = "w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(33.33%-1rem)]";
+
   return (
     <div className="w-full h-full overflow-y-auto pt-32 pb-20 px-4 md:px-12 lg:px-20 animate-fade-in custom-scrollbar">
       <div className="max-w-7xl mx-auto space-y-12">
@@ -32,49 +39,57 @@ const ServicesView: React.FC = () => {
           </p>
         </div>
 
-        {/* Core Services Grid */}
-        <div className="grid md:grid-cols-3 gap-6">
+        {/* Services Flex Container (Centered) */}
+        <div className="flex flex-wrap justify-center gap-6">
           <ServiceCard
+            className={cardClass}
             icon={Stethoscope}
             title="Chronic Kidney Disease"
             description="Expert management of CKD stages 1-5, focusing on slowing progression through medication, diet, and lifestyle changes."
           />
           <ServiceCard
+            className={cardClass}
             icon={HeartPulse}
             title="Hypertension Management"
             description="Specialized care for difficult-to-control high blood pressure, a leading cause and complication of kidney disease."
           />
           <ServiceCard
+            className={cardClass}
             icon={LucidePillBottle}
             title="Post-Transplant Care"
             description="Comprehensive long-term follow-up for kidney transplant recipients to ensure graft health and medication management."
           />
           <ServiceCard
+            className={cardClass}
             icon={Droplet}
             title="Dialysis Services"
             description="Medical Directors for over 15 units. We see patients at both DaVita and Fresenius facilities, managing In-Center, PD, and Home Therapies."
           />
           <ServiceCard
+            className={cardClass}
             icon={BedDouble}
             title="Post-Acute Care"
             description="In-person care at Post Acute Medical IPR/LTAC, Kindred LTAC, RIO, Carillon, Daysprings, Laurels of Huber Heights, and Oaks of West Kettering."
           />
           <ServiceCard
+            className={cardClass}
             icon={Scale}
             title="Electrolyte Disorders"
             description="Diagnosis and treatment of abnormalities of electrolytes and minerals like sodium, potassium, calcium, and magnesium."
           />
           {/* New Service 1 */}
           <ServiceCard
+            className={cardClass}
             icon={Microscope}
             title="Glomerular Diseases"
-            description="Expert diagnosis and treatment of a wide variety of primary and secondary glomerular diseases, and co-management with tertiary care centers when necessary."
+            description="Diagnosis and treatment of a wide variety of glomerular diseases, complications of the disease and treatments, and co-management with tertiary care centers when appropriate."
           />
           {/* New Service 2 */}
           <ServiceCard
+            className={cardClass}
             icon={Dna}
             title="Genetic Disorders"
-            description="Screening and management of genetic causes of kidney disease including conditions such as Autosomal Polycystic Kidney Disease."
+            description="Management and screening for genetic causes of kidney disease including conditions such as Autosomal Polycystic Kidney Disease."
           />
         </div>
 
@@ -253,8 +268,11 @@ const ServiceCard: React.FC<{
   icon: any;
   title: string;
   description: string;
-}> = ({ icon: Icon, title, description }) => (
-  <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-sm border border-white/50 hover:shadow-md transition-all hover:-translate-y-1">
+  className?: string; // Added optional className prop
+}> = ({ icon: Icon, title, description, className = "" }) => (
+  <div
+    className={`bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-sm border border-white/50 hover:shadow-md transition-all hover:-translate-y-1 ${className}`}
+  >
     <div className="w-12 h-12 bg-blue-100 text-blue-700 rounded-xl flex items-center justify-center mb-4">
       <Icon size={24} />
     </div>
