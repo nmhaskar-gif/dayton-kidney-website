@@ -416,140 +416,160 @@ const ProvidersView: React.FC = () => {
           </div>
         </div>
       ) : (
-        /* LIST VIEW: Fixed alignment and scrollbar */
-        <div
-          key="list-container"
-          className="w-full flex-grow overflow-hidden px-4 max-w-7xl mx-auto flex gap-6 mt-8 md:mt-10"
-        >
-          <div className="w-full lg:w-1/3 xl:w-1/4 h-[650px] flex flex-col overflow-hidden">
-            <div className="flex-grow overflow-y-auto custom-scrollbar pr-2 space-y-2 pb-20">
-              {filteredProviders.map((provider) => {
-                const details = getProviderOverrides(provider);
-                const isActive = previewProvider?.id === provider.id;
-                return (
-                  <div
-                    key={provider.id}
-                    onClick={() =>
-                      window.innerWidth < 1024
-                        ? setSelectedProvider(provider)
-                        : setPreviewProvider(provider)
-                    }
-                    className={`flex items-center gap-3 p-2.5 rounded-xl border transition-all cursor-pointer ${
-                      isActive
-                        ? "bg-blue-900 border-blue-900 text-white shadow-md scale-[1.02]"
-                        : "bg-white/80 border-white/50 hover:border-teal-200"
-                    }`}
-                  >
-                    <div className="h-10 w-10 rounded-full overflow-hidden flex-shrink-0 bg-slate-200 border-2 border-white shadow-sm">
-                      <img
-                        src={provider.imageUrl}
-                        className="w-full h-full object-cover"
-                        alt=""
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-bold text-sm truncate">
-                        {details.cardName}
-                      </h4>
-                      <p
-                        className={`text-[10px] truncate ${
-                          isActive ? "text-teal-200" : "text-slate-500"
-                        }`}
-                      >
-                        {details.cardTitle}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
+/* LIST VIEW: Fixed alignment and scrollbar */
+<div
+  key="list-container"
+  /* FIX 1: 'flex-col lg:flex-row' makes it stack on mobile/tablet, but side-by-side on laptop+ */
+  className="w-full flex-grow overflow-hidden px-4 max-w-7xl mx-auto flex flex-col lg:flex-row gap-6 mt-8 md:mt-10"
+>
+  {/* --- LEFT SIDE: THE LIST --- */}
+  {/* FIX 2: Fixed width on Desktop (lg:w-[340px]) so it doesn't get squished. Full width on mobile. */}
+  <div className="w-full lg:w-[340px] xl:w-[400px] flex-shrink-0 h-[650px] flex flex-col overflow-hidden">
+    <div className="flex-grow overflow-y-auto custom-scrollbar pr-2 space-y-2 pb-20">
+      {filteredProviders.map((provider) => {
+        const details = getProviderOverrides(provider);
+        const isActive = previewProvider?.id === provider.id;
+        return (
+          <div
+            key={provider.id}
+            onClick={() =>
+              /* FIX 3: Click Logic. If screen < 1024px (Mobile/Tablet), open Modal. Else open Side View. */
+              window.innerWidth < 1024
+                ? setSelectedProvider(provider)
+                : setPreviewProvider(provider)
+            }
+            className={`flex items-center gap-3 p-2.5 rounded-xl border transition-all cursor-pointer ${
+              isActive
+                ? "bg-blue-900 border-blue-900 text-white shadow-md scale-[1.02]"
+                : "bg-white/80 border-white/50 hover:border-teal-200"
+            }`}
+          >
+            <div className="h-10 w-10 rounded-full overflow-hidden flex-shrink-0 bg-slate-200 border-2 border-white shadow-sm">
+              <img
+                src={provider.imageUrl}
+                className="w-full h-full object-cover"
+                alt=""
+              />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h4 className="font-bold text-sm truncate">{details.cardName}</h4>
+              <p
+                className={`text-[10px] truncate ${
+                  isActive ? "text-teal-200" : "text-slate-500"
+                }`}
+              >
+                {details.cardTitle}
+              </p>
             </div>
           </div>
+        );
+      })}
+    </div>
+  </div>
 
-          <div className="hidden lg:flex lg:w-2/3 xl:w-3/4 h-full pb-20 items-start justify-center">
-            {previewProvider ? (
-              <div className="w-full h-[650px] bg-white/95 rounded-3xl border border-white/60 shadow-xl overflow-hidden flex flex-row animate-fade-in">
-                <div className="w-2/5 h-full relative bg-slate-800 flex-shrink-0">
-                  <img
-                    src={previewProvider.imageUrl}
-                    className="w-full h-full object-cover object-top"
-                    alt=""
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-blue-900/90 via-transparent to-transparent opacity-80" />
-                  <div className="absolute bottom-0 left-0 w-full p-8 z-10 text-white">
-                    <h2 className="text-3xl font-extrabold leading-tight mb-1">
-                      {getProviderOverrides(previewProvider).cardName}
-                    </h2>
-                    <p className="text-teal-400 font-bold uppercase text-xs mb-1">
-                      {getProviderOverrides(previewProvider).credentials}
-                    </p>
-                    <p className="text-lg font-medium">
-                      {getProviderOverrides(previewProvider).cardTitle}
-                    </p>
+  {/* --- RIGHT SIDE: THE BIO BOX --- */}
+  {/* FIX 4: Hidden on mobile/tablet (hidden lg:flex). 
+      'flex-1 min-w-0' ensures it takes remaining space without being cut off. */}
+  <div className="hidden lg:flex flex-1 min-w-0 h-full pb-20 items-start justify-center">
+    {previewProvider ? (
+      <div className="w-full h-[650px] bg-white/95 rounded-3xl border border-white/60 shadow-xl overflow-hidden flex flex-row animate-fade-in">
+        <div className="w-2/5 h-full relative bg-slate-800 flex-shrink-0">
+          <img
+            src={previewProvider.imageUrl}
+            className="w-full h-full object-cover object-top"
+            alt=""
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-blue-900/90 via-transparent to-transparent opacity-80" />
+          <div className="absolute bottom-0 left-0 w-full p-8 z-10 text-white">
+            <h2 className="text-3xl font-extrabold leading-tight mb-1">
+              {getProviderOverrides(previewProvider).cardName}
+            </h2>
+            <p className="text-teal-400 font-bold uppercase text-xs mb-1">
+              {getProviderOverrides(previewProvider).credentials}
+            </p>
+            <p className="text-lg font-medium">
+              {getProviderOverrides(previewProvider).cardTitle}
+            </p>
+          </div>
+        </div>
+        <div className="flex-1 overflow-y-auto p-8 custom-scrollbar bg-white">
+          {(() => {
+            const d = getProviderOverrides(previewProvider);
+            const bio = d.bio || "No biography available.";
+            const education = Array.isArray(d.education) ? d.education : [];
+            const interests = Array.isArray(d.interests) ? d.interests : [];
+
+            return (
+              <>
+                <h3 className="flex items-center gap-2 text-lg font-bold text-blue-900 mb-3 border-b pb-2">
+                  <BookOpen size={20} className="text-teal-600" />
+                  Biography
+                </h3>
+                <p className="text-slate-700 text-sm leading-relaxed mb-8">
+                  {bio}
+                </p>
+
+                <h3 className="flex items-center gap-2 text-lg font-bold text-blue-900 mb-3 border-b pb-2">
+                  <GraduationCap size={20} className="text-teal-600" />
+                  Education &amp; Training
+                </h3>
+                {education.length ? (
+                  <ul className="space-y-3 mb-8">
+                    {education.map((item, i) => (
+                      <li
+                        key={i}
+                        className="flex items-start gap-3 text-slate-700 text-sm group"
+                      >
+                        <span className="w-1.5 h-1.5 rounded-full bg-teal-400 mt-2 flex-shrink-0 group-hover:scale-150 transition-transform" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-slate-500 text-sm mb-8">
+                    No education information available.
+                  </p>
+                )}
+
+                <h3 className="flex items-center gap-2 text-lg font-bold text-blue-900 mb-3 border-b pb-2">
+                  <Heart size={20} className="text-teal-600" />
+                  Interests &amp; Hobbies
+                </h3>
+                {interests.length ? (
+                  <div className="flex flex-wrap gap-2">
+                    {interests.map((item, i) => (
+                      <span
+                        key={i}
+                        className="px-4 py-1.5 bg-white border border-blue-100 text-blue-800 rounded-full text-xs font-bold shadow-sm hover:bg-blue-50 transition-colors"
+                      >
+                        {item}
+                      </span>
+                    ))}
                   </div>
-                </div>
-                <div className="flex-1 overflow-y-auto p-8 custom-scrollbar bg-white">
-                  {(() => {
-                    const d = getProviderOverrides(previewProvider);
-                    const bio = d.bio || "No biography available.";
-                    const education = Array.isArray(d.education)
-                      ? d.education
-                      : [];
-                    const interests = Array.isArray(d.interests)
-                      ? d.interests
-                      : [];
-
-                    return (
-                      <>
-                        <h3 className="flex items-center gap-2 text-lg font-bold text-blue-900 mb-3 border-b pb-2">
-                          <BookOpen size={20} className="text-teal-600" />
-                          Biography
-                        </h3>
-                        <p className="text-slate-700 text-sm leading-relaxed mb-8">
-                          {bio}
-                        </p>
-
-                        <h3 className="flex items-center gap-2 text-lg font-bold text-blue-900 mb-3 border-b pb-2">
-                          <GraduationCap size={20} className="text-teal-600" />
-                          Education &amp; Training
-                        </h3>
-                        {education.length ? (
-                          <ul className="space-y-3 mb-8">
-                            {education.map((item, i) => (
-                              <li
-                                key={i}
-                                className="flex items-start gap-3 text-slate-700 text-sm group"
-                              >
-                                <span className="w-1.5 h-1.5 rounded-full bg-teal-400 mt-2 flex-shrink-0 group-hover:scale-150 transition-transform" />
-                                <span>{item}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        ) : (
-                          <p className="text-slate-500 text-sm mb-8">
-                            No education information available.
-                          </p>
-                        )}
-
-                        <h3 className="flex items-center gap-2 text-lg font-bold text-blue-900 mb-3 border-b pb-2">
-                          <Heart size={20} className="text-teal-600" />
-                          Interests &amp; Hobbies
-                        </h3>
-                        {interests.length ? (
-                          <div className="flex flex-wrap gap-2">
-                            {interests.map((item, i) => (
-                              <span
-                                key={i}
-                                className="px-4 py-1.5 bg-white border border-blue-100 text-blue-800 rounded-full text-xs font-bold shadow-sm hover:bg-blue-50 transition-colors"
-                              >
-                                {item}
-                              </span>
-                            ))}
-                          </div>
-                        ) : (
-                          <p className="text-slate-500 text-sm">
-                            No interests listed.
-                          </p>
-                        )}
+                ) : (
+                  <p className="text-slate-500 text-sm">
+                    No interests listed.
+                  </p>
+                )}
+              </>
+            );
+          })()}
+        </div>
+      </div>
+    ) : (
+      <div className="h-[650px] w-full flex flex-col items-center justify-center text-center p-8 bg-white/30 rounded-3xl border-2 border-dashed border-blue-900/20">
+        <MousePointerClick
+          size={48}
+          className="text-teal-600 mb-4 animate-bounce"
+        />
+        <h3 className="text-2xl font-bold text-blue-900">Meet Our Experts</h3>
+        <p className="text-slate-600">
+          Select a provider to view their profile.
+        </p>
+      </div>
+    )}
+  </div>
+</div>
                       </>
                     );
                   })()}

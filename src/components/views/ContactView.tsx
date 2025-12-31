@@ -11,34 +11,33 @@ const CONTACT_DATA = [
     city: "Centerville",
     address: "7700 Washington Village Dr, Suite 230",
     phone: "(937) 438-3132",
-    fax: "(937) 222-1436",
+    fax: "(937) 438-8707",
   },
   {
     city: "Huber Heights",
     address: "7231 Shull Road",
-    phone: "(937) 555-0103",
-    fax: "(937) 222-1436",
+    phone: "(937) 235-2757",
+    fax: "(937) 235-2851",
   },
   {
     city: "Dayton",
     address: "455 Turner Road",
     phone: "(937) 496-5162",
-    fax: "(937) 222-1436",
+    fax: "(937) 522-0485",
   },
   {
     city: "Eaton",
     address: "450 Washington Jackson Rd",
     phone: "(937) 235-2757",
-    fax: "(937) 222-1436",
+    fax: "(937) 235-2851",
   },
   {
     city: "Greenville",
     address: "742 Sweitzer Street, Suite A",
     phone: "(937) 496-5162",
-    fax: "(937) 222-1436",
+    fax: "(937) 522-0485",
   },
 ];
-
 const ContactView: React.FC = () => {
   return (
     <div className="w-full h-full overflow-y-auto pt-32 pb-20 px-4 md:px-12 lg:px-20 animate-fade-in custom-scrollbar">
