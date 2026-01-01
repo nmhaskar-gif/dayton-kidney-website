@@ -400,15 +400,15 @@ const EducationView: React.FC<Props> = ({ setIsModalOpen }) => {
       {/* Chat modal */}
       {chatOpen && (
         <div
-          className="fixed inset-0 z-[9999] bg-black/60 p-3 sm:p-4 flex items-end sm:items-center justify-center"
+          className="fixed inset-0 z-[9999] bg-black/60 p-3 sm:p-4 flex items-center justify-center"
           onClick={() => setChatOpen(false)}
         >
           <div
             className="
-        mx-auto w-full max-w-xl rounded-2xl bg-white shadow-2xl overflow-hidden
-        flex flex-col
-        max-h-[92dvh] md:max-h-none
-      "
+    mx-auto w-full max-w-xl rounded-2xl bg-white shadow-2xl overflow-hidden
+    flex flex-col
+    h-[92dvh] sm:h-auto sm:max-h-[92dvh] md:max-h-[80vh]
+  "
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
