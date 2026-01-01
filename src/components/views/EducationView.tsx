@@ -5,13 +5,12 @@ import { createPortal } from "react-dom";
 import {
   MessageSquare,
   Play,
-  Pause,
   Plus,
   Minus,
   Bot,
   Headphones,
-  Video,
 } from "lucide-react";
+
 type Props = {
   setIsModalOpen?: (open: boolean) => void;
 };
@@ -39,6 +38,7 @@ const EducationView: React.FC<Props> = ({ setIsModalOpen }) => {
     },
   ]);
   const [chatLoading, setChatLoading] = useState(false);
+
   useEffect(() => {
     const html = document.documentElement;
     const body = document.body;
@@ -65,6 +65,7 @@ const EducationView: React.FC<Props> = ({ setIsModalOpen }) => {
       body.style.overscrollBehavior = "";
     };
   }, [chatOpen]);
+
   useEffect(() => {
     setIsModalOpen?.(chatOpen);
     return () => setIsModalOpen?.(false);
@@ -166,254 +167,268 @@ const EducationView: React.FC<Props> = ({ setIsModalOpen }) => {
   };
 
   return (
-    <div
-      className={`w-full h-full pt-32 pb-20 px-4 md:px-12 lg:px-20 animate-fade-in custom-scrollbar ${
-        chatOpen ? "overflow-hidden" : "overflow-y-auto"
-      }`}
-    >
-      <div className="max-w-6xl mx-auto space-y-16">
-        {/* Section 1: AI Assistant */}
-        <div className="bg-gradient-to-br from-blue-900 to-indigo-900 rounded-3xl p-8 md:p-12 text-white shadow-2xl relative overflow-hidden">
-          {/* Decorative background circles */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-teal-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+    <>
+      <div
+        className={`w-full h-full pt-32 pb-20 px-4 md:px-12 lg:px-20 animate-fade-in custom-scrollbar ${
+          chatOpen ? "overflow-hidden" : "overflow-y-auto"
+        }`}
+      >
+        <div className="max-w-6xl mx-auto space-y-16">
+          {/* Section 1: AI Assistant */}
+          <div className="bg-gradient-to-br from-blue-900 to-indigo-900 rounded-3xl p-8 md:p-12 text-white shadow-2xl relative overflow-hidden">
+            {/* Decorative background circles */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-teal-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
 
-          <div className="relative z-10 grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-white/10 rounded-lg backdrop-blur-sm">
-                  <Bot size={24} className="text-teal-400" />
+            <div className="relative z-10 grid md:grid-cols-2 gap-8 items-center">
+              <div>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 bg-white/10 rounded-lg backdrop-blur-sm">
+                    <Bot size={24} className="text-teal-400" />
+                  </div>
+                  <span className="text-teal-400 font-bold tracking-widest text-sm uppercase">
+                    DK AI Assistant
+                  </span>
                 </div>
-                <span className="text-teal-400 font-bold tracking-widest text-sm uppercase">
-                  DK AI Assistant
-                </span>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  Got questions about your kidneys?
+                </h2>
+                <p className="text-blue-100 text-lg mb-8 leading-relaxed">
+                  Our advanced AI assistant is trained on trusted medical data
+                  to help answer your questions about CKD, diet, and treatments
+                  instantly.
+                </p>
+                <button
+                  onClick={() => {
+                    setChatMessages([
+                      {
+                        role: "assistant",
+                        content:
+                          "Hi! I can help explain lab results, kidney diets, or general kidney health. What's on your mind?",
+                      },
+                    ]);
+                    setChatInput("");
+                    setChatError(null);
+                    setChatOpen(true);
+                  }}
+                  className="bg-teal-500 hover:bg-teal-400 text-white font-bold py-3 px-8 rounded-full transition-all shadow-lg transform hover:-translate-y-1 flex items-center gap-2"
+                >
+                  <MessageSquare size={20} />
+                  Start Chatting
+                </button>
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Got questions about your kidneys?
-              </h2>
-              <p className="text-blue-100 text-lg mb-8 leading-relaxed">
-                Our advanced AI assistant is trained on trusted medical data to
-                help answer your questions about CKD, diet, and treatments
-                instantly.
-              </p>
-              <button
-                onClick={() => {
-                  setChatMessages([
-                    {
-                      role: "assistant",
-                      content:
-                        "Hi! I can help explain lab results, kidney diets, or general kidney health. What's on your mind?",
-                    },
-                  ]);
-                  setChatInput("");
-                  setChatError(null);
-                  setChatOpen(true);
-                }}
-                className="bg-teal-500 hover:bg-teal-400 text-white font-bold py-3 px-8 rounded-full transition-all shadow-lg transform hover:-translate-y-1 flex items-center gap-2"
-              >
-                <MessageSquare size={20} />
-                Start Chatting
-              </button>
-            </div>
 
-            {/* Simulated Chat Interface */}
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-4 shadow-inner max-w-sm mx-auto w-full">
-              <div className="space-y-4">
-                <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-teal-500 flex items-center justify-center flex-shrink-0">
-                    <Bot size={16} />
+              {/* Simulated Chat Interface */}
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-4 shadow-inner max-w-sm mx-auto w-full">
+                <div className="space-y-4">
+                  <div className="flex gap-3">
+                    <div className="w-8 h-8 rounded-full bg-teal-500 flex items-center justify-center flex-shrink-0">
+                      <Bot size={16} />
+                    </div>
+                    <div className="bg-white/20 rounded-2xl rounded-tl-none p-3 text-sm">
+                      Hi! I can help answer questions about lab results, kidney
+                      diets, or general kidney health. What's on your mind?
+                    </div>
                   </div>
-                  <div className="bg-white/20 rounded-2xl rounded-tl-none p-3 text-sm">
-                    Hi! I can help answer questions about lab results, kidney
-                    diets, or general kidney health. What's on your mind?
+                  <div className="flex gap-3 flex-row-reverse">
+                    <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 text-xs font-bold">
+                      You
+                    </div>
+                    <div className="bg-blue-600 rounded-2xl rounded-tr-none p-3 text-sm">
+                      What foods are high in potassium?
+                    </div>
                   </div>
-                </div>
-                <div className="flex gap-3 flex-row-reverse">
-                  <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 text-xs font-bold">
-                    You
-                  </div>
-                  <div className="bg-blue-600 rounded-2xl rounded-tr-none p-3 text-sm">
-                    What foods are high in potassium?
-                  </div>
-                </div>
-                <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-teal-500 flex items-center justify-center flex-shrink-0">
-                    <Bot size={16} />
-                  </div>
-                  <div className="bg-white/20 rounded-2xl rounded-tl-none p-3 text-sm flex gap-1 items-center">
-                    <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce"></span>
-                    <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce delay-100"></span>
-                    <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce delay-200"></span>
+                  <div className="flex gap-3">
+                    <div className="w-8 h-8 rounded-full bg-teal-500 flex items-center justify-center flex-shrink-0">
+                      <Bot size={16} />
+                    </div>
+                    <div className="bg-white/20 rounded-2xl rounded-tl-none p-3 text-sm flex gap-1 items-center">
+                      <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce"></span>
+                      <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce delay-100"></span>
+                      <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce delay-200"></span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Section 2: Audio and Video Library */}
-        <div className="space-y-6">
-          {/* Header row */}
-          <div className="flex items-center gap-4">
-            <div className="p-3 bg-orange-100 rounded-full text-orange-600 shadow-sm">
-              <Headphones size={24} />
+          {/* Section 2: Audio and Video Library */}
+          <div className="space-y-6">
+            {/* Header row */}
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-orange-100 rounded-full text-orange-600 shadow-sm">
+                <Headphones size={24} />
+              </div>
+
+              <div className="inline-flex px-6 py-2 bg-white/90 backdrop-blur-md rounded-full border border-white/60 shadow-sm">
+                <h3 className="text-2xl md:text-3xl font-bold text-blue-900 whitespace-nowrap">
+                  Audio and Video Library
+                </h3>
+              </div>
             </div>
 
-            <div className="inline-flex px-6 py-2 bg-white/90 backdrop-blur-md rounded-full border border-white/60 shadow-sm">
-              <h3 className="text-2xl md:text-3xl font-bold text-blue-900 whitespace-nowrap">
-                Audio and Video Library
-              </h3>
+            {/* Grid */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {sortedPods.map((pod, idx) => {
+                const isVideo =
+                  pod.type === "video" ||
+                  (typeof pod.url === "string" &&
+                    (pod.url.includes("youtube") ||
+                      pod.url.includes("youtu.be")));
+
+                return (
+                  <div
+                    key={idx}
+                    className={`bg-white border rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 group relative overflow-hidden flex flex-col
+                      ${
+                        playingIndex === idx && !isVideo
+                          ? "border-orange-400 ring-2 ring-orange-100"
+                          : "border-gray-100"
+                      }
+                    `}
+                  >
+                    {/* MEDIA TYPE PILL */}
+                    <div className="flex items-center gap-2 mb-2">
+                      <span
+                        className={`px-3 py-1 text-xs font-bold rounded-full tracking-wider border
+                          ${
+                            isVideo
+                              ? "bg-red-100 text-red-700 border-red-200"
+                              : "bg-teal-100 text-teal-800 border-teal-200"
+                          }`}
+                      >
+                        {isVideo ? "▶ VIDEO" : "🎧 AUDIO"}
+                      </span>
+                    </div>
+
+                    <h4 className="text-lg font-bold text-blue-900 mb-2">
+                      {pod.title}
+                    </h4>
+
+                    <p className="text-sm text-slate-600 mb-4 line-clamp-3 flex-grow">
+                      {pod.description}
+                    </p>
+
+                    {/* ACTION BUTTONS */}
+                    <div className="pt-4 border-t border-gray-100 mt-auto">
+                      {isVideo ? (
+                        <a
+                          href={pod.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center text-red-600 font-semibold hover:text-red-700 transition-colors"
+                        >
+                          Watch Video &rarr;
+                        </a>
+                      ) : (
+                        <button
+                          onClick={() => handlePlay(idx)}
+                          className={`flex items-center gap-2 font-semibold transition-colors ${
+                            playingIndex === idx
+                              ? "text-orange-500"
+                              : "text-teal-600 hover:text-teal-700"
+                          }`}
+                        >
+                          {playingIndex === idx ? (
+                            <>
+                              <span>Playing...</span>
+                              <div className="w-2 h-2 bg-orange-500 rounded-full animate-ping" />
+                            </>
+                          ) : (
+                            <>Play Episode ▶</>
+                          )}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
-          {/* Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {sortedPods.map((pod, idx) => {
-              const isVideo =
-                pod.type === "video" ||
-                (typeof pod.url === "string" &&
-                  (pod.url.includes("youtube") ||
-                    pod.url.includes("youtu.be")));
+          {/* Section 3: FAQ */}
+          <div>
+            <div className="flex items-center gap-4 mb-8">
+              <div className="p-3 bg-blue-100 rounded-full text-blue-700 shadow-sm">
+                <MessageSquare size={24} />
+              </div>
 
-              return (
+              <div className="inline-flex px-6 py-2 bg-white/90 backdrop-blur-md rounded-full border border-white/60 shadow-sm">
+                <h3 className="text-2xl md:text-3xl font-bold text-blue-900 whitespace-nowrap">
+                  Frequently Asked Questions
+                </h3>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              {FAQ_DATA.map((faq, idx) => (
                 <div
                   key={idx}
-                  className={`bg-white border rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 group relative overflow-hidden flex flex-col
-                    ${
-                      playingIndex === idx && !isVideo
-                        ? "border-orange-400 ring-2 ring-orange-100"
-                        : "border-gray-100"
-                    }
-                  `}
+                  className="bg-white/90 backdrop-blur-md border border-white/50 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
                 >
-                  {/* MEDIA TYPE PILL */}
-                  <div className="flex items-center gap-2 mb-2">
-                    <span
-                      className={`px-3 py-1 text-xs font-bold rounded-full tracking-wider border
-                        ${
-                          isVideo
-                            ? "bg-red-100 text-red-700 border-red-200"
-                            : "bg-teal-100 text-teal-800 border-teal-200"
-                        }`}
-                    >
-                      {isVideo ? "▶ VIDEO" : "🎧 AUDIO"}
+                  <button
+                    onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                    className="w-full flex justify-between items-center p-6 text-left hover:bg-white/50 transition-colors"
+                  >
+                    <span className="text-lg font-semibold text-blue-900 pr-8">
+                      {faq.question}
                     </span>
-                  </div>
-
-                  <h4 className="text-lg font-bold text-blue-900 mb-2">
-                    {pod.title}
-                  </h4>
-
-                  <p className="text-sm text-slate-600 mb-4 line-clamp-3 flex-grow">
-                    {pod.description}
-                  </p>
-
-                  {/* ACTION BUTTONS */}
-                  <div className="pt-4 border-t border-gray-100 mt-auto">
-                    {isVideo ? (
-                      <a
-                        href={pod.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center text-red-600 font-semibold hover:text-red-700 transition-colors"
-                      >
-                        Watch Video &rarr;
-                      </a>
+                    {openFaq === idx ? (
+                      <Minus
+                        size={20}
+                        className="text-teal-600 flex-shrink-0"
+                      />
                     ) : (
-                      <button
-                        onClick={() => handlePlay(idx)}
-                        className={`flex items-center gap-2 font-semibold transition-colors ${
-                          playingIndex === idx
-                            ? "text-orange-500"
-                            : "text-teal-600 hover:text-teal-700"
-                        }`}
-                      >
-                        {playingIndex === idx ? (
-                          <>
-                            <span>Playing...</span>
-                            <div className="w-2 h-2 bg-orange-500 rounded-full animate-ping" />
-                          </>
-                        ) : (
-                          <>Play Episode ▶</>
-                        )}
-                      </button>
+                      <Plus
+                        size={20}
+                        className="text-blue-900/50 flex-shrink-0"
+                      />
                     )}
+                  </button>
+
+                  <div
+                    className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                      openFaq === idx
+                        ? "max-h-96 opacity-100"
+                        : "max-h-0 opacity-0"
+                    }`}
+                  >
+                    <div className="p-6 pt-0 text-slate-700 leading-relaxed border-t border-gray-100/50 mt-2">
+                      {faq.answer}
+                    </div>
                   </div>
                 </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Section 3: FAQ */}
-        <div>
-          <div className="flex items-center gap-4 mb-8">
-            <div className="p-3 bg-blue-100 rounded-full text-blue-700 shadow-sm">
-              <MessageSquare size={24} />
+              ))}
             </div>
-
-            <div className="inline-flex px-6 py-2 bg-white/90 backdrop-blur-md rounded-full border border-white/60 shadow-sm">
-              <h3 className="text-2xl md:text-3xl font-bold text-blue-900 whitespace-nowrap">
-                Frequently Asked Questions
-              </h3>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            {FAQ_DATA.map((faq, idx) => (
-              <div
-                key={idx}
-                className="bg-white/90 backdrop-blur-md border border-white/50 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
-              >
-                <button
-                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                  className="w-full flex justify-between items-center p-6 text-left hover:bg-white/50 transition-colors"
-                >
-                  <span className="text-lg font-semibold text-blue-900 pr-8">
-                    {faq.question}
-                  </span>
-                  {openFaq === idx ? (
-                    <Minus size={20} className="text-teal-600 flex-shrink-0" />
-                  ) : (
-                    <Plus
-                      size={20}
-                      className="text-blue-900/50 flex-shrink-0"
-                    />
-                  )}
-                </button>
-
-                <div
-                  className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                    openFaq === idx
-                      ? "max-h-96 opacity-100"
-                      : "max-h-0 opacity-0"
-                  }`}
-                >
-                  <div className="p-6 pt-0 text-slate-700 leading-relaxed border-t border-gray-100/50 mt-2">
-                    {faq.answer}
-                  </div>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </div>
 
-      {/* Chat modal */}
+      {/* Chat modal with UPDATED Styling for iPhone & Desktop */}
       {chatOpen &&
         createPortal(
           <div
-            className="fixed inset-0 z-[9999] bg-black/60 p-3 sm:p-4 flex items-end sm:items-center justify-center"
+            className="fixed inset-0 z-[9999] bg-black/60 flex items-end sm:items-center justify-center sm:p-4"
             onClick={() => setChatOpen(false)}
           >
             <div
               className="
-          w-full max-w-xl bg-white shadow-2xl overflow-hidden
-          rounded-t-2xl sm:rounded-2xl
-          flex flex-col
-          h-[92dvh] sm:h-auto
-          sm:max-h-[92dvh] md:max-h-none
-        "
+            w-full bg-white shadow-2xl overflow-hidden flex flex-col
+            
+            /* MOBILE STYLES: 
+               - h-[80dvh]: Use 80% of screen to avoid address bar issues
+               - rounded-t-2xl: Round top corners only
+            */
+            h-[80dvh] rounded-t-2xl
+
+            /* DESKTOP STYLES (sm): 
+               - sm:h-[600px]: Fixed height
+               - sm:max-w-md: Narrower width like a phone
+               - sm:rounded-2xl: Round all corners
+            */
+            sm:h-[600px] sm:rounded-2xl sm:max-w-md
+          "
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header */}
@@ -433,22 +448,16 @@ const EducationView: React.FC<Props> = ({ setIsModalOpen }) => {
               </div>
 
               {/* Disclaimer */}
-              <div className="px-4 py-3 text-xs text-slate-700 bg-slate-50 border-b flex-shrink-0">
-                This is educational only and not meant to be used for medical
-                advice. In an emergency, call 911 or go to the nearest emergency
-                department. For questions about your own health, ask your
-                nephrologist. Do not enter personal or identifying health
-                information (such as names, dates of birth, or medical record
-                numbers).
+              <div className="px-4 py-3 text-xs text-slate-700 bg-slate-50 border-b flex-shrink-0 text-center leading-tight">
+                Educational only. Not medical advice. Do not enter personal
+                health info.
               </div>
 
               {/* Messages */}
-              <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-4 py-4 space-y-3 bg-white md:h-[420px]">
+              <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-4 py-4 space-y-3 bg-white">
                 {chatMessages.length === 0 ? (
-                  <div className="text-sm text-slate-600">
-                    Ask a simple question about kidney labs (e.g., creatinine,
-                    eGFR, potassium). The assistant cannot diagnose, stage CKD,
-                    or interpret your personal results.
+                  <div className="text-sm text-slate-600 text-center mt-4">
+                    Ask a simple question about kidney labs or diet.
                   </div>
                 ) : (
                   chatMessages.map((m, idx) => (
@@ -472,20 +481,20 @@ const EducationView: React.FC<Props> = ({ setIsModalOpen }) => {
                 )}
 
                 {chatLoading && (
-                  <div className="text-xs text-slate-500">
+                  <div className="text-xs text-slate-500 animate-pulse ml-2">
                     Assistant is typing…
                   </div>
                 )}
                 {chatError && (
-                  <div className="text-xs text-red-600">{chatError}</div>
+                  <div className="text-xs text-red-600 ml-2">{chatError}</div>
                 )}
               </div>
 
               {/* Input */}
-              <div className="px-4 pt-3 border-t bg-white flex-shrink-0 pb-[calc(env(safe-area-inset-bottom)+12px)] md:pb-3">
+              <div className="px-4 pt-3 border-t bg-white flex-shrink-0 pb-[calc(env(safe-area-inset-bottom)+12px)] sm:pb-3">
                 <div className="flex gap-2">
                   <input
-                    className="flex-1 rounded-xl border border-slate-300 px-3 py-2 text-sm"
+                    className="flex-1 rounded-full border border-slate-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Type your question..."
                     value={chatInput}
                     onChange={(e) => setChatInput(e.target.value)}
@@ -498,11 +507,11 @@ const EducationView: React.FC<Props> = ({ setIsModalOpen }) => {
                     disabled={chatLoading}
                   />
                   <button
-                    className="rounded-xl px-4 py-2 text-sm font-semibold text-white bg-teal-600 hover:bg-teal-500"
+                    className="rounded-full w-10 h-10 flex items-center justify-center text-white bg-teal-600 hover:bg-teal-500 shadow-md transition-transform active:scale-95"
                     onClick={sendMessage}
                     disabled={chatLoading}
                   >
-                    Send
+                    <MessageSquare size={18} fill="white" />
                   </button>
                 </div>
               </div>
@@ -510,7 +519,7 @@ const EducationView: React.FC<Props> = ({ setIsModalOpen }) => {
           </div>,
           document.body
         )}
-    </div>
+    </>
   );
 };
 
