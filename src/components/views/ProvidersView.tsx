@@ -614,7 +614,7 @@ const ProfileModal: React.FC<{ provider: Provider; onClose: () => void }> = ({
               {interests.map((item, i) => (
                 <span
                   key={i}
-                  className="px-4 py-1.5 bg-white border border-blue-100 text-blue-800 rounded-full text-xs font-bold shadow-sm hover:bg-blue-50 transition-colors"
+                  className="px-4 py-1.5 bg-white border border-blue-100 text-blue-800 rounded-full text-xs font-bold shadow-sm hover:bg-blue-50 transition-colors whitespace-nowrap"
                 >
                   {item}
                 </span>
