@@ -123,7 +123,7 @@ export const PROVIDERS_DATA: Provider[] = [
     name: "Dr. Natallia Maroz",
     title: "MD",
     role: "MD",
-    specialties: ["General Nephrology", "Dialysis"],
+    specialties: ["General Nephrology", "Plasmapheresis"],
     imageUrl:
       "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&q=80&w=400",
   },
@@ -168,7 +168,7 @@ export const PROVIDERS_DATA: Provider[] = [
     name: "Dr. Mark Oxman",
     title: "DO",
     role: "MD",
-    specialties: ["General Nephrology", "Senior Partner"],
+    specialties: ["General Nephrology"],
     imageUrl:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=400",
   },
@@ -187,8 +187,14 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "DO",
     role: "MD",
     specialties: ["General Nephrology"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1527613426441-4da17471b66d?auto=format&fit=crop&q=80&w=400",
+    imageUrl: "https://images/katrina-rohlfs.png",
+    bio: "Dr. Katrina Rohlfs, MD joined the practice in September 2024. Dr. Rohlfs focuses on the clinical care of patients with chronic kidney disease, glomerulonephritis, and resistant hypertension. ",
+    education: [
+      "Medical School: Osmania Medical College",
+      "Residency: Good Samaritan Hospital",
+      "Fellowship: University of Cincinnati",
+    ],
+    interests: ["Hiking", "Photography", "Traveling"],
   },
   {
     id: "md-salupo",
@@ -204,7 +210,7 @@ export const PROVIDERS_DATA: Provider[] = [
     name: "Dr. Melissa Schnell",
     title: "MD",
     role: "MD",
-    specialties: ["General Nephrology"],
+    specialties: ["General Nephrology", "Plasmapheresis"],
     imageUrl:
       "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&q=80&w=400",
   },

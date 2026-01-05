@@ -22,7 +22,7 @@ const getProviderOverrides = (provider: Provider) => {
   let credentials = "";
 
   if (role === "MD") {
-    credentials = "MD, FASN, FACP";
+    credentials = "MD";
     cardTitle = "General Nephrology";
 
     if (["Eze", "Odunsi", "Lane"].some((n) => name.includes(n))) {
