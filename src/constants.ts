@@ -131,6 +131,7 @@ export const PROVIDERS_DATA: Provider[] = [
     id: "md-mhaskar",
     name: "Dr. Nilesh Mhaskar",
     title: "MD",
+    suffixes: "FASN",
     role: "MD",
     specialties: ["General Nephrology"],
     imageUrl: "/images/nilesh-mhaskar1.png",
@@ -187,7 +188,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "DO",
     role: "MD",
     specialties: ["General Nephrology"],
-    imageUrl: "https://images/katrina-rohlfs.png",
+    imageUrl: "/images/katrina-rohlfs.png",
     bio: "Dr. Katrina Rohlfs, MD joined the practice in September 2024. Dr. Rohlfs focuses on the clinical care of patients with chronic kidney disease, glomerulonephritis, and resistant hypertension. ",
     education: [
       "Medical School: Osmania Medical College",
