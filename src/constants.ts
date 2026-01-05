@@ -134,7 +134,7 @@ export const PROVIDERS_DATA: Provider[] = [
     suffixes: "FASN",
     role: "MD",
     specialties: ["General Nephrology"],
-    imageUrl: "/images/nilesh-mhaskar1.png",
+    imageUrl: "/images/nilesh-mhaskar2.png",
     imagePosition: "center 60%",
   },
   {
@@ -181,6 +181,9 @@ export const PROVIDERS_DATA: Provider[] = [
     specialties: ["General Nephrology"],
     imageUrl:
       "https://images.unsplash.com/photo-1537368910025-bc005fbed16a?auto=format&fit=crop&q=80&w=400",
+    bio: "Dr. Patel joined Nephrology Associates of Dayton in July 2014 but has lived in Dayton since 2007 when he started his Internal Medicine Residency. He is a founding partner of Dayton Kidney. His clinical interests include Glomerular Diseases, Autosomal Dominant Polycystic Kidney Disease, and Acute Kidney Injury.",
+    education: "Medical School: BJ Medical College, Ahmedabad, India","Residency: Wright State University, Dayton, OH", "Fellowship: The Ohio State University, Columbus OH where he served as Chief fellow and Fellow of the Year award during his second year ", 
+   interests: "Traveling", "Hiking", "Running" "Spending time with family and friends"
   },
   {
     id: "md-rohlfs",
@@ -189,7 +192,7 @@ export const PROVIDERS_DATA: Provider[] = [
     role: "MD",
     specialties: ["General Nephrology"],
     imageUrl: "/images/katrina-rohlfs1.png",
-    bio: "Dr. Katrina Rohlfs, MD joined the practice in September 2024. Dr. Rohlfs focuses on the clinical care of patients with chronic kidney disease, glomerulonephritis, and resistant hypertension. ",
+    bio: "Dr. Katrina Rohlfs joined the practice in September 2024. Dr. Rohlfs focuses on the clinical care of patients with Chronic Kidney Disease, Glomerulonephritis, and Resistant Hypertension. ",
     education: [
       "Medical School: Osmania Medical College",
       "Residency: Good Samaritan Hospital",
