@@ -14,27 +14,27 @@ import gsap from "gsap";
 import { createPortal } from "react-dom";
 
 // --- CUSTOM CONTENT OVERRIDES ---
+// --- CUSTOM CONTENT OVERRIDES ---
 const getProviderOverrides = (provider: Provider) => {
   const name = provider.name;
   const role = provider.role;
 
-  // 1. Default cardTitle to what is in the data
+  // 1. Default cardTitle and credentials from the data
   let cardTitle = provider.title;
-
-  // 2. Default credentials to the title (MD/DO) found in the data
   let credentials = provider.title;
 
-  // 3. If they have extra credentials (FASN, etc), append them
+  // 2. Add suffixes if they exist (e.g., FASN, FACP)
   if (provider.suffixes) {
     credentials = `${credentials}, ${provider.suffixes}`;
   }
 
+  // 3. LOGIC FOR MDs
   if (role === "MD") {
-    // REMOVED: credentials = "MD";  <-- This was the line causing the problem!
+    // Note: We REMOVED the line that forced credentials = "MD"
 
     cardTitle = "General Nephrology";
 
-    // ... Keep your existing specialty logic below ...
+    // Update title based on specific doctor names
     if (["Eze", "Odunsi", "Lane"].some((n) => name.includes(n))) {
       cardTitle = "General & Interventional Nephrology";
     } else if (
@@ -46,7 +46,9 @@ const getProviderOverrides = (provider: Provider) => {
     } else if (["Eduafo", "Mirza"].some((n) => name.includes(n))) {
       cardTitle = "General & Transplant Nephrology";
     }
-  } else if (role === "APP") {
+  }
+  // 4. LOGIC FOR APPs (This "else if" must be connected to the "if" above)
+  else if (role === "APP") {
     if (
       ["Esther Bassaw", "Gillian Wenzke", "Stephen Langley"].some((n) =>
         name.includes(n)
@@ -65,7 +67,9 @@ const getProviderOverrides = (provider: Provider) => {
       cardTitle = "Advanced Practice Provider";
       credentials = "CNP/PA";
     }
-  } else if (role === "MGMT") {
+  }
+  // 5. LOGIC FOR MANAGEMENT
+  else if (role === "MGMT") {
     credentials = "";
     if (name.includes("Lisa Pouliot")) {
       cardTitle = "Practice Administrator";
@@ -80,7 +84,8 @@ const getProviderOverrides = (provider: Provider) => {
   }
   const cardName = cleanName;
 
-  if (name.includes("Mhaskar")) {
+  // This block handles the hardcoded bio for Mhaskar if you haven't moved it to constants yet
+  if (name.includes("Mhaskar") && !provider.bio) {
     return {
       cardName,
       cardTitle,
