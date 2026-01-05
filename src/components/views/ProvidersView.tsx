@@ -19,10 +19,10 @@ const getProviderOverrides = (provider: Provider) => {
   const role = provider.role;
 
   // 1. Default cardTitle to what is in the data
-  let cardTitle = provider.title; 
-  
+  let cardTitle = provider.title;
+
   // 2. Default credentials to the title (MD/DO) found in the data
-  let credentials = provider.title; 
+  let credentials = provider.title;
 
   // 3. If they have extra credentials (FASN, etc), append them
   if (provider.suffixes) {
@@ -31,7 +31,7 @@ const getProviderOverrides = (provider: Provider) => {
 
   if (role === "MD") {
     // REMOVED: credentials = "MD";  <-- This was the line causing the problem!
-    
+
     cardTitle = "General Nephrology";
 
     // ... Keep your existing specialty logic below ...
@@ -46,7 +46,6 @@ const getProviderOverrides = (provider: Provider) => {
     } else if (["Eduafo", "Mirza"].some((n) => name.includes(n))) {
       cardTitle = "General & Transplant Nephrology";
     }
-  }
   } else if (role === "APP") {
     if (
       ["Esther Bassaw", "Gillian Wenzke", "Stephen Langley"].some((n) =>
