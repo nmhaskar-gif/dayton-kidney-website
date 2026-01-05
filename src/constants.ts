@@ -182,8 +182,19 @@ export const PROVIDERS_DATA: Provider[] = [
     imageUrl:
       "https://images.unsplash.com/photo-1537368910025-bc005fbed16a?auto=format&fit=crop&q=80&w=400",
     bio: "Dr. Patel joined Nephrology Associates of Dayton in July 2014 but has lived in Dayton since 2007 when he started his Internal Medicine Residency. He is a founding partner of Dayton Kidney. His clinical interests include Glomerular Diseases, Autosomal Dominant Polycystic Kidney Disease, and Acute Kidney Injury.",
-    education: "Medical School: BJ Medical College, Ahmedabad, India","Residency: Wright State University, Dayton, OH", "Fellowship: The Ohio State University, Columbus OH where he served as Chief fellow and Fellow of the Year award during his second year ", 
-   interests: "Traveling", "Hiking", "Running" "Spending time with family and friends",
+    // Added comma after bio, and brackets around the strings to make it a valid array
+    education: [
+      "Medical School: BJ Medical College, Ahmedabad, India",
+      "Residency: Wright State University, Dayton, OH",
+      "Fellowship: The Ohio State University, Columbus OH where he served as Chief fellow and Fellow of the Year award during his second year",
+    ],
+    // Added brackets and missing commas between the interests strings
+    interests: [
+      "Traveling",
+      "Hiking",
+      "Running",
+      "Spending time with family and friends",
+    ],
   },
   {
     id: "md-rohlfs",
