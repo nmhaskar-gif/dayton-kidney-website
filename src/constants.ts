@@ -133,7 +133,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "MD",
     suffixes: "FASN",
     role: "MD",
-    specialties: ["General Nephrology"],
+    specialties: ["General Nephrology", "Plasmapheresis"],
     imageUrl: "/images/nilesh-mhaskar2.png",
     imagePosition: "center 60%",
   },
@@ -186,7 +186,7 @@ export const PROVIDERS_DATA: Provider[] = [
     education: [
       "Medical School: BJ Medical College, Ahmedabad, India",
       "Residency: Wright State University, Dayton, OH",
-      "Fellowship: The Ohio State University, Columbus OH where he served as Chief fellow and Fellow of the Year award during his second year",
+      "Fellowship: The Ohio State University, Columbus OH where he served as Chief fellow and received the Fellow of the Year award during his second year",
     ],
     // Added brackets and missing commas between the interests strings
     interests: [
