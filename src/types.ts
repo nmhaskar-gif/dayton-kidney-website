@@ -36,7 +36,7 @@ export interface Provider {
   specialties: string[];
   imageUrl: string;
   imagePosition?: string;
-
+  suffixes?: string; // <--- The "?" is crucial! It means "optional"
   // New detailed fields
   education?: string[];
   bio?: string;
