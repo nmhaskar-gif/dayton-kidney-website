@@ -3,11 +3,9 @@ import { POSITIONS, SCROLL_HEIGHT, ASSETS } from "../constants";
 import { ArrowDown } from "lucide-react";
 import V1RevealOverlay from "./V1RevealOverlay";
 
-// --- HELPERS ---
 const clamp01 = (n: number) => Math.max(0, Math.min(1, n));
 const smoothstep = (x: number) => x * x * (3 - 2 * x);
 
-// --- TYPES ---
 type GateState = {
   tPass: number;
   scale: number;
@@ -15,18 +13,14 @@ type GateState = {
   zIndex: number;
 };
 
-interface JourneySceneProps {
-  scrollY: number;
-  onComplete: () => void;
-}
-
-const JourneyScene: React.FC<JourneySceneProps> = ({ scrollY }) => {
+const JourneyScene: React.FC<{ scrollY: number; onComplete: () => void }> = ({
+  scrollY,
+}) => {
   const worldRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [smoothScrollY, setSmoothScrollY] = useState(0);
   const targetScrollRef = useRef(0);
 
-  // Handle Responsive Check
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 1024);
     checkMobile();
@@ -34,7 +28,6 @@ const JourneyScene: React.FC<JourneySceneProps> = ({ scrollY }) => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Smooth Scroll Interpolation
   useEffect(() => {
     targetScrollRef.current = scrollY;
     let mounted = true;
@@ -57,12 +50,12 @@ const JourneyScene: React.FC<JourneySceneProps> = ({ scrollY }) => {
   const worldZ = smoothScrollY;
   const isIntro = worldZ < 100;
 
-  // Gate Logic Calculation
   const computeGateState = (panelZ: number): GateState => {
     const dist = panelZ + worldZ;
     const approachStart = -2200;
-    const approachEnd = 150;
-    const passEnd = 950;
+    const approachEnd = 250;
+    /* FIX: Changed passEnd to 1700 to make the doors swing slowly and feel "heavy" */
+    const passEnd = 1700;
 
     const tApproach = clamp01(
       (dist - approachStart) / (approachEnd - approachStart)
@@ -72,10 +65,9 @@ const JourneyScene: React.FC<JourneySceneProps> = ({ scrollY }) => {
     const a = smoothstep(tApproach);
     const p = smoothstep(tPassLinear);
 
-    // Scale capped at 2.4 to prevent clipping on short/wide laptop screens
     const minScale = isMobile ? 0.95 : 0.55;
     const nearScale = isMobile ? 1.15 : 1.25;
-    const throughScale = isMobile ? 2.3 : 2.4;
+    const throughScale = isMobile ? 2.2 : 2.4;
 
     const scale =
       p > 0
@@ -97,7 +89,6 @@ const JourneyScene: React.FC<JourneySceneProps> = ({ scrollY }) => {
   const panel1State = computeGateState(POSITIONS.SIGN_1 - 600);
   const panel2State = computeGateState(POSITIONS.SIGN_2 - 1200);
 
-  // Reveal Timing
   const postSign2Dist = POSITIONS.SIGN_2 - 1200 + worldZ - 950;
   const revealLayerOpacity = smoothstep(clamp01((postSign2Dist - 1950) / 250));
 
@@ -107,14 +98,14 @@ const JourneyScene: React.FC<JourneySceneProps> = ({ scrollY }) => {
       <div className="absolute inset-0 z-0">
         <img
           src="https://images.unsplash.com/photo-1476820865390-c52aeebb9891?q=80&w=2500&auto=format&fit=crop"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover opacity-80"
           style={{ transform: `scale(${1 + worldZ * 0.00005})` }}
-          alt="Forest Path"
+          alt="Foggy Road"
         />
         <div className="absolute inset-0 bg-stone-900/40" />
       </div>
 
-      {/* 2. 3D WORLD WRAPPER */}
+      {/* 2. 3D WORLD */}
       <div
         className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
         style={{ perspective: "1200px", perspectiveOrigin: "50% 50%" }}
@@ -129,43 +120,55 @@ const JourneyScene: React.FC<JourneySceneProps> = ({ scrollY }) => {
         >
           {/* INTRO TEXT */}
           <div
-            className="absolute top-1/2 left-1/2 text-center w-full"
+            className="absolute top-[62%] md:top-[55%] left-1/2 text-center w-full max-w-[90%] md:max-w-3xl px-6 py-8 bg-black/30 backdrop-blur-sm rounded-3xl border border-white/10"
             style={{
               transform: `translate3d(-50%, -50%, ${
                 POSITIONS.START_TEXT + 450
               }px) translateY(-100px)`,
             }}
           >
-            <h1 className="text-4xl md:text-6xl font-serif text-white font-bold px-6 leading-tight drop-shadow-2xl">
-              Your kidney health <br className="md:hidden" /> is a journey.
+            <h2 className="text-white text-xs md:text-sm uppercase tracking-[0.2em] mb-4 font-bold">
+              Welcome to Dayton Kidney
+            </h2>
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-serif text-white font-bold leading-tight">
+              Your kidney health is a journey.
+              <br />
+              <span className="text-white">
+                We&apos;ve been with you for over{" "}
+                <br className="hidden lg:block" /> 50 years.
+              </span>
             </h1>
           </div>
 
-          {/* GATE 1 */}
+          {/* GATE 1 - RENAL PHYSICIANS */}
           <GatePanel
             state={panel1State}
             z={POSITIONS.SIGN_1 - 600}
             logo={ASSETS.renalLogo}
             title="Renal Physicians"
+            subtitle="Setting the standard for excellence in kidney care in Dayton."
             est="Est. 1972"
+            isInvert={false}
           />
 
-          {/* GATE 2 */}
+          {/* GATE 2 - NAOD */}
           <GatePanel
             state={panel2State}
             z={POSITIONS.SIGN_2 - 1200}
             logo="https://i.ibb.co/WvbphTZT/NAOD-Logo.jpg"
-            title="Nephrology Associates"
+            title="Nephrology Associates of Dayton"
+            subtitle="Providing compassionate, patient-centered kidney care close to home."
             est="Since 1980"
+            isInvert={true}
           />
         </div>
       </div>
 
-      {/* 3. DYNAMIC SCROLL HINT */}
+      {/* 3. SCROLL HINT */}
       {isIntro && (
         <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2">
           <p className="text-white/80 text-[10px] tracking-[0.3em] uppercase font-bold drop-shadow-md">
-            {worldZ < 200 ? "Scroll to Begin" : "Pass through to continue"}
+            Scroll to Begin
           </p>
           <div className="animate-bounce mt-1">
             <ArrowDown className="text-white/80" size={18} />
@@ -192,16 +195,17 @@ const JourneyScene: React.FC<JourneySceneProps> = ({ scrollY }) => {
   );
 };
 
-// --- SUB-COMPONENT: GATEPANEL ---
 const GatePanel: React.FC<{
   state: GateState;
   z: number;
   logo: string;
   title: string;
+  subtitle: string;
   est: string;
-}> = ({ state, z, logo, title, est }) => (
+  isInvert: boolean;
+}> = ({ state, z, logo, title, subtitle, est, isInvert }) => (
   <div
-    className="absolute top-1/2 left-1/2 w-[90vw] max-w-[900px] h-[400px]"
+    className="absolute top-1/2 left-1/2 w-[90vw] max-w-[980px] h-[500px]"
     style={{
       transform: `translate3d(-50%, -50%, ${z}px)`,
       opacity: state.opacity,
@@ -215,56 +219,57 @@ const GatePanel: React.FC<{
       style={{
         transform: `scale(${state.scale})`,
         transformStyle: "preserve-3d",
-        willChange: "transform",
       }}
     >
       {/* DOORS */}
-      <div
-        className="absolute inset-0 flex preserve-3d"
-        style={{ willChange: "transform" }}
-      >
-        {/* LEFT DOOR */}
+      <div className="absolute inset-0 flex preserve-3d">
         <div
-          className="w-1/2 h-full origin-left border border-white/20 border-r-0 backdrop-blur-xl rounded-l-[40px]"
+          className="w-1/2 h-full origin-left border border-white/20 border-r-0 backdrop-blur-2xl rounded-l-[44px]"
           style={{
-            transform: `rotateY(${-75 * state.tPass}deg)`,
-            background: "rgba(255,255,255,0.1)",
+            transform: `rotateY(${-70 * state.tPass}deg)`,
+            background:
+              "linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05))",
             backfaceVisibility: "hidden",
-            willChange: "transform",
           }}
         />
-        {/* RIGHT DOOR */}
         <div
-          className="w-1/2 h-full origin-right border border-white/20 border-l-0 backdrop-blur-xl rounded-r-[40px]"
+          className="w-1/2 h-full origin-right border border-white/20 border-l-0 backdrop-blur-2xl rounded-r-[44px]"
           style={{
-            transform: `rotateY(${75 * state.tPass}deg)`,
-            background: "rgba(255,255,255,0.1)",
+            transform: `rotateY(${70 * state.tPass}deg)`,
+            background:
+              "linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05))",
             backfaceVisibility: "hidden",
-            willChange: "transform",
           }}
         />
       </div>
 
       {/* CONTENT LAYER */}
       <div
-        className="relative z-10 flex flex-col items-center p-8 pointer-events-none"
+        className="relative z-10 flex flex-col items-center p-12 text-center"
         style={{
           opacity: clamp01(1 - state.tPass * 2.5),
-          transform: "translateZ(50px)",
-          willChange: "opacity",
+          transform: "translateZ(60px)",
         }}
       >
-        <span className="text-white/60 text-xs md:text-sm tracking-[.3em] uppercase mb-4 font-bold">
+        <span className="text-white/80 text-xs md:text-xl uppercase tracking-[0.4em] font-semibold mb-8">
           {est}
         </span>
-        <img
-          src={logo}
-          className="h-16 md:h-28 object-contain brightness-200 grayscale mb-6"
-          alt={title}
-        />
-        <h2 className="text-white text-xl md:text-3xl font-serif text-center drop-shadow-lg">
-          {title}
-        </h2>
+        <div
+          className={`mb-10 ${
+            isInvert ? "bg-white/10 p-6 rounded-3xl border border-white/20" : ""
+          }`}
+        >
+          <img
+            src={logo}
+            className={`w-full max-w-[550px] object-contain brightness-200 grayscale ${
+              isInvert ? "invert" : ""
+            }`}
+            alt={title}
+          />
+        </div>
+        <p className="text-white/90 text-lg md:text-4xl font-light max-w-2xl leading-tight">
+          {subtitle}
+        </p>
       </div>
     </div>
   </div>
