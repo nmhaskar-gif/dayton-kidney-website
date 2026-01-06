@@ -1,4 +1,3 @@
-// src/components/V1RevealOverlay.tsx
 import React, { useEffect, useState } from "react";
 import { ViewState } from "../types";
 import { ASSETS } from "../constants";
@@ -14,14 +13,13 @@ import ServicesView from "./views/ServicesView";
 import ContactView from "./views/ContactView";
 
 interface V1RevealOverlayProps {
-  setView: (view: ViewState) => void; // kept for compatibility (even if not used)
+  setView: (view: ViewState) => void;
   opacity: number;
   pointerEvents: "none" | "auto";
   isActive: boolean;
 }
 
 const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
-  // setView, // (optional) not used in your current design; keep if you wire it later
   opacity,
   pointerEvents,
   isActive,
@@ -30,13 +28,11 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // --- PRELOAD/DECODE BIG IMAGES USED AT REVEAL TIME (reduces transition stutter) ---
   useEffect(() => {
     const urls = [ASSETS.skyline, ASSETS.logo].filter(Boolean) as string[];
     urls.forEach((url) => {
       const img = new Image();
       img.src = url;
-      // decode hint (supported in many browsers; harmless if not)
       // @ts-ignore
       img.decode?.().catch(() => {});
     });
@@ -50,7 +46,6 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
   return (
     <div
       className="absolute inset-0 z-50 flex flex-col bg-blue-50 overflow-hidden"
-      // IMPORTANT: remove the opacity transition here (you drive fade timing from JourneyScene)
       style={{
         opacity,
         pointerEvents,
@@ -61,11 +56,9 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
       {/* --- BACKGROUND --- */}
       <div className="absolute inset-0 z-0">
         <div
-          className={`w-full h-full bg-no-repeat transition-transform duration-[20s] ease-linear
-          bg-cover bg-center
-          md:bg-cover md:bg-[position:80%_top]
-          
-            ${isActive ? "scale-105" : "scale-100"}`}
+          className={`w-full h-full bg-no-repeat transition-transform duration-[20s] ease-linear bg-cover bg-center md:bg-cover md:bg-[position:80%_top] ${
+            isActive ? "scale-105" : "scale-100"
+          }`}
           style={{
             backgroundImage: `url('${ASSETS.skyline}')`,
             willChange: isModalOpen ? "auto" : "transform",
@@ -79,16 +72,8 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
         <div
           className={`absolute inset-0 transition-all duration-1000 ${
             currentView === ViewState.HOME
-              ? `
-        bg-white/30 backdrop-blur-[4px]
-        md:bg-gradient-to-r md:from-white/20 md:via-transparent md:to-transparent
-        md:bg-transparent
-        md:backdrop-blur-0
-      `
-              : `
-        bg-white/40 backdrop-blur-[1px]
-        md:bg-white/40 md:backdrop-blur-[1px]
-      `
+              ? "bg-white/30 backdrop-blur-[4px] md:bg-transparent md:backdrop-blur-0"
+              : "bg-white/40 backdrop-blur-[1px]"
           }`}
         />
       </div>
@@ -103,10 +88,9 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
       >
         <div className="w-full px-4 md:px-8 lg:px-12 h-full relative">
           <div className="flex items-center h-full pt-4 gap-3">
-            {/* 1. LOGO (Far Left) */}
+            {/* LOGO */}
             <div
               className={`relative z-50 flex-shrink-0 mr-4 ${
-                /* Added 'relative' for positioning */
                 currentView === ViewState.HOME
                   ? "cursor-default"
                   : "cursor-pointer transition-transform duration-300 hover:scale-105"
@@ -117,21 +101,10 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
                   : () => navigateTo(ViewState.HOME)
               }
             >
-              {/* --- SPOTLIGHT ADDITION START --- */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-white/50 rounded-full blur-3xl -z-10 pointer-events-none" />
-              {/* --- SPOTLIGHT ADDITION END --- */}
-
               <img
                 src={ASSETS.logo}
                 alt="Dayton Kidney"
-                /* 1. h-16 md:h-20: 
-        This is the KEY fix. h-20 (80px) fits exactly into your h-24 navbar 
-        (accounting for the top padding) without getting squished.
-     
-     2. drop-shadow-[...]: 
-        I increased the blur radius (10px) to create a stronger "glow" effect, 
-        which separates the dark logo from the background.
-  */
                 className="h-40 md:h-60 w-auto object-contain 
                 drop-shadow-[0_0_2px_rgba(255,255,255,1)]
                 drop-shadow-[0_0_15px_rgba(255,255,255,0.8)] 
@@ -140,7 +113,7 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
               />
             </div>
 
-            {/* 2. MAIN NAV LINKS */}
+            {/* NAV LINKS */}
             <div className="hidden md:flex flex-1 min-w-0">
               <div className="flex-1 min-w-0 overflow-x-auto no-scrollbar">
                 <div className="flex items-center space-x-1 lg:space-x-2 whitespace-nowrap">
@@ -173,7 +146,7 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
               </div>
             </div>
 
-            {/* 3. ACTION BUTTONS */}
+            {/* ACTION BUTTONS */}
             <div className="hidden md:flex flex-shrink-0 items-center gap-2 ml-auto mr-4 origin-right md:scale-90 lg:scale-100 transition-transform">
               <button
                 onClick={() => navigateTo(ViewState.FORMS)}
@@ -185,7 +158,6 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
               >
                 <Download size={14} /> Forms
               </button>
-
               <button
                 onClick={() => navigateTo(ViewState.CONTACT)}
                 className={`flex items-center gap-2 px-5 py-2 rounded-full font-semibold text-sm transition-all shadow-lg transform hover:-translate-y-0.5 ${
@@ -200,7 +172,7 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
               </button>
             </div>
 
-            {/* Mobile Menu Icon */}
+            {/* Mobile Icon */}
             <div className="flex items-center md:hidden ml-auto">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -212,7 +184,7 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
           </div>
         </div>
 
-        {/* Mobile Menu Panel */}
+        {/* Mobile Panel */}
         <div
           className={`md:hidden bg-white/95 backdrop-blur-xl border-t border-gray-100 shadow-xl absolute w-full top-full left-0 z-40 transition-all duration-300 origin-top ${
             isMobileMenuOpen ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0"
@@ -277,6 +249,7 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
   );
 };
 
+// ... NavButton and MobileNavLink remain the same ...
 const NavButton: React.FC<{
   label: string;
   active: boolean;
@@ -286,7 +259,6 @@ const NavButton: React.FC<{
     "px-2 lg:px-3 py-1 text-xs lg:text-sm font-bold rounded-full transition-colors whitespace-nowrap";
   const activeClasses = "bg-blue-900 text-white shadow-md";
   const inactiveClasses = "text-blue-900 bg-white/40 hover:bg-white/80";
-
   return (
     <button
       onClick={onClick}

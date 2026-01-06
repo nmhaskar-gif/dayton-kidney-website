@@ -17,8 +17,6 @@ const HomeView: React.FC<HomeViewProps> = ({ setView, isActive }) => {
 
   useEffect(() => {
     if (isActive) {
-      // localStorage.setItem("dk_story_seen", "true");
-
       const ctx = gsap.context(() => {
         gsap.fromTo(
           cardRef.current,
@@ -57,23 +55,32 @@ const HomeView: React.FC<HomeViewProps> = ({ setView, isActive }) => {
   return (
     <div
       ref={containerRef}
-      // FIX 1: Reduced Mobile Padding (pt-28 -> pt-20)
-      // This pulls the box UP on phones to reduce the "sky gap".
-      className="absolute inset-0 z-10 flex items-center justify-start md:justify-center pointer-events-none p-4 pt-20 md:pt-0"
+      /* FIX 1: Keep pt-24 at all breakpoints. 
+         This creates a 96px "dead zone" at the top so the card 
+         mathematically cannot sit behind the fixed navbar.
+      */
+      className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none p-4 pt-24"
     >
-      {/* WRAPPER DIV */}
-      <div className="w-full flex justify-center -translate-y-6 md:-translate-y-16 lg:-translate-y-24">
+      {/* FIX 2: Removed all negative translate-y classes. 
+         This stops the "vacuum" effect that was pulling the card upward.
+      */}
+      <div className="w-full flex justify-center">
         {/* INNER CARD */}
         <div
           ref={cardRef}
-          className="pointer-events-auto w-[95%] sm:w-[85%] md:w-full md:max-w-lg lg:max-w-3xl p-5 sm:p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] shadow-2xl text-center opacity-0 border border-white/20
-                     bg-gradient-to-b from-white/5 to-white/20 
-                     backdrop-blur-sm"
+          /* FIX 3: added max-h-[calc(100vh-10rem)] and overflow-y-auto. 
+             If the screen is short (laptop) or zoomed in, the card stays 
+             within view and becomes scrollable internally.
+          */
+          className="pointer-events-auto w-[95%] sm:w-[85%] md:w-full md:max-w-lg lg:max-w-3xl 
+                     p-5 sm:p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] shadow-2xl text-center 
+                     opacity-0 border border-white/20 bg-gradient-to-b from-white/5 to-white/20 
+                     backdrop-blur-sm max-h-[calc(100vh-10rem)] overflow-y-auto no-scrollbar"
         >
           {/* Title */}
-          <div ref={titleRef} className="mb-4 sm:mb-8 md:mb-8 lg:mb-12">
+          <div ref={titleRef} className="mb-4 sm:mb-8 md:mb-8 lg:mb-10">
             <h1 className="font-extrabold tracking-tight leading-none">
-              <span className="bg-clip-text text-transparent bg-gradient-to-br from-blue-900 to-teal-800 text-4xl sm:text-5xl md:text-5xl lg:text-7xl">
+              <span className="bg-clip-text text-transparent bg-gradient-to-br from-blue-900 to-teal-800 text-4xl sm:text-5xl md:text-5xl lg:text-6xl">
                 Dayton Kidney
               </span>
             </h1>
@@ -112,7 +119,6 @@ const HomeView: React.FC<HomeViewProps> = ({ setView, isActive }) => {
             ref={buttonsRef}
             className="flex flex-col sm:flex-row gap-3 justify-center items-center"
           >
-            {/* Find Location (Solid) */}
             <button
               onClick={() => setView(ViewState.LOCATIONS)}
               className="w-full sm:w-auto px-6 py-3 sm:px-8 rounded-full font-bold text-white bg-blue-900 hover:bg-teal-600 shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1 text-sm sm:text-base"
@@ -120,7 +126,6 @@ const HomeView: React.FC<HomeViewProps> = ({ setView, isActive }) => {
               Find a Location
             </button>
 
-            {/* Meet Providers (Glass) */}
             <button
               onClick={() => setView(ViewState.PROVIDERS)}
               className="w-full sm:w-auto px-6 py-3 sm:px-8 rounded-full font-bold text-blue-900 bg-white/60 backdrop-blur-md border border-white/50 hover:bg-white hover:shadow-lg transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2 text-sm sm:text-base"
