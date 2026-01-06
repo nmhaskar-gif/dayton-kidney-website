@@ -55,9 +55,10 @@ const HomeView: React.FC<HomeViewProps> = ({ setView, isActive }) => {
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none p-4 pt-24"
+      className="absolute inset-0 z-10 pointer-events-none overflow-y-auto overscroll-contain p-4 pt-24"
     >
       <div className="w-full flex justify-center">
+        {/* keep */}
         {/* INNER CARD */}
         <div
           ref={cardRef}
@@ -67,7 +68,9 @@ const HomeView: React.FC<HomeViewProps> = ({ setView, isActive }) => {
           className="pointer-events-auto w-[95%] sm:w-[85%] md:w-full md:max-w-lg lg:max-w-3xl 
                      p-5 sm:p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] shadow-2xl text-center 
                      opacity-0 border border-white/20 bg-gradient-to-b from-white/5 to-white/20 
-                     backdrop-blur-sm max-h-[calc(100vh-10rem)] overflow-y-auto no-scrollbar scrollbar-hide"
+                     backdrop-blur-sm
++            max-h-none overflow-visible
++            lg:max-h-[calc(100dvh-10rem)] lg:overflow-y-auto lg:no-scrollbar lg:scrollbar-hide"
         >
           {/* Title */}
           <div ref={titleRef} className="mb-4 sm:mb-6 md:mb-8 lg:mb-10">

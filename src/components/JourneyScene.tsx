@@ -1,16 +1,209 @@
-import React, { useRef, useState, useEffect } from "react";
-import { POSITIONS, SCROLL_HEIGHT, ASSETS } from "../constants";
+// src/components/JourneyScene.tsx
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowDown } from "lucide-react";
+import { POSITIONS } from "../constants";
 import V1RevealOverlay from "./V1RevealOverlay";
 
 const clamp01 = (n: number) => Math.max(0, Math.min(1, n));
 const smoothstep = (x: number) => x * x * (3 - 2 * x);
+const smoothstep2 = (x: number) => smoothstep(smoothstep(x));
 
+type GateTheme = "intro" | "rpi" | "naod";
+type GateTiming = {
+  approachStart: number;
+  approachEnd: number;
+  passEnd: number;
+};
 type GateState = {
-  tPass: number;
+  open: number;
   scale: number;
   opacity: number;
   zIndex: number;
+};
+
+type GateContent = {
+  eyebrow?: string;
+  title: string;
+  body: string;
+  cta?: string;
+  logoSrc?: string;
+  logoAlt?: string;
+};
+
+const THEME: Record<
+  GateTheme,
+  { leftBg: string; rightBg: string; border: string; contentCard: string }
+> = {
+  intro: {
+    leftBg:
+      "linear-gradient(135deg, rgba(14,165,233,0.18), rgba(20,184,166,0.10))",
+    rightBg:
+      "linear-gradient(225deg, rgba(14,165,233,0.18), rgba(20,184,166,0.10))",
+    border: "rgba(255,255,255,0.22)",
+    contentCard: "bg-black/30 border-white/10",
+  },
+
+  // RPI: blue/orange (subtle tint)
+  rpi: {
+    leftBg:
+      "linear-gradient(135deg, rgba(59,130,246,0.22), rgba(249,115,22,0.12))",
+    rightBg:
+      "linear-gradient(225deg, rgba(59,130,246,0.22), rgba(249,115,22,0.12))",
+    border: "rgba(255,255,255,0.22)",
+    contentCard: "bg-white/6 border-white/15",
+  },
+
+  // NAOD: green (subtle tint)
+  naod: {
+    leftBg:
+      "linear-gradient(135deg, rgba(34,197,94,0.22), rgba(255,255,255,0.06))",
+    rightBg:
+      "linear-gradient(225deg, rgba(34,197,94,0.22), rgba(255,255,255,0.06))",
+    border: "rgba(255,255,255,0.22)",
+    contentCard: "bg-white/6 border-white/15",
+  },
+};
+
+function computeGateState(
+  panelZ: number,
+  worldZ: number,
+  timing: GateTiming,
+  isMobile: boolean
+): GateState {
+  const dist = panelZ + worldZ;
+
+  const tApproach = clamp01(
+    (dist - timing.approachStart) / (timing.approachEnd - timing.approachStart)
+  );
+  const a = smoothstep(tApproach);
+
+  const tPassLinear = clamp01(
+    (dist - timing.approachEnd) / (timing.passEnd - timing.approachEnd)
+  );
+  const pHeavy = smoothstep2(tPassLinear);
+
+  // Critical: start opening before collision + smooth heavy swing
+  const open = clamp01(pHeavy + 0.22 * a);
+
+  // Keep scale safe on laptops
+  const minScale = isMobile ? 0.98 : 0.62;
+  const nearScale = isMobile ? 1.12 : 1.18;
+  const throughScale = isMobile ? 2.05 : 2.12;
+  const scale =
+    open > 0
+      ? nearScale + (throughScale - nearScale) * open
+      : minScale + (nearScale - minScale) * a;
+
+  const fadeIn = clamp01(a * 1.1);
+  const fadeOut = 1 - open * open;
+  const opacity = clamp01(fadeIn * fadeOut);
+
+  const zIndex = 20 + Math.round(60 * Math.max(a, open));
+  return { open, scale, opacity, zIndex };
+}
+
+const GatePanel: React.FC<{
+  z: number;
+  state: GateState;
+  theme: GateTheme;
+  content: GateContent;
+  topClassName?: string;
+  zIndexCap?: number;
+}> = ({ z, state, theme, content, topClassName, zIndexCap }) => {
+  const t = THEME[theme];
+  const zIndex =
+    typeof zIndexCap === "number"
+      ? Math.min(state.zIndex, zIndexCap)
+      : state.zIndex;
+
+  return (
+    <div
+      className={`absolute ${
+        topClassName ?? "top-1/2"
+      } left-1/2 w-[92vw] max-w-[980px] h-[520px]`}
+      style={{
+        transform: `translate3d(-50%, -50%, ${z}px)`,
+        opacity: state.opacity,
+        zIndex,
+        transformStyle: "preserve-3d",
+        backfaceVisibility: "hidden",
+        willChange: "transform, opacity",
+      }}
+    >
+      <div
+        className="relative w-full h-full flex items-center justify-center"
+        style={{
+          transform: `scale(${state.scale})`,
+          transformStyle: "preserve-3d",
+          willChange: "transform",
+        }}
+      >
+        {/* DOORS */}
+        <div className="absolute inset-0 flex preserve-3d">
+          <div
+            className="w-1/2 h-full origin-left border border-white/20 border-r-0 backdrop-blur-2xl rounded-l-[44px]"
+            style={{
+              transform: `rotateY(${-72 * state.open}deg)`,
+              background: t.leftBg,
+              borderColor: t.border,
+              backfaceVisibility: "hidden",
+              willChange: "transform",
+            }}
+          />
+          <div
+            className="w-1/2 h-full origin-right border border-white/20 border-l-0 backdrop-blur-2xl rounded-r-[44px]"
+            style={{
+              transform: `rotateY(${72 * state.open}deg)`,
+              background: t.rightBg,
+              borderColor: t.border,
+              backfaceVisibility: "hidden",
+              willChange: "transform",
+            }}
+          />
+        </div>
+
+        {/* CONTENT */}
+        <div
+          className={`relative z-10 flex flex-col items-center justify-center text-center px-8 md:px-12 py-10 rounded-3xl border ${t.contentCard}`}
+          style={{
+            opacity: clamp01(1 - state.open * 1.25),
+            transform: "translateZ(70px)",
+            willChange: "opacity",
+          }}
+        >
+          {content.eyebrow && (
+            <div className="text-white/75 text-[11px] md:text-sm uppercase tracking-[0.35em] font-bold mb-4">
+              {content.eyebrow}
+            </div>
+          )}
+
+          {content.logoSrc && (
+            <div className="mb-6 bg-white/10 border border-white/15 rounded-3xl px-8 py-6">
+              <img
+                src={content.logoSrc}
+                alt={content.logoAlt ?? content.title}
+                className="h-14 md:h-20 object-contain"
+              />
+            </div>
+          )}
+
+          <h2 className="text-white text-2xl md:text-5xl font-serif font-bold drop-shadow-2xl">
+            {content.title}
+          </h2>
+
+          <p className="text-white/85 text-sm md:text-xl mt-4 font-semibold drop-shadow-lg max-w-3xl">
+            {content.body}
+          </p>
+
+          {content.cta && (
+            <p className="text-white/70 text-[10px] md:text-sm mt-7 tracking-[0.35em] uppercase font-bold">
+              {content.cta}
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 const JourneyScene: React.FC<{ scrollY: number; onComplete: () => void }> = ({
@@ -30,6 +223,9 @@ const JourneyScene: React.FC<{ scrollY: number; onComplete: () => void }> = ({
 
   useEffect(() => {
     targetScrollRef.current = scrollY;
+  }, [scrollY]);
+
+  useEffect(() => {
     let mounted = true;
     const tick = () => {
       if (!mounted) return;
@@ -45,70 +241,54 @@ const JourneyScene: React.FC<{ scrollY: number; onComplete: () => void }> = ({
       mounted = false;
       cancelAnimationFrame(raf);
     };
-  }, [scrollY]);
+  }, []);
 
   const worldZ = smoothScrollY;
-  const isIntro = worldZ < 100;
 
-  const computeGateState = (panelZ: number): GateState => {
-    const dist = panelZ + worldZ;
-    const approachStart = -2200;
-    const approachEnd = 250;
-    /* FIX: Changed passEnd to 1700 to make the doors swing slowly and feel "heavy" */
-    const passEnd = 1700;
+  // Timings chosen specifically to:
+  // - start opening BEFORE you reach the sign (approachEnd is negative)
+  // - open slowly over a long distance (passEnd far)
+  const INTRO_TIMING: GateTiming = useMemo(
+    () => ({ approachStart: -2400, approachEnd: -700, passEnd: 2400 }),
+    []
+  );
+  const GATE_TIMING: GateTiming = useMemo(
+    () => ({ approachStart: -2200, approachEnd: -450, passEnd: 2600 }),
+    []
+  );
 
-    const tApproach = clamp01(
-      (dist - approachStart) / (approachEnd - approachStart)
-    );
-    const tPassLinear = clamp01((dist - approachEnd) / (passEnd - approachEnd));
+  const introZ = POSITIONS.START_TEXT + 400;
+  const rpiZ = POSITIONS.SIGN_1 - 600;
+  const naodZ = POSITIONS.SIGN_2 - 1200;
 
-    const a = smoothstep(tApproach);
-    const p = smoothstep(tPassLinear);
+  const introState = computeGateState(introZ, worldZ, INTRO_TIMING, isMobile);
+  const rpiState = computeGateState(rpiZ, worldZ, GATE_TIMING, isMobile);
+  const naodState = computeGateState(naodZ, worldZ, GATE_TIMING, isMobile);
 
-    const minScale = isMobile ? 0.95 : 0.55;
-    const nearScale = isMobile ? 1.15 : 1.25;
-    const throughScale = isMobile ? 2.2 : 2.4;
+  // Scroll hint: only early, and not while intro is already opening
+  const showScrollHint = worldZ < 140 && introState.open < 0.12;
 
-    const scale =
-      p > 0
-        ? nearScale + (throughScale - nearScale) * p
-        : minScale + (nearScale - minScale) * a;
-
-    return {
-      tPass: p,
-      scale,
-      opacity: clamp01(
-        (0.7 + 0.3 * smoothstep(clamp01((panelZ + worldZ + 2000) / 1500))) *
-          (a * 1.15) *
-          (1 - p * p)
-      ),
-      zIndex: 20 + Math.round(60 * Math.max(a, p)),
-    };
-  };
-
-  const panel1State = computeGateState(POSITIONS.SIGN_1 - 600);
-  const panel2State = computeGateState(POSITIONS.SIGN_2 - 1200);
-
-  const postSign2Dist = POSITIONS.SIGN_2 - 1200 + worldZ - 950;
-  const revealLayerOpacity = smoothstep(clamp01((postSign2Dist - 1950) / 250));
+  // Reveal overlay (keep yours if different)
+  const postSign2Dist = naodZ + worldZ - 1200;
+  const revealLayerOpacity = smoothstep(clamp01((postSign2Dist - 1800) / 300));
 
   return (
     <div className="relative w-full h-full bg-[#1c1917] overflow-hidden">
-      {/* 1. BACKGROUND */}
+      {/* BACKGROUND */}
       <div className="absolute inset-0 z-0">
         <img
           src="https://images.unsplash.com/photo-1476820865390-c52aeebb9891?q=80&w=2500&auto=format&fit=crop"
-          className="w-full h-full object-cover opacity-80"
+          className="w-full h-full object-cover opacity-85"
           style={{ transform: `scale(${1 + worldZ * 0.00005})` }}
           alt="Foggy Road"
         />
-        <div className="absolute inset-0 bg-stone-900/40" />
+        <div className="absolute inset-0 bg-stone-900/45" />
       </div>
 
-      {/* 2. 3D WORLD */}
+      {/* 3D WORLD */}
       <div
         className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
-        style={{ perspective: "1200px", perspectiveOrigin: "50% 50%" }}
+        style={{ perspective: "1400px" }}
       >
         <div
           ref={worldRef}
@@ -118,65 +298,68 @@ const JourneyScene: React.FC<{ scrollY: number; onComplete: () => void }> = ({
             transformStyle: "preserve-3d",
           }}
         >
-          {/* INTRO TEXT */}
-          <div
-            className="absolute top-[62%] md:top-[55%] left-1/2 text-center w-full max-w-[90%] md:max-w-3xl px-6 py-8 bg-black/30 backdrop-blur-sm rounded-3xl border border-white/10"
-            style={{
-              transform: `translate3d(-50%, -50%, ${
-                POSITIONS.START_TEXT + 450
-              }px) translateY(-100px)`,
-            }}
-          >
-            <h2 className="text-white text-xs md:text-sm uppercase tracking-[0.2em] mb-4 font-bold">
-              Welcome to Dayton Kidney
-            </h2>
-            <h1 className="text-3xl sm:text-4xl md:text-6xl font-serif text-white font-bold leading-tight">
-              Your kidney health is a journey.
-              <br />
-              <span className="text-white">
-                We&apos;ve been with you for over{" "}
-                <br className="hidden lg:block" /> 50 years.
-              </span>
-            </h1>
-          </div>
-
-          {/* GATE 1 - RENAL PHYSICIANS */}
+          {/* INTRO GATE: placed lower to avoid overlap with fixed Skip UI */}
           <GatePanel
-            state={panel1State}
-            z={POSITIONS.SIGN_1 - 600}
-            logo={ASSETS.renalLogo}
-            title="Renal Physicians"
-            subtitle="Setting the standard for excellence in kidney care in Dayton."
-            est="Est. 1972"
-            isInvert={false}
+            theme="intro"
+            z={introZ}
+            state={introState}
+            topClassName="top-[72%] md:top-[64%]"
+            // cap z-index to stay under typical fixed top UI
+            zIndexCap={38}
+            content={{
+              eyebrow: "Welcome to Dayton Kidney",
+              title: "Your kidney health is a journey.",
+              body: "We’ve been with you for over 50 years — bringing unrivaled expertise and compassionate care to the Miami Valley.",
+              cta: "Scroll forward to begin",
+            }}
           />
 
-          {/* GATE 2 - NAOD */}
+          {/* RPI */}
           <GatePanel
-            state={panel2State}
-            z={POSITIONS.SIGN_2 - 1200}
-            logo="https://i.ibb.co/WvbphTZT/NAOD-Logo.jpg"
-            title="Nephrology Associates of Dayton"
-            subtitle="Providing compassionate, patient-centered kidney care close to home."
-            est="Since 1980"
-            isInvert={true}
+            theme="rpi"
+            z={rpiZ}
+            state={rpiState}
+            content={{
+              eyebrow: "Est. 1972",
+              title: "Renal Physicians",
+              body: "Setting the standard for excellence in kidney care in Dayton.",
+              cta: "Continue scrolling to pass through",
+              logoSrc: "/images/RPI-Logo.png",
+              logoAlt: "Renal Physicians (RPI) logo",
+            }}
+          />
+
+          {/* NAOD */}
+          <GatePanel
+            theme="naod"
+            z={naodZ}
+            state={naodState}
+            content={{
+              eyebrow: "Since 1980",
+              title: "Nephrology Associates of Dayton",
+              body: "Providing compassionate, patient-centered kidney care close to home.",
+              cta: "Pass through to continue",
+              // If you keep the space in the filename, use this exact path:
+              logoSrc: "/images/NAOD-Logo.jpg",
+              logoAlt: "Nephrology Associates of Dayton (NAOD) logo",
+            }}
           />
         </div>
       </div>
 
-      {/* 3. SCROLL HINT */}
-      {isIntro && (
-        <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2">
-          <p className="text-white/80 text-[10px] tracking-[0.3em] uppercase font-bold drop-shadow-md">
+      {/* SCROLL HINT */}
+      {showScrollHint && (
+        <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-2 pointer-events-none">
+          <p className="text-white/85 text-[10px] tracking-[0.35em] uppercase font-bold drop-shadow-md">
             Scroll to Begin
           </p>
           <div className="animate-bounce mt-1">
-            <ArrowDown className="text-white/80" size={18} />
+            <ArrowDown className="text-white/85" size={18} />
           </div>
         </div>
       )}
 
-      {/* 4. REVEAL OVERLAY */}
+      {/* REVEAL OVERLAY */}
       <div
         className="absolute inset-0 z-50"
         style={{
@@ -194,85 +377,5 @@ const JourneyScene: React.FC<{ scrollY: number; onComplete: () => void }> = ({
     </div>
   );
 };
-
-const GatePanel: React.FC<{
-  state: GateState;
-  z: number;
-  logo: string;
-  title: string;
-  subtitle: string;
-  est: string;
-  isInvert: boolean;
-}> = ({ state, z, logo, title, subtitle, est, isInvert }) => (
-  <div
-    className="absolute top-1/2 left-1/2 w-[90vw] max-w-[980px] h-[500px]"
-    style={{
-      transform: `translate3d(-50%, -50%, ${z}px)`,
-      opacity: state.opacity,
-      zIndex: state.zIndex,
-      transformStyle: "preserve-3d",
-      backfaceVisibility: "hidden",
-    }}
-  >
-    <div
-      className="relative w-full h-full flex items-center justify-center"
-      style={{
-        transform: `scale(${state.scale})`,
-        transformStyle: "preserve-3d",
-      }}
-    >
-      {/* DOORS */}
-      <div className="absolute inset-0 flex preserve-3d">
-        <div
-          className="w-1/2 h-full origin-left border border-white/20 border-r-0 backdrop-blur-2xl rounded-l-[44px]"
-          style={{
-            transform: `rotateY(${-70 * state.tPass}deg)`,
-            background:
-              "linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05))",
-            backfaceVisibility: "hidden",
-          }}
-        />
-        <div
-          className="w-1/2 h-full origin-right border border-white/20 border-l-0 backdrop-blur-2xl rounded-r-[44px]"
-          style={{
-            transform: `rotateY(${70 * state.tPass}deg)`,
-            background:
-              "linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05))",
-            backfaceVisibility: "hidden",
-          }}
-        />
-      </div>
-
-      {/* CONTENT LAYER */}
-      <div
-        className="relative z-10 flex flex-col items-center p-12 text-center"
-        style={{
-          opacity: clamp01(1 - state.tPass * 2.5),
-          transform: "translateZ(60px)",
-        }}
-      >
-        <span className="text-white/80 text-xs md:text-xl uppercase tracking-[0.4em] font-semibold mb-8">
-          {est}
-        </span>
-        <div
-          className={`mb-10 ${
-            isInvert ? "bg-white/10 p-6 rounded-3xl border border-white/20" : ""
-          }`}
-        >
-          <img
-            src={logo}
-            className={`w-full max-w-[550px] object-contain brightness-200 grayscale ${
-              isInvert ? "invert" : ""
-            }`}
-            alt={title}
-          />
-        </div>
-        <p className="text-white/90 text-lg md:text-4xl font-light max-w-2xl leading-tight">
-          {subtitle}
-        </p>
-      </div>
-    </div>
-  </div>
-);
 
 export default JourneyScene;
