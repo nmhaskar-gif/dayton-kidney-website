@@ -102,7 +102,7 @@ const getProviderOverrides = (provider: Provider) => {
         "Doing the New York Times Crossword Puzzle",
         "Cooking and Baking",
         "Taking walks with my dogs",
-        "Travelling with my family",
+        "Traveling with my family",
       ],
     };
   }

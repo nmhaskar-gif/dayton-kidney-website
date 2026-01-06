@@ -55,30 +55,22 @@ const HomeView: React.FC<HomeViewProps> = ({ setView, isActive }) => {
   return (
     <div
       ref={containerRef}
-      /* FIX 1: Keep pt-24 at all breakpoints. 
-         This creates a 96px "dead zone" at the top so the card 
-         mathematically cannot sit behind the fixed navbar.
-      */
       className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none p-4 pt-24"
     >
-      {/* FIX 2: Removed all negative translate-y classes. 
-         This stops the "vacuum" effect that was pulling the card upward.
-      */}
       <div className="w-full flex justify-center">
         {/* INNER CARD */}
         <div
           ref={cardRef}
-          /* FIX 3: added max-h-[calc(100vh-10rem)] and overflow-y-auto. 
-             If the screen is short (laptop) or zoomed in, the card stays 
-             within view and becomes scrollable internally.
+          /* FIX: Added 'scrollbar-hide' and ensured 'no-scrollbar' works. 
+             If the content fits, the bar will be invisible. 
           */
           className="pointer-events-auto w-[95%] sm:w-[85%] md:w-full md:max-w-lg lg:max-w-3xl 
                      p-5 sm:p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] shadow-2xl text-center 
                      opacity-0 border border-white/20 bg-gradient-to-b from-white/5 to-white/20 
-                     backdrop-blur-sm max-h-[calc(100vh-10rem)] overflow-y-auto no-scrollbar"
+                     backdrop-blur-sm max-h-[calc(100vh-10rem)] overflow-y-auto no-scrollbar scrollbar-hide"
         >
           {/* Title */}
-          <div ref={titleRef} className="mb-4 sm:mb-8 md:mb-8 lg:mb-10">
+          <div ref={titleRef} className="mb-4 sm:mb-6 md:mb-8 lg:mb-10">
             <h1 className="font-extrabold tracking-tight leading-none">
               <span className="bg-clip-text text-transparent bg-gradient-to-br from-blue-900 to-teal-800 text-4xl sm:text-5xl md:text-5xl lg:text-6xl">
                 Dayton Kidney
@@ -86,29 +78,27 @@ const HomeView: React.FC<HomeViewProps> = ({ setView, isActive }) => {
             </h1>
           </div>
 
-          {/* Body Text */}
+          {/* Body Text - LEGIBILITY FIXES HERE */}
           <div ref={bodyRef} className="mb-8 md:mb-10 mx-auto">
-            <p className="text-slate-900 font-bold leading-relaxed text-sm sm:text-base md:text-lg lg:text-xl drop-shadow-[0_0_15px_rgba(255,255,255,0.9)]">
-              The unrivaled expertise and
-              <br className="block sm:hidden" />
-              compassionate care of
-              <br className="block sm:hidden" />
-              <span className="text-teal-900 font-extrabold">
+            <p className="text-slate-900 font-bold leading-relaxed tracking-wide text-sm sm:text-base md:text-lg lg:text-xl drop-shadow-[0_0_15px_rgba(255,255,255,0.9)]">
+              The unrivaled expertise and compassionate care of
+              {/* Force a block layout for the names so they don't blend */}
+              <span className="block my-2 text-teal-900 font-extrabold text-base md:text-xl lg:text-2xl">
                 Renal Physicians
               </span>
-              <br className="block sm:hidden" />
-              and
-              <br className="block sm:hidden" />
-              <span className="text-teal-900 font-extrabold">
+              <span className="block my-1 text-slate-700 italic text-xs md:text-sm">
+                and
+              </span>
+              <span className="block my-2 text-teal-900 font-extrabold text-base md:text-xl lg:text-2xl">
                 Nephrology Associates of Dayton
               </span>
-              <br className="block sm:hidden" />
               have come together to form
-              <br className="block sm:hidden" />
-              <strong>Dayton Kidney</strong>
+              <strong className="block mt-2 text-blue-900 text-xl md:text-2xl">
+                Dayton Kidney
+              </strong>
             </p>
 
-            <p className="mt-4 sm:mt-6 text-blue-950 font-extrabold text-xs sm:text-sm md:text-base lg:text-lg drop-shadow-[0_0_20px_rgba(255,255,255,1)] max-w-xl mx-auto">
+            <p className="mt-6 text-blue-950 font-extrabold text-xs sm:text-sm md:text-base lg:text-lg drop-shadow-[0_0_20px_rgba(255,255,255,1)] max-w-xl mx-auto leading-relaxed">
               Uniting the region's most experienced teams to help you navigate
               your kidney health journey, every step of the way.
             </p>
