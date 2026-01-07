@@ -1,224 +1,39 @@
 // src/components/JourneyScene.tsx
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowDown } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
 import { POSITIONS } from "../constants";
+import { ArrowDown } from "lucide-react";
 import V1RevealOverlay from "./V1RevealOverlay";
 
+// ---------------- helpers ----------------
 const clamp01 = (n: number) => Math.max(0, Math.min(1, n));
 const smoothstep = (x: number) => x * x * (3 - 2 * x);
-const smoothstep2 = (x: number) => smoothstep(smoothstep(x));
 
-type GateTheme = "intro" | "rpi" | "naod";
-type GateTiming = {
-  approachStart: number;
-  approachEnd: number;
-  passEnd: number;
-};
-type GateState = {
-  open: number;
+// ---------------- types ----------------
+type PanelState = {
+  dist: number;
+  tPass: number;
   scale: number;
   opacity: number;
   zIndex: number;
+  rotateY: number;
+  x: number;
 };
 
-type GateContent = {
-  eyebrow?: string;
-  title: string;
-  body: string;
-  cta?: string;
-  logoSrc?: string;
-  logoAlt?: string;
-};
-
-const THEME: Record<
-  GateTheme,
-  { leftBg: string; rightBg: string; border: string; contentCard: string }
-> = {
-  intro: {
-    leftBg:
-      "linear-gradient(135deg, rgba(14,165,233,0.18), rgba(20,184,166,0.10))",
-    rightBg:
-      "linear-gradient(225deg, rgba(14,165,233,0.18), rgba(20,184,166,0.10))",
-    border: "rgba(255,255,255,0.22)",
-    contentCard: "bg-black/30 border-white/10",
-  },
-
-  // RPI: blue/orange (subtle tint)
-  rpi: {
-    leftBg:
-      "linear-gradient(135deg, rgba(59,130,246,0.22), rgba(249,115,22,0.12))",
-    rightBg:
-      "linear-gradient(225deg, rgba(59,130,246,0.22), rgba(249,115,22,0.12))",
-    border: "rgba(255,255,255,0.22)",
-    contentCard: "bg-white/6 border-white/15",
-  },
-
-  // NAOD: green (subtle tint)
-  naod: {
-    leftBg:
-      "linear-gradient(135deg, rgba(34,197,94,0.22), rgba(255,255,255,0.06))",
-    rightBg:
-      "linear-gradient(225deg, rgba(34,197,94,0.22), rgba(255,255,255,0.06))",
-    border: "rgba(255,255,255,0.22)",
-    contentCard: "bg-white/6 border-white/15",
-  },
-};
-
-function computeGateState(
-  panelZ: number,
-  worldZ: number,
-  timing: GateTiming,
-  isMobile: boolean
-): GateState {
-  const dist = panelZ + worldZ;
-
-  const tApproach = clamp01(
-    (dist - timing.approachStart) / (timing.approachEnd - timing.approachStart)
-  );
-  const a = smoothstep(tApproach);
-
-  const tPassLinear = clamp01(
-    (dist - timing.approachEnd) / (timing.passEnd - timing.approachEnd)
-  );
-  const pHeavy = smoothstep2(tPassLinear);
-
-  // Critical: start opening before collision + smooth heavy swing
-  const open = clamp01(pHeavy + 0.22 * a);
-
-  // Keep scale safe on laptops
-  const minScale = isMobile ? 0.98 : 0.62;
-  const nearScale = isMobile ? 1.12 : 1.18;
-  const throughScale = isMobile ? 2.05 : 2.12;
-  const scale =
-    open > 0
-      ? nearScale + (throughScale - nearScale) * open
-      : minScale + (nearScale - minScale) * a;
-
-  const fadeIn = clamp01(a * 1.1);
-  const fadeOut = 1 - open * open;
-  const opacity = clamp01(fadeIn * fadeOut);
-
-  const zIndex = 20 + Math.round(60 * Math.max(a, open));
-  return { open, scale, opacity, zIndex };
-}
-
-const GatePanel: React.FC<{
-  z: number;
-  state: GateState;
-  theme: GateTheme;
-  content: GateContent;
-  topClassName?: string;
-  zIndexCap?: number;
-}> = ({ z, state, theme, content, topClassName, zIndexCap }) => {
-  const t = THEME[theme];
-  const zIndex =
-    typeof zIndexCap === "number"
-      ? Math.min(state.zIndex, zIndexCap)
-      : state.zIndex;
-
-  return (
-    <div
-      className={`absolute ${
-        topClassName ?? "top-1/2"
-      } left-1/2 w-[92vw] max-w-[980px] h-[520px]`}
-      style={{
-        transform: `translate3d(-50%, -50%, ${z}px)`,
-        opacity: state.opacity,
-        zIndex,
-        transformStyle: "preserve-3d",
-        backfaceVisibility: "hidden",
-        willChange: "transform, opacity",
-      }}
-    >
-      <div
-        className="relative w-full h-full flex items-center justify-center"
-        style={{
-          transform: `scale(${state.scale})`,
-          transformStyle: "preserve-3d",
-          willChange: "transform",
-        }}
-      >
-        {/* DOORS */}
-        <div className="absolute inset-0 flex preserve-3d">
-          <div
-            className="w-1/2 h-full origin-left border border-white/20 border-r-0 backdrop-blur-2xl rounded-l-[44px]"
-            style={{
-              transform: `rotateY(${-72 * state.open}deg)`,
-              background: t.leftBg,
-              borderColor: t.border,
-              backfaceVisibility: "hidden",
-              willChange: "transform",
-            }}
-          />
-          <div
-            className="w-1/2 h-full origin-right border border-white/20 border-l-0 backdrop-blur-2xl rounded-r-[44px]"
-            style={{
-              transform: `rotateY(${72 * state.open}deg)`,
-              background: t.rightBg,
-              borderColor: t.border,
-              backfaceVisibility: "hidden",
-              willChange: "transform",
-            }}
-          />
-        </div>
-
-        {/* CONTENT */}
-        <div
-          className={`relative z-10 flex flex-col items-center justify-center text-center px-8 md:px-12 py-10 rounded-3xl border ${t.contentCard}`}
-          style={{
-            opacity: clamp01(1 - state.open * 1.25),
-            transform: "translateZ(70px)",
-            willChange: "opacity",
-          }}
-        >
-          {content.eyebrow && (
-            <div className="text-white/75 text-[11px] md:text-sm uppercase tracking-[0.35em] font-bold mb-4">
-              {content.eyebrow}
-            </div>
-          )}
-
-          {content.logoSrc && (
-            <div className="mb-6 bg-white/10 border border-white/15 rounded-3xl px-8 py-6">
-              <img
-                src={content.logoSrc}
-                alt={content.logoAlt ?? content.title}
-                className="h-14 md:h-20 object-contain"
-              />
-            </div>
-          )}
-
-          <h2 className="text-white text-2xl md:text-5xl font-serif font-bold drop-shadow-2xl">
-            {content.title}
-          </h2>
-
-          <p className="text-white/85 text-sm md:text-xl mt-4 font-semibold drop-shadow-lg max-w-3xl">
-            {content.body}
-          </p>
-
-          {content.cta && (
-            <p className="text-white/70 text-[10px] md:text-sm mt-7 tracking-[0.35em] uppercase font-bold">
-              {content.cta}
-            </p>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
+type Side = "left" | "right";
 
 const JourneyScene: React.FC<{ scrollY: number; onComplete: () => void }> = ({
   scrollY,
+  onComplete,
 }) => {
-  const worldRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [smoothScrollY, setSmoothScrollY] = useState(0);
   const targetScrollRef = useRef(0);
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
+    const check = () => setIsMobile(window.innerWidth < 1024);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
   }, []);
 
   useEffect(() => {
@@ -230,149 +45,329 @@ const JourneyScene: React.FC<{ scrollY: number; onComplete: () => void }> = ({
     const tick = () => {
       if (!mounted) return;
       setSmoothScrollY((prev) => {
-        const target = targetScrollRef.current;
-        const next = prev + (target - prev) * 0.12;
-        return Math.abs(next - target) < 0.25 ? target : next;
+        const t = targetScrollRef.current;
+        const n = prev + (t - prev) * 0.12;
+        return Math.abs(n - t) < 0.25 ? t : n;
       });
       requestAnimationFrame(tick);
     };
-    const raf = requestAnimationFrame(tick);
+    tick();
     return () => {
       mounted = false;
-      cancelAnimationFrame(raf);
     };
   }, []);
 
   const worldZ = smoothScrollY;
+  const isIntro = worldZ < 120;
 
-  // Timings chosen specifically to:
-  // - start opening BEFORE you reach the sign (approachEnd is negative)
-  // - open slowly over a long distance (passEnd far)
-  const INTRO_TIMING: GateTiming = useMemo(
-    () => ({ approachStart: -2400, approachEnd: -700, passEnd: 2400 }),
-    []
-  );
-  const GATE_TIMING: GateTiming = useMemo(
-    () => ({ approachStart: -2200, approachEnd: -450, passEnd: 2600 }),
-    []
-  );
+  // ---------------- motion ----------------
+  const computePanelState = (
+    panelZ: number,
+    side: Side,
+    opts?: {
+      turnApproachGate?: number;
+      passTurnDelay?: number;
+      turnEasePower?: 1 | 2 | 3;
+      maxYaw?: number;
+      maxX?: number;
+    }
+  ): PanelState => {
+    const dist = panelZ + worldZ;
+    const dir = side === "left" ? -1 : 1;
+    const approachStart = -2200;
+    const approachEnd = 420;
+    const passEnd = 2500;
 
-  const introZ = POSITIONS.START_TEXT + 400;
+    const tApproach = clamp01(
+      (dist - approachStart) / (approachEnd - approachStart)
+    );
+    const tPassLinear = clamp01((dist - approachEnd) / (passEnd - approachEnd));
+
+    const a = smoothstep(tApproach);
+    const p = tPassLinear;
+
+    const scale = isMobile ? 0.95 + a * 0.22 : 0.68 + a * 0.36 + p * 0.14;
+    const opacity = clamp01(a * (1 - p * p));
+
+    const gate = clamp01(opts?.turnApproachGate ?? 0.72);
+    const aTurn = clamp01((a - gate) / (1 - gate));
+    const delay = clamp01(opts?.passTurnDelay ?? 0.0);
+    const pTurn = clamp01((p - delay) / (1 - delay));
+
+    let u = clamp01(1 - (1 - aTurn) * (1 - pTurn));
+
+    const power = opts?.turnEasePower ?? 2;
+    u = smoothstep(u);
+    if (power >= 2) u = smoothstep(u);
+    if (power >= 3) u = smoothstep(u);
+
+    const maxYaw = opts?.maxYaw ?? (isMobile ? 62 : 80);
+    const maxX = opts?.maxX ?? (isMobile ? 300 : 560);
+
+    return {
+      dist,
+      tPass: p,
+      scale,
+      opacity,
+      zIndex: 20 + Math.round(dist / 12),
+      rotateY: dir * maxYaw * u,
+      x: dir * maxX * u,
+    };
+  };
+
+  const introZ = POSITIONS.START_TEXT + 150;
   const rpiZ = POSITIONS.SIGN_1 - 600;
   const naodZ = POSITIONS.SIGN_2 - 1200;
 
-  const introState = computeGateState(introZ, worldZ, INTRO_TIMING, isMobile);
-  const rpiState = computeGateState(rpiZ, worldZ, GATE_TIMING, isMobile);
-  const naodState = computeGateState(naodZ, worldZ, GATE_TIMING, isMobile);
+  const intro = computePanelState(introZ, "right", {
+    turnApproachGate: 0.76,
+    turnEasePower: 2,
+    maxYaw: isMobile ? 56 : 72,
+    maxX: isMobile ? 260 : 500,
+  });
 
-  // Scroll hint: only early, and not while intro is already opening
-  const showScrollHint = worldZ < 140 && introState.open < 0.12;
+  const rpi = computePanelState(rpiZ, "left", {
+    turnApproachGate: 0.72,
+    turnEasePower: 2,
+  });
+  const naod = computePanelState(naodZ, "right", {
+    turnApproachGate: 0.64,
+    turnEasePower: 2,
+  });
 
-  // Reveal overlay (keep yours if different)
-  const postSign2Dist = naodZ + worldZ - 1200;
-  const revealLayerOpacity = smoothstep(clamp01((postSign2Dist - 1800) / 300));
+  const revealStart = 100;
+  const revealSpan = 4000;
+  const post = naodZ + worldZ;
+  const revealOpacity = smoothstep(clamp01((post - revealStart) / revealSpan));
+
+  const overlayOpacity = smoothstep(clamp01((revealOpacity - 0.75) / 0.25));
+  const overlayActive = overlayOpacity > 0.01;
+  const overlayInteractive = overlayOpacity > 0.85;
+
+  const cloudOpacity = smoothstep(clamp01(revealOpacity / 0.35));
+  const textOpacity = smoothstep(clamp01((revealOpacity - 0.1) / 0.2));
+
+  const completedRef = useRef(false);
+  useEffect(() => {
+    if (completedRef.current) return;
+    if (overlayOpacity >= 0.99) {
+      completedRef.current = true;
+      onComplete();
+    }
+  }, [overlayOpacity, onComplete]);
 
   return (
     <div className="relative w-full h-full bg-[#1c1917] overflow-hidden">
+      <style>{`
+        @keyframes dkCloudDrift1 { 0% { transform: translateX(-6%) } 100% { transform: translateX(6%) } }
+        @keyframes dkCloudDrift2 { 0% { transform: translateX(8%) } 100% { transform: translateX(-8%) } }
+      `}</style>
+
       {/* BACKGROUND */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0">
         <img
           src="https://images.unsplash.com/photo-1476820865390-c52aeebb9891?q=80&w=2500&auto=format&fit=crop"
           className="w-full h-full object-cover opacity-85"
-          style={{ transform: `scale(${1 + worldZ * 0.00005})` }}
           alt="Foggy Road"
         />
         <div className="absolute inset-0 bg-stone-900/45" />
       </div>
 
-      {/* 3D WORLD */}
+      {/* WORLD */}
       <div
-        className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
+        className="absolute inset-0 flex items-center justify-center pointer-events-none"
         style={{ perspective: "1400px" }}
       >
         <div
-          ref={worldRef}
-          className="w-full h-full relative"
+          className="relative w-full h-full"
           style={{
             transform: `translateZ(${worldZ}px)`,
             transformStyle: "preserve-3d",
           }}
         >
-          {/* INTRO GATE: placed lower to avoid overlap with fixed Skip UI */}
-          <GatePanel
-            theme="intro"
+          <GlassPanel
+            state={intro}
             z={introZ}
-            state={introState}
-            topClassName="top-[72%] md:top-[64%]"
-            // cap z-index to stay under typical fixed top UI
-            zIndexCap={38}
-            content={{
-              eyebrow: "Welcome to Dayton Kidney",
-              title: "Your kidney health is a journey.",
-              body: "We’ve been with you for over 50 years — bringing unrivaled expertise and compassionate care to the Miami Valley.",
-              cta: "Scroll forward to begin",
-            }}
+            topClassName="top-[38%] md:top-[28%]"
+            eyebrow="Welcome to Dayton Kidney"
+            title="Your kidney health is a journey."
+            body="We’ve been with you for over 50 years."
+            variant="intro"
           />
-
-          {/* RPI */}
-          <GatePanel
-            theme="rpi"
+          <GlassPanel
+            state={rpi}
             z={rpiZ}
-            state={rpiState}
-            content={{
-              eyebrow: "Est. 1972",
-              title: "Renal Physicians",
-              body: "Setting the standard for excellence in kidney care in Dayton.",
-              cta: "Continue scrolling to pass through",
-              logoSrc: "/images/RPI-Logo.png",
-              logoAlt: "Renal Physicians (RPI) logo",
-            }}
+            topClassName="top-[36%] md:top-[26%]"
+            eyebrow="Est. 1972"
+            logoSrc="/images/RPI-Logo.png"
+            title=""
+            body="Setting the standard for excellence in kidney care in Dayton."
+            variant="default"
           />
-
-          {/* NAOD */}
-          <GatePanel
-            theme="naod"
+          <GlassPanel
+            state={naod}
             z={naodZ}
-            state={naodState}
-            content={{
-              eyebrow: "Since 1980",
-              title: "Nephrology Associates of Dayton",
-              body: "Providing compassionate, patient-centered kidney care close to home.",
-              cta: "Pass through to continue",
-              // If you keep the space in the filename, use this exact path:
-              logoSrc: "/images/NAOD-Logo.jpg",
-              logoAlt: "Nephrology Associates of Dayton (NAOD) logo",
-            }}
+            topClassName="top-[36%] md:top-[26%]"
+            eyebrow="Since 1980"
+            logoSrc="/images/NAOD-Logo.jpg"
+            title=""
+            body="Providing compassionate, patient-centered kidney care close to home."
+            variant="default"
           />
         </div>
       </div>
 
       {/* SCROLL HINT */}
-      {showScrollHint && (
-        <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-2 pointer-events-none">
-          <p className="text-white/85 text-[10px] tracking-[0.35em] uppercase font-bold drop-shadow-md">
-            Scroll to Begin
+      {isIntro && (
+        <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-40 text-center pointer-events-none">
+          <p className="text-white/85 text-[10px] tracking-[0.35em] uppercase font-bold mb-2">
+            Scroll to Continue the Journey with Us
           </p>
-          <div className="animate-bounce mt-1">
-            <ArrowDown className="text-white/85" size={18} />
-          </div>
+          <ArrowDown
+            className="mx-auto animate-bounce text-white/85"
+            size={18}
+          />
         </div>
       )}
 
-      {/* REVEAL OVERLAY */}
+      {/* REVEAL VISUALS */}
       <div
         className="absolute inset-0 z-50"
+        style={{ opacity: revealOpacity, pointerEvents: "none" }}
+      >
+        <div className="absolute inset-0" style={{ opacity: cloudOpacity }}>
+          <div
+            className="absolute -inset-[20%]"
+            style={{
+              background:
+                "radial-gradient(circle at 30% 35%, rgba(255,255,255,1), rgba(255,255,255,0) 70%)",
+              filter: "blur(30px)",
+              animation: "dkCloudDrift1 9s ease-in-out infinite alternate",
+            }}
+          />
+          <div
+            className="absolute -inset-[20%]"
+            style={{
+              background:
+                "radial-gradient(circle at 70% 45%, rgba(255,255,255,0.95), rgba(255,255,255,0) 70%)",
+              filter: "blur(40px)",
+              animation: "dkCloudDrift2 11s ease-in-out infinite alternate",
+            }}
+          />
+        </div>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div
+            className="text-center px-6"
+            style={{
+              opacity: textOpacity,
+              transform: `translateY(${(1 - textOpacity) * 15}px)`,
+            }}
+          >
+            <div
+              className="text-white font-serif text-4xl md:text-7xl font-bold leading-tight"
+              style={{
+                textShadow:
+                  "0 10px 40px rgba(0,0,0,0.85), 0 2px 10px rgba(0,0,0,0.6)",
+              }}
+            >
+              Now our paths unite <br className="hidden md:block" /> for your
+              future.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* OVERLAY */}
+      <div
+        className="absolute inset-0 z-[60]"
         style={{
-          opacity: revealLayerOpacity,
-          pointerEvents: revealLayerOpacity > 0.9 ? "auto" : "none",
+          opacity: overlayOpacity,
+          pointerEvents: overlayInteractive ? "auto" : "none",
         }}
       >
         <V1RevealOverlay
-          opacity={1}
-          isActive={revealLayerOpacity > 0.9}
-          pointerEvents={revealLayerOpacity > 0.9 ? "auto" : "none"}
+          opacity={overlayOpacity}
+          isActive={overlayActive}
+          pointerEvents={overlayInteractive ? "auto" : "none"}
           setView={() => {}}
         />
+      </div>
+    </div>
+  );
+};
+
+const GlassPanel: React.FC<{
+  state: PanelState;
+  z: number;
+  topClassName?: string;
+  eyebrow?: string;
+  title: string;
+  body: string;
+  logoSrc?: string;
+  variant?: "intro" | "default";
+}> = ({ state, z, topClassName, eyebrow, title, body, logoSrc, variant }) => {
+  const isIntro = variant === "intro";
+  return (
+    <div
+      className={`absolute ${
+        topClassName ?? "top-1/2"
+      } left-0 right-0 flex justify-center items-center pointer-events-none`}
+      style={{
+        transform: `translate3d(${state.x}px, 0, ${z}px) rotateY(${state.rotateY}deg) scale(${state.scale})`,
+        opacity: state.opacity,
+        zIndex: state.zIndex,
+        transformStyle: "preserve-3d",
+        willChange: "transform, opacity",
+      }}
+    >
+      <div className="relative w-fit max-w-[90vw] md:max-w-[800px]">
+        <div
+          className={`absolute inset-0 rounded-[36px] border border-white/20 ${
+            isIntro ? "backdrop-blur-3xl" : "backdrop-blur-md"
+          }`}
+          style={{
+            background: isIntro
+              ? "linear-gradient(135deg, rgba(28,25,23,0.80), rgba(28,25,23,0.60))"
+              : "linear-gradient(135deg, rgba(28,25,23,0.70), rgba(28,25,23,0.50))",
+          }}
+        />
+        <div className="relative z-10 px-8 py-10 md:px-16 md:py-14 text-center">
+          {eyebrow && (
+            <div className="text-white/70 text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold mb-4">
+              {eyebrow}
+            </div>
+          )}
+          {logoSrc && (
+            <div className="mb-8 bg-white/10 border border-white/10 rounded-[28px] px-8 py-6 inline-block">
+              <img
+                src={logoSrc}
+                className="h-16 md:h-28 object-contain"
+                alt="logo"
+              />
+            </div>
+          )}
+          {isIntro ? (
+            <>
+              <div className="text-white font-serif text-2xl md:text-5xl leading-tight font-medium">
+                {title}
+              </div>
+              <div className="text-white/90 font-serif text-2xl md:text-5xl leading-tight mt-5 font-medium">
+                {body}
+              </div>
+            </>
+          ) : (
+            <>
+              {title && (
+                <h2 className="text-white text-3xl md:text-6xl font-serif font-bold leading-tight mb-4">
+                  {title}
+                </h2>
+              )}
+              <p className="text-white/80 text-base md:text-xl font-serif max-w-[32ch] mx-auto leading-relaxed">
+                {body}
+              </p>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

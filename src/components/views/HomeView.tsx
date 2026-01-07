@@ -20,17 +20,16 @@ const HomeView: React.FC<HomeViewProps> = ({ setView, isActive }) => {
       const ctx = gsap.context(() => {
         gsap.fromTo(
           cardRef.current,
-          { opacity: 0, scale: 0.95, y: 30 },
+          { opacity: 0, scale: 0.98, y: 20 },
           { opacity: 1, scale: 1, y: 0, duration: 1.2, ease: "power3.out" }
         );
 
         gsap.set([titleRef.current, bodyRef.current, buttonsRef.current], {
           opacity: 0,
-          y: 20,
+          y: 15,
         });
 
-        const tl = gsap.timeline({ delay: 0.5 });
-
+        const tl = gsap.timeline({ delay: 0.4 });
         tl.to(titleRef.current, {
           opacity: 1,
           y: 0,
@@ -55,53 +54,49 @@ const HomeView: React.FC<HomeViewProps> = ({ setView, isActive }) => {
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 z-10 pointer-events-none overflow-y-auto overscroll-contain p-4 pt-24"
+      className={`absolute inset-0 z-10 h-full overflow-y-auto no-scrollbar overscroll-contain ${
+        isActive ? "pointer-events-auto" : "pointer-events-none"
+      }`}
     >
-      <div className="w-full flex justify-center">
-        {/* keep */}
-        {/* INNER CARD */}
+      <style>{`
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      `}</style>
+
+      {/* TOP MASK: This creates the "fade behind nav" effect.
+          As you scroll the card up, it hits this gradient and disappears. 
+      */}
+      <div className="sticky top-0 left-0 right-0 h-24 z-20 bg-gradient-to-b from-[#1c1917]/80 via-[#1c1917]/40 to-transparent pointer-events-none backdrop-blur-sm md:h-32" />
+
+      {/* CARD WRAPPER */}
+      <div className="relative min-h-full w-full flex justify-center items-start px-6 pt-[5vh] md:pt-[8vh] pb-20">
         <div
           ref={cardRef}
-          /* FIX: Added 'scrollbar-hide' and ensured 'no-scrollbar' works. 
-             If the content fits, the bar will be invisible. 
-          */
-          className="pointer-events-auto w-[95%] sm:w-[85%] md:w-full md:max-w-lg lg:max-w-3xl 
-                     p-5 sm:p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] shadow-2xl text-center 
-                     opacity-0 border border-white/20 bg-gradient-to-b from-white/5 to-white/20 
-                     backdrop-blur-sm
-+            max-h-none overflow-visible
-+            lg:max-h-[calc(100dvh-10rem)] lg:overflow-y-auto lg:no-scrollbar lg:scrollbar-hide"
+          className="w-full max-w-lg lg:max-w-3xl 
+                     p-8 md:p-12 lg:p-14 rounded-[2.5rem] md:rounded-[3.5rem] 
+                     shadow-2xl text-center opacity-0 border border-white/20 
+                     bg-gradient-to-b from-white/15 to-white/5 backdrop-blur-md"
         >
-          {/* Title */}
-          <div ref={titleRef} className="mb-4 sm:mb-6 md:mb-8 lg:mb-10">
+          {/* Title - Restored to original legible sizes */}
+          <div ref={titleRef} className="mb-6 md:mb-8">
             <h1 className="font-extrabold tracking-tight leading-none">
-              <span className="bg-clip-text text-transparent bg-gradient-to-br from-blue-900 to-teal-800 text-4xl sm:text-5xl md:text-5xl lg:text-6xl">
+              <span className="bg-clip-text text-transparent bg-gradient-to-br from-blue-900 to-teal-800 text-4xl sm:text-5xl md:text-6xl">
                 Dayton Kidney
               </span>
             </h1>
           </div>
 
-          {/* Body Text - LEGIBILITY FIXES HERE */}
-          <div ref={bodyRef} className="mb-8 md:mb-10 mx-auto">
-            <p className="text-slate-900 font-bold leading-relaxed tracking-wide text-sm sm:text-base md:text-lg lg:text-xl drop-shadow-[0_0_15px_rgba(255,255,255,0.9)]">
-              The unrivaled expertise and compassionate care of
-              {/* Force a block layout for the names so they don't blend */}
-              <span className="block my-2 text-teal-900 font-extrabold text-base md:text-xl lg:text-2xl">
-                Renal Physicians
+          {/* Body Text - Restored sizes */}
+          <div ref={bodyRef} className="mb-8 md:mb-10 mx-auto max-w-2xl">
+            <p className="text-slate-900 font-bold leading-relaxed text-base sm:text-lg md:text-xl drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]">
+              The unrivaled expertise and compassionate care of Renal Physicians
+              and Nephrology Associates of Dayton have come together to form
+              <span className="text-blue-900 font-extrabold ml-2">
+                Dayton Kidney.
               </span>
-              <span className="block my-1 text-slate-700 italic text-xs md:text-sm">
-                and
-              </span>
-              <span className="block my-2 text-teal-900 font-extrabold text-base md:text-xl lg:text-2xl">
-                Nephrology Associates of Dayton
-              </span>
-              have come together to form
-              <strong className="block mt-2 text-blue-900 text-xl md:text-2xl">
-                Dayton Kidney
-              </strong>
             </p>
 
-            <p className="mt-6 text-blue-950 font-extrabold text-xs sm:text-sm md:text-base lg:text-lg drop-shadow-[0_0_20px_rgba(255,255,255,1)] max-w-xl mx-auto leading-relaxed">
+            <p className="mt-6 text-blue-950 font-semibold text-sm sm:text-base md:text-lg drop-shadow-[0_0_15px_rgba(255,255,255,0.9)] leading-relaxed">
               Uniting the region's most experienced teams to help you navigate
               your kidney health journey, every step of the way.
             </p>
@@ -114,14 +109,14 @@ const HomeView: React.FC<HomeViewProps> = ({ setView, isActive }) => {
           >
             <button
               onClick={() => setView(ViewState.LOCATIONS)}
-              className="w-full sm:w-auto px-6 py-3 sm:px-8 rounded-full font-bold text-white bg-blue-900 hover:bg-teal-600 shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1 text-sm sm:text-base"
+              className="w-full sm:w-auto px-8 py-3.5 rounded-full font-bold text-white bg-blue-900 hover:bg-teal-600 shadow-md transition-all transform hover:-translate-y-1 text-sm md:text-base"
             >
               Find a Location
             </button>
 
             <button
               onClick={() => setView(ViewState.PROVIDERS)}
-              className="w-full sm:w-auto px-6 py-3 sm:px-8 rounded-full font-bold text-blue-900 bg-white/60 backdrop-blur-md border border-white/50 hover:bg-white hover:shadow-lg transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2 text-sm sm:text-base"
+              className="w-full sm:w-auto px-8 py-3.5 rounded-full font-bold text-blue-900 bg-white/60 backdrop-blur-md border border-white/40 hover:bg-white transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2 text-sm md:text-base"
             >
               Meet Our Providers
               <ArrowRight size={18} />
