@@ -110,7 +110,7 @@ const JourneyScene: React.FC<{ scrollY: number; onComplete: () => void }> = ({
       scale,
       opacity,
       zIndex: 20 + Math.round(dist / 12),
-      rotateY: dir * maxYaw * u,
+      rotateY: -dir * maxYaw * u,
       x: dir * maxX * u,
     };
   };
@@ -120,23 +120,23 @@ const JourneyScene: React.FC<{ scrollY: number; onComplete: () => void }> = ({
   const naodZ = POSITIONS.SIGN_2 - 1200;
 
   const intro = computePanelState(introZ, "right", {
-    turnApproachGate: 0.76,
-    turnEasePower: 2,
-    maxYaw: isMobile ? 56 : 72,
-    maxX: isMobile ? 260 : 500,
+    turnApproachGate: 0.75,
+    turnEasePower: 1,
+    maxYaw: isMobile ? 45 : 60,
+    maxX: isMobile ? 220 : 450,
   });
 
   const rpi = computePanelState(rpiZ, "left", {
     turnApproachGate: 0.72,
-    turnEasePower: 2,
+    turnEasePower: 1,
   });
   const naod = computePanelState(naodZ, "right", {
     turnApproachGate: 0.64,
-    turnEasePower: 2,
+    turnEasePower: 1,
   });
 
   const revealStart = 100;
-  const revealSpan = 4000;
+  const revealSpan = 3200;
   const post = naodZ + worldZ;
   const revealOpacity = smoothstep(clamp01((post - revealStart) / revealSpan));
 
@@ -150,7 +150,7 @@ const JourneyScene: React.FC<{ scrollY: number; onComplete: () => void }> = ({
   const completedRef = useRef(false);
   useEffect(() => {
     if (completedRef.current) return;
-    if (overlayOpacity >= 0.99) {
+    if (overlayOpacity >= 0.85) {
       completedRef.current = true;
       onComplete();
     }
