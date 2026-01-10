@@ -1,4 +1,3 @@
-// src/components/JourneyScene.tsx
 import React, { useEffect, useRef, useState } from "react";
 import { POSITIONS } from "../constants";
 import { ArrowDown } from "lucide-react";
@@ -27,6 +26,7 @@ const JourneyScene: React.FC<{ scrollY: number; onComplete: () => void }> = ({
 }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [smoothScrollY, setSmoothScrollY] = useState(0);
+  const [handoff, setHandoff] = useState(false); // Freezes physics
   const targetScrollRef = useRef(0);
 
   useEffect(() => {
@@ -40,13 +40,14 @@ const JourneyScene: React.FC<{ scrollY: number; onComplete: () => void }> = ({
     targetScrollRef.current = scrollY;
   }, [scrollY]);
 
+  // SCROLL PHYSICS LOOP
   useEffect(() => {
     let mounted = true;
     const tick = () => {
       if (!mounted) return;
       setSmoothScrollY((prev) => {
         const t = targetScrollRef.current;
-        const n = prev + (t - prev) * 0.12;
+        const n = prev + (t - prev) * 0.08;
         return Math.abs(n - t) < 0.25 ? t : n;
       });
       requestAnimationFrame(tick);
@@ -55,9 +56,14 @@ const JourneyScene: React.FC<{ scrollY: number; onComplete: () => void }> = ({
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [handoff]);
 
-  const worldZ = smoothScrollY;
+  const introT = Math.max(0, Math.min(1, smoothScrollY / 80));
+  const easedIntroT = introT * introT * (3 - 2 * introT);
+  const frozenWorldZRef = useRef(0);
+  if (!handoff) frozenWorldZRef.current = smoothScrollY;
+  const worldZ = handoff ? frozenWorldZRef.current : smoothScrollY;
+
   const isIntro = worldZ < 120;
 
   // ---------------- motion ----------------
@@ -120,7 +126,7 @@ const JourneyScene: React.FC<{ scrollY: number; onComplete: () => void }> = ({
   const naodZ = POSITIONS.SIGN_2 - 1200;
 
   const intro = computePanelState(introZ, "right", {
-    turnApproachGate: 0.75,
+    turnApproachGate: 0.85,
     turnEasePower: 1,
     maxYaw: isMobile ? 45 : 60,
     maxX: isMobile ? 220 : 450,
@@ -135,26 +141,40 @@ const JourneyScene: React.FC<{ scrollY: number; onComplete: () => void }> = ({
     turnEasePower: 1,
   });
 
-  const revealStart = 100;
-  const revealSpan = 3200;
+  // --- REVEAL LOGIC ---
+  const revealStart = -350;
+  const revealSpan = 2500;
   const post = naodZ + worldZ;
   const revealOpacity = smoothstep(clamp01((post - revealStart) / revealSpan));
 
-  const overlayOpacity = smoothstep(clamp01((revealOpacity - 0.75) / 0.25));
-  const overlayActive = overlayOpacity > 0.01;
-  const overlayInteractive = overlayOpacity > 0.85;
+  // 1. Compute raw opacity
+  const overlayOpacityRaw = smoothstep(clamp01((revealOpacity - 0.88) / 0.12));
+
+  // 2. Lock opacity to 1 if handoff has started
+  const overlayOpacityLocked = handoff ? 1 : overlayOpacityRaw;
+  const overlayActive = overlayOpacityLocked > 0.01;
+  const overlayInteractiveLocked = handoff ? true : overlayOpacityLocked > 0.95;
 
   const cloudOpacity = smoothstep(clamp01(revealOpacity / 0.35));
-  const textOpacity = smoothstep(clamp01((revealOpacity - 0.1) / 0.2));
+  const textOpacity = smoothstep(clamp01((revealOpacity - 0.1) / 0.25));
 
+  // --- COMPLETION HANDLER ---
   const completedRef = useRef(false);
   useEffect(() => {
     if (completedRef.current) return;
-    if (overlayOpacity >= 0.85) {
+    if (handoff) return;
+
+    // FIX 1: Lower threshold to 0.94 guarantees this fires before scroll ends
+    if (overlayOpacityRaw >= 0.94) {
       completedRef.current = true;
-      onComplete();
+      setHandoff(true); // LOCKS SCENE
+
+      // Wait 50ms for lock to settle (showing white screen), then swap
+      setTimeout(() => {
+        onComplete();
+      }, 50);
     }
-  }, [overlayOpacity, onComplete]);
+  }, [overlayOpacityRaw, handoff, onComplete]);
 
   return (
     <div className="relative w-full h-full bg-[#1c1917] overflow-hidden">
@@ -163,14 +183,27 @@ const JourneyScene: React.FC<{ scrollY: number; onComplete: () => void }> = ({
         @keyframes dkCloudDrift2 { 0% { transform: translateX(8%) } 100% { transform: translateX(-8%) } }
       `}</style>
 
-      {/* BACKGROUND */}
-      <div className="absolute inset-0">
+      {/* Background Image Layer */}
+      <div className="absolute inset-0 z-0">
         <img
           src="https://images.unsplash.com/photo-1476820865390-c52aeebb9891?q=80&w=2500&auto=format&fit=crop"
-          className="w-full h-full object-cover opacity-85"
-          alt="Foggy Road"
+          alt="Foggy Forest Road"
+          className="w-full h-full object-cover"
+          style={{
+            willChange: "transform",
+            transform: `scale(${Math.min(
+              1.3,
+              1.08 + smoothScrollY * 0.00004 * easedIntroT
+            )}) translateZ(0)`,
+          }}
         />
-        <div className="absolute inset-0 bg-stone-900/45" />
+
+        <div
+          className={`absolute inset-0 bg-stone-900/20 ${
+            isMobile ? "" : "mix-blend-overlay"
+          }`}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-stone-900/80" />
       </div>
 
       {/* WORLD */}
@@ -216,21 +249,25 @@ const JourneyScene: React.FC<{ scrollY: number; onComplete: () => void }> = ({
           />
         </div>
       </div>
-
       {/* SCROLL HINT */}
       {isIntro && (
-        <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-40 text-center pointer-events-none">
-          <p className="text-white/85 text-[10px] tracking-[0.35em] uppercase font-bold mb-2">
+        <div
+          className="absolute left-1/2 -translate-x-1/2 z-40 text-center pointer-events-none"
+          style={{
+            top: "clamp(68%, 60% + 180px, 78%)",
+          }}
+        >
+          <p className="text-white/90 text-[12px] sm:text-[13px] tracking-[0.32em] uppercase font-bold mb-2">
             Scroll to Continue the Journey with Us
           </p>
           <ArrowDown
-            className="mx-auto animate-bounce text-white/85"
-            size={18}
+            className="mx-auto animate-bounce text-white/90"
+            size={20}
           />
         </div>
       )}
 
-      {/* REVEAL VISUALS */}
+      {/* REVEAL VISUALS (TEXT) */}
       <div
         className="absolute inset-0 z-50"
         style={{ opacity: revealOpacity, pointerEvents: "none" }}
@@ -278,17 +315,18 @@ const JourneyScene: React.FC<{ scrollY: number; onComplete: () => void }> = ({
       </div>
 
       {/* OVERLAY */}
+      {/* FIX 2: bg-white added here. This guarantees the overlay is opaque regardless of V1RevealOverlay internals */}
       <div
-        className="absolute inset-0 z-[60]"
+        className="absolute inset-0 z-[60] bg-white"
         style={{
-          opacity: overlayOpacity,
-          pointerEvents: overlayInteractive ? "auto" : "none",
+          opacity: overlayOpacityLocked,
+          pointerEvents: overlayInteractiveLocked ? "auto" : "none",
         }}
       >
         <V1RevealOverlay
-          opacity={overlayOpacity}
+          opacity={overlayOpacityLocked}
           isActive={overlayActive}
-          pointerEvents={overlayInteractive ? "auto" : "none"}
+          pointerEvents={overlayInteractiveLocked ? "auto" : "none"}
           setView={() => {}}
         />
       </div>

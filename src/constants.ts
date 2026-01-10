@@ -23,7 +23,7 @@ export const NEPHRO_AI_API_URL =
   "https://nephro-chat-server.onrender.com/api/nephro-chat";
 
 // Z-Axis positions for our journey elements
-export const SCROLL_HEIGHT = 10000; // Total scrollable height in px
+export const SCROLL_HEIGHT = 11000; // Total scrollable height in px
 export const DEPTH_SCALE = 1; // Multiplier for scroll-to-z mapping
 
 export const POSITIONS = {
@@ -70,8 +70,16 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "MD",
     role: "MD",
     specialties: ["General Nephrology", "Hypertension"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=400",
+    imageUrl: "/images/ashok-ammula.jpeg",
+    bio: "Dr. Ammula joined Nephrology Associates of Dayton in July 2008. He is a founding partner of Dayton Kidney. His clinical interests include Home Dialysis, Glomerulonephritis, Hypertension, and Autosomal Polycystic Kidney Disease.",
+    // Added comma after bio, and brackets around the strings to make it a valid array
+    education: [
+      "Medical School: Osmania Medical College, Hyderabad, India",
+      "Residency: St. Luke’s & Roosevelt Medical Center, New York, NY",
+      "Fellowship: Boston University Medical Center, Boston, MA",
+    ],
+    // Added brackets and missing commas between the interests strings
+    interests: ["Reading Fiction", "Hiking", "Gardening", "Cooking"],
   },
   {
     id: "md-eduafo",
