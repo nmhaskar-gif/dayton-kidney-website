@@ -69,7 +69,7 @@ export const PROVIDERS_DATA: Provider[] = [
     name: "Dr. Ashok Ammula",
     title: "MD",
     role: "MD",
-    specialties: ["General Nephrology", "Hypertension"],
+    specialties: "General Nephrology",
     imageUrl: "/images/ashok-ammula.jpeg",
     bio: "Dr. Ammula joined Nephrology Associates of Dayton in July 2008. He is a founding partner of Dayton Kidney. His clinical interests include Home Dialysis, Glomerulonephritis, Hypertension, and Autosomal Polycystic Kidney Disease.",
     // Added comma after bio, and brackets around the strings to make it a valid array
@@ -130,7 +130,7 @@ export const PROVIDERS_DATA: Provider[] = [
     id: "md-maroz",
     name: "Dr. Natallia Maroz",
     title: "MD",
-    suffixes: "FASN","FACP"
+    suffixes: ["FASN", "FACP"],
     role: "MD",
     specialties: ["General Nephrology", "Plasmapheresis"],
     imageUrl:
