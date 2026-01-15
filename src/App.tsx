@@ -75,7 +75,9 @@ const App: React.FC = () => {
           setHasStartedScrolling(started);
         }
 
-        const endThreshold = SCROLL_HEIGHT - window.innerHeight - 50;
+        const vh = window.visualViewport?.height ?? window.innerHeight;
+        const endThreshold = SCROLL_HEIGHT - vh - 50;
+
         if (currentY >= endThreshold) {
           enterReveal();
         }
@@ -132,6 +134,8 @@ const App: React.FC = () => {
           <div
             className="fixed inset-0 z-10"
             style={{
+              height: "100%",
+              minHeight: "-webkit-fill-available",
               opacity: phase === "FADING" ? 0 : 1,
               transition: `opacity ${FADE_MS}ms ease`,
               willChange: "opacity",
@@ -151,10 +155,11 @@ const App: React.FC = () => {
         <div
           className="fixed inset-0 z-40"
           style={{
-            opacity: phase === "FADING" ? 1 : 1, // visible in both FADING and REVEAL
+            height: "100%",
+            minHeight: "-webkit-fill-available",
+            opacity: 1,
             transition: `opacity ${FADE_MS}ms ease`,
             willChange: "opacity",
-            // Critical: stop accidental clicks during fade (your “Provider bio” issue)
             pointerEvents: phase === "REVEAL" ? "auto" : "none",
           }}
         >

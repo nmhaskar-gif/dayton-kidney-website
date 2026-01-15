@@ -23,7 +23,7 @@ export const NEPHRO_AI_API_URL =
   "https://nephro-chat-server.onrender.com/api/nephro-chat";
 
 // Z-Axis positions for our journey elements
-export const SCROLL_HEIGHT = 11000; // Total scrollable height in px
+export const SCROLL_HEIGHT = 5000; // Total scrollable height in px
 export const DEPTH_SCALE = 1; // Multiplier for scroll-to-z mapping
 
 export const POSITIONS = {
@@ -171,6 +171,13 @@ export const PROVIDERS_DATA: Provider[] = [
     specialties: ["General Nephrology"],
     imageUrl:
       "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?auto=format&fit=crop&q=80&w=400",
+    bio: "Dr. Oo joined Nephrology Associates of Dayton in 2020. She is a founding partner of Dayton Kidney.Her clinical interests include Hypertension, Electrolyte Disorders, Cystic Kidney Disease, and Glomerulonephritis."
+    education: [
+      "Medical School: University of Medicine (1), Yangon, Myanmar",
+      "Residency:  Easton Hospital, Easton, PA",
+      "Fellowship: University of Iowa Hospital and Clinics, IA",
+    ],
+    interests: ["Hiking", "Cooking", "Traveling", "Spending Time With Family"],
   },
   {
     id: "md-oxman",
@@ -213,9 +220,9 @@ export const PROVIDERS_DATA: Provider[] = [
     imageUrl: "/images/katrina-rohlfs1.png",
     bio: "Dr. Katrina Rohlfs joined the practice in September 2024. Dr. Rohlfs focuses on the clinical care of patients with Chronic Kidney Disease, Glomerulonephritis, and Resistant Hypertension. ",
     education: [
-      "Medical School: Osmania Medical College",
-      "Residency: Good Samaritan Hospital",
-      "Fellowship: University of Cincinnati",
+      "Medical School: American University of the Caribbean",
+      "Residency: Campbell School of Medicine, Lillington, NC",
+      "Fellowship: Methodist Dallas Medical Center",
     ],
     interests: ["Hiking", "Photography", "Traveling"],
   },
@@ -225,8 +232,14 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "DO",
     role: "MD",
     specialties: ["General Nephrology"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1618498082410-b4aa22193b38?auto=format&fit=crop&q=80&w=400",
+    imageUrl: "/images/nicholas-salupo.jpg",
+    bio: "Dr. Nicholas Salupo joined the practice in August 2025. His clinical interests include Glomerulonephritis, Renal Nutrition, and Bioethics.",
+    education: [
+      "Medical School: Marian University College of Osteopathic Medicine",
+      "Residency:  Kettering Grandview Medical Center",
+      "Fellowship: Cleveland Clinic",
+    ],
+    interests: ["Hiking", "Gardening", "Cooking"],
   },
   {
     id: "md-schnell",

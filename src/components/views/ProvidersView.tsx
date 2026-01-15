@@ -90,7 +90,7 @@ const getProviderOverrides = (provider: Provider) => {
       cardName,
       cardTitle,
       credentials,
-      bio: "Dr Mhaskar joined Renal Physicians in 2007 and is a founding partner of Dayton Kidney. He served as the President of Renal Physicians from 2019-2025 and Chairman of Dayton Kidney from 2026-2027. His interests include General Nephrology, Hypertension, and Glomerular Diseases.",
+      bio: "Dr Mhaskar joined Renal Physicians in 2007 and is a founding partner of Dayton Kidney. He served as the President of Renal Physicians from 2019-2025 and Chairman of Dayton Kidney from 2026-2027. His interests include General Nephrology, Hypertension, and Chronic Dialysis",
       education: [
         "High School: Fountain Valley High School, California - GO BARONS!",
         "Undergraduate: University of California, Berkeley",

@@ -81,4 +81,10 @@
     color: #5eead4 !important; /* Teal color for visibility */
     border: 1px solid #5eead4 !important;
   }
+  html,
+  body,
+  #root {
+    height: 100%;
+    min-height: -webkit-fill-available;
+  }
 }
