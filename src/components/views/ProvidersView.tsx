@@ -24,8 +24,9 @@ const getProviderOverrides = (provider: Provider) => {
   let credentials = provider.title;
 
   // 2. Add suffixes if they exist (e.g., FASN, FACP)
-  if (provider.suffixes) {
-    credentials = `${credentials}, ${provider.suffixes}`;
+  // 2. Add suffixes if they exist (e.g., FASN, FACP)
+  if (provider.suffixes?.length) {
+    credentials = `${credentials}, ${provider.suffixes.join(", ")}`;
   }
 
   // 3. LOGIC FOR MDs
