@@ -104,7 +104,7 @@ export const PROVIDERS_DATA: Provider[] = [
     name: "Dr. Jennifer Jackson",
     title: "MD",
     role: "MD",
-    specialties: ["General Nephrology"],
+    specialties: "General Nephrology",
     imageUrl:
       "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=400",
   },
