@@ -130,6 +130,7 @@ export const PROVIDERS_DATA: Provider[] = [
     id: "md-maroz",
     name: "Dr. Natallia Maroz",
     title: "MD",
+    suffixes: "FASN","FACP"
     role: "MD",
     specialties: ["General Nephrology", "Plasmapheresis"],
     imageUrl:
@@ -171,7 +172,7 @@ export const PROVIDERS_DATA: Provider[] = [
     specialties: ["General Nephrology"],
     imageUrl:
       "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?auto=format&fit=crop&q=80&w=400",
-    bio: "Dr. Oo joined Nephrology Associates of Dayton in 2020. She is a founding partner of Dayton Kidney.Her clinical interests include Hypertension, Electrolyte Disorders, Cystic Kidney Disease, and Glomerulonephritis."
+    bio: "Dr. Oo joined Nephrology Associates of Dayton in 2020. She is a founding partner of Dayton Kidney.Her clinical interests include Hypertension, Electrolyte Disorders, Cystic Kidney Disease, and Glomerulonephritis.",
     education: [
       "Medical School: University of Medicine (1), Yangon, Myanmar",
       "Residency:  Easton Hospital, Easton, PA",
