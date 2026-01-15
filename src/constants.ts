@@ -52,7 +52,7 @@ export const SATELLITES: SatelliteItem[] = [
 
 export const ASSETS = {
   // High-Res Skyline
-  skyline: "/images/dayton-skyline.jpg",
+  skyline: "/images/dayton-skyline.webp",
   // New logo URL from request
   logo: "/images/DK-Logo.png",
   // Updated Renal Physicians logo

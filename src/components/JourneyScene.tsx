@@ -298,7 +298,7 @@ const JourneyScene: React.FC<{ scrollY: number; onComplete: () => void }> = ({
       {/* Background Image Layer */}
       <div className="absolute inset-0 z-0" style={{ opacity: sceneOpacity }}>
         <img
-          src="/images/merged-roads2.png"
+          src="/images/merged-roads2.webp"
           alt="Two roads converging"
           className="w-full h-full object-cover"
           style={{
