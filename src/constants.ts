@@ -69,16 +69,14 @@ export const PROVIDERS_DATA: Provider[] = [
     name: "Dr. Ashok Ammula",
     title: "MD",
     role: "MD",
-    specialties: "General Nephrology",
+    specialties: ["General Nephrology"],
     imageUrl: "/images/ashok-ammula.jpeg",
     bio: "Dr. Ammula joined Nephrology Associates of Dayton in July 2008. He is a founding partner of Dayton Kidney. His clinical interests include Home Dialysis, Glomerulonephritis, Hypertension, and Autosomal Polycystic Kidney Disease.",
-    // Added comma after bio, and brackets around the strings to make it a valid array
     education: [
       "Medical School: Osmania Medical College, Hyderabad, India",
       "Residency: St. Luke’s & Roosevelt Medical Center, New York, NY",
       "Fellowship: Boston University Medical Center, Boston, MA",
     ],
-    // Added brackets and missing commas between the interests strings
     interests: ["Reading Fiction", "Hiking", "Gardening", "Cooking"],
   },
   {
@@ -104,7 +102,7 @@ export const PROVIDERS_DATA: Provider[] = [
     name: "Dr. Jennifer Jackson",
     title: "MD",
     role: "MD",
-    specialties: "General Nephrology",
+    specialties: ["General Nephrology"],
     imageUrl:
       "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=400",
   },
@@ -140,7 +138,7 @@ export const PROVIDERS_DATA: Provider[] = [
     id: "md-mhaskar",
     name: "Dr. Nilesh Mhaskar",
     title: "MD",
-    suffixes: "FASN",
+    suffixes: ["FASN"],
     role: "MD",
     specialties: ["General Nephrology", "Plasmapheresis"],
     imageUrl: "/images/nilesh-mhaskar2.png",
@@ -172,10 +170,10 @@ export const PROVIDERS_DATA: Provider[] = [
     specialties: ["General Nephrology"],
     imageUrl:
       "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?auto=format&fit=crop&q=80&w=400",
-    bio: "Dr. Oo joined Nephrology Associates of Dayton in 2020. She is a founding partner of Dayton Kidney.Her clinical interests include Hypertension, Electrolyte Disorders, Cystic Kidney Disease, and Glomerulonephritis.",
+    bio: "Dr. Oo joined Nephrology Associates of Dayton in 2020. She is a founding partner of Dayton Kidney. Her clinical interests include Hypertension, Electrolyte Disorders, Cystic Kidney Disease, and Glomerulonephritis.",
     education: [
       "Medical School: University of Medicine (1), Yangon, Myanmar",
-      "Residency:  Easton Hospital, Easton, PA",
+      "Residency: Easton Hospital, Easton, PA",
       "Fellowship: University of Iowa Hospital and Clinics, IA",
     ],
     interests: ["Hiking", "Cooking", "Traveling", "Spending Time With Family"],
@@ -198,13 +196,11 @@ export const PROVIDERS_DATA: Provider[] = [
     imageUrl:
       "https://images.unsplash.com/photo-1537368910025-bc005fbed16a?auto=format&fit=crop&q=80&w=400",
     bio: "Dr. Patel joined Nephrology Associates of Dayton in July 2014 but has lived in Dayton since 2007 when he started his Internal Medicine Residency. He is a founding partner of Dayton Kidney. His clinical interests include Glomerular Diseases, Autosomal Dominant Polycystic Kidney Disease, and Acute Kidney Injury.",
-    // Added comma after bio, and brackets around the strings to make it a valid array
     education: [
       "Medical School: BJ Medical College, Ahmedabad, India",
       "Residency: Wright State University, Dayton, OH",
       "Fellowship: The Ohio State University, Columbus OH where he served as Chief fellow and received the Fellow of the Year award during his second year",
     ],
-    // Added brackets and missing commas between the interests strings
     interests: [
       "Traveling",
       "Hiking",
@@ -219,7 +215,7 @@ export const PROVIDERS_DATA: Provider[] = [
     role: "MD",
     specialties: ["General Nephrology"],
     imageUrl: "/images/katrina-rohlfs1.png",
-    bio: "Dr. Katrina Rohlfs joined the practice in September 2024. Dr. Rohlfs focuses on the clinical care of patients with Chronic Kidney Disease, Glomerulonephritis, and Resistant Hypertension. ",
+    bio: "Dr. Katrina Rohlfs joined the practice in September 2024. Dr. Rohlfs focuses on the clinical care of patients with Chronic Kidney Disease, Glomerulonephritis, and Resistant Hypertension.",
     education: [
       "Medical School: American University of the Caribbean",
       "Residency: Campbell School of Medicine, Lillington, NC",
@@ -237,7 +233,7 @@ export const PROVIDERS_DATA: Provider[] = [
     bio: "Dr. Nicholas Salupo joined the practice in August 2025. His clinical interests include Glomerulonephritis, Renal Nutrition, and Bioethics.",
     education: [
       "Medical School: Marian University College of Osteopathic Medicine",
-      "Residency:  Kettering Grandview Medical Center",
+      "Residency: Kettering Grandview Medical Center",
       "Fellowship: Cleveland Clinic",
     ],
     interests: ["Hiking", "Gardening", "Cooking"],
