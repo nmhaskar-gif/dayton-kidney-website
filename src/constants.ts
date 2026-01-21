@@ -89,7 +89,7 @@ export const PROVIDERS_DATA: Provider[] = [
     bio: "Dr. Eduafo joined Renal Physicians in 1997. He is a founding partner of Dayton Kidney. He served as Medical Director of the Miami Valley Transplant Program until its closure in 2013. His clinical interests include General Nephrology and Kidney Transplantation.",
     education: [
       "Medical School: University of Ghana Medical School, Accra, Ghana",
-      "Residency: "Internal Medicine, State University of New York Science Center, Brooklyn, New York",
+      "Residency: Internal Medicine, State University of New York Science Center, Brooklyn, New York",
       "Fellowship: Nephrology and Kidney Transplantation, New York Hospital/Cornell University, New York",
     ],
     interests: ["Reading Fiction", "Hiking", "Gardening", "Cooking"],
@@ -211,10 +211,12 @@ export const PROVIDERS_DATA: Provider[] = [
     specialties: ["General Nephrology"],
     imageUrl: "/images/mark-oxman.jpg",
     bio: "Dr. Oxman is a founding member and President of Nephrology Associates since 1990. He is a founding member of Dayton Kidney. He has been recognized for his dedication to education, receiving the Outstanding Faculty Award from the Ohio University College of Osteopathic Medicine.",
-    education: ["Undergraduate: Dickerson College, Pennsylvania",
-    Medical School: University of Health Sciences, Kansas City, MO", 
-    "Residency: Grandview Hospital, Dayton OH", 
-    "Fellowship: Hahnemann University, Philadelphia PA"],
+    education: [
+      "Undergraduate: Dickerson College, Pennsylvania",
+      "Medical School: University of Health Sciences, Kansas City, MO",
+      "Residency: Grandview Hospital, Dayton OH",
+      "Fellowship: Hahnemann University, Philadelphia PA",
+    ],
     interests: [
       "Traveling",
       "Hiking",
@@ -308,8 +310,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "CNP",
     role: "APP",
     specialties: ["Advanced Practice"],
-    imageUrl:
-      "",
+    imageUrl: "",
   },
   {
     id: "app-bindu",
@@ -317,8 +318,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "CNP",
     role: "APP",
     specialties: ["Advanced Practice"],
-    imageUrl:
-      "",
+    imageUrl: "",
   },
   {
     id: "app-langley",
@@ -326,15 +326,17 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "CNP",
     role: "APP",
     specialties: ["Advanced Practice"],
-    imageUrl:
-      "/images/stephen-langley.jpg",
-      bio: "Stephen Langley joined the practice in July 2025. Stephen's clinical interests include Management of End Stage Kidney Disease and Inpatient Nephrology Care.",
+    imageUrl: "/images/stephen-langley.jpg",
+    bio: "Stephen Langley joined the practice in July 2025. Stephen's clinical interests include Management of End Stage Kidney Disease and Inpatient Nephrology Care.",
     education: [
       "Undergraduate: Bachelor of Science in Nursing, Ohio University",
       "Masters: Adult-Gerontological Acute Care Nurse Practitioner, University of Cincinnati",
     ],
-    interests: ["Spending time with his wife and two sons", "Watching Sports", "Participating in Outdoor Activities"],
-
+    interests: [
+      "Spending time with his wife and two sons",
+      "Watching Sports",
+      "Participating in Outdoor Activities",
+    ],
   },
   {
     id: "app-pavlica",
@@ -342,8 +344,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "PA",
     role: "APP",
     specialties: ["Advanced Practice"],
-    imageUrl:
-      "/images/elizabeth-pavlica.jpg",
+    imageUrl: "/images/elizabeth-pavlica.jpg",
   },
   {
     id: "app-simpson",
@@ -351,15 +352,13 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "PA",
     role: "APP",
     specialties: ["Advanced Practice"],
-    imageUrl:
-      "/images/katie-simpson.jpg",
-      bio: "Kathrine Simpson joined the practice in July 2020. She focuses on end stage kidney disease and likes working with patients so that they feel knowledgeable about their condition and motivated to stay consistent with their treatments, medications, and lifestyle.",
+    imageUrl: "/images/katie-simpson.jpg",
+    bio: "Kathrine Simpson joined the practice in July 2020. She focuses on end stage kidney disease and likes working with patients so that they feel knowledgeable about their condition and motivated to stay consistent with their treatments, medications, and lifestyle.",
     education: [
       "Undergraduate: University of Dayton, Bachelor of Science in Biochemistry. ",
       "Masters: Kettering College, Master of Physician Assistant Studies",
     ],
     interests: ["Running", "Painting", "Spending time with friends and family"],
-
   },
   {
     id: "app-treadwell",
@@ -367,8 +366,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "PA",
     role: "APP",
     specialties: ["Advanced Practice"],
-    imageUrl:
-      "",
+    imageUrl: "",
   },
   {
     id: "app-vincent",
@@ -376,8 +374,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "CNP",
     role: "APP",
     specialties: ["Advanced Practice"],
-    imageUrl:
-      "",
+    imageUrl: "",
   },
   {
     id: "app-wenzke",
@@ -385,8 +382,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "CNP",
     role: "APP",
     specialties: ["Advanced Practice"],
-    imageUrl:
-      "/images/gillian-wekzke.jpg",
+    imageUrl: "/images/gillian-wekzke.jpg",
   },
 
   // --- MANAGEMENT ---
