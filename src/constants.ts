@@ -382,7 +382,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "CNP",
     role: "APP",
     specialties: ["Advanced Practice"],
-    imageUrl: "/images/gillian-wekzke.jpg",
+    imageUrl: "/images/gillian-wenzke.jpg",
   },
 
   // --- MANAGEMENT ---
