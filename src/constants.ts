@@ -124,7 +124,7 @@ export const PROVIDERS_DATA: Provider[] = [
     role: "MD",
     specialties: ["General Nephrology", "Hypertension"],
     imageUrl: "/images/jeffrey-kaufhold.png",
-    bio: "Dr. Kaufhold joined Nephrology Associates in 1997. He is a founding member of Dayton Kidney. He continues to actively teach, becoming a Mater Faculty at Ohio University in 2010. His clinical interests include ethics (which he also teaches at Wright State, Ohio University, and Miami University of Ohio)",
+    bio: "Dr. Kaufhold joined Nephrology Associates in 1997. He is a founding member of Dayton Kidney. He continues to actively teach, becoming a Master Faculty at Ohio University in 2010. His clinical interests include ethics which he also teaches at Wright State, Ohio University, and Miami University of Ohio",
     education: [
       "Undergraduate: University of Dayton",
       "Medical School: University of Cincinnati Medical School",
@@ -210,7 +210,7 @@ export const PROVIDERS_DATA: Provider[] = [
     role: "MD",
     specialties: ["General Nephrology"],
     imageUrl: "/images/mark-oxman.jpg",
-    bio: "Dr. Oxman is a founding member and President of Nephrology Associates since 1990. He is a founding member of Dayton Kidney. He has been recognized for his dedication to education, receiving the Outstanding Faculty Award from the Ohio University College of Osteopathic Medicine.",
+    bio: "Dr. Oxman was a founding member and President of Nephrology Associates since 1990. He is a founding member of Dayton Kidney. He has been recognized for his dedication to education, receiving the Outstanding Faculty Award from the Ohio University College of Osteopathic Medicine.",
     education: [
       "Undergraduate: Dickerson College, Pennsylvania",
       "Medical School: University of Health Sciences, Kansas City, MO",

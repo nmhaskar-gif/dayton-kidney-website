@@ -188,7 +188,7 @@ const AboutView: React.FC = () => {
           title="A New Standard"
           align="right"
           icon={Users}
-          imgSrc="/images/about-us-Mark-and-Larry.png"
+          imgSrc="/images/about-us-Mark-and-Larry.jpg"
           imgAlt="Nephrology Associates Team"
         >
           <p className="text-slate-700 leading-relaxed">
