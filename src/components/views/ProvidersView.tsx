@@ -85,29 +85,6 @@ const getProviderOverrides = (provider: Provider) => {
   }
   const cardName = cleanName;
 
-  // This block handles the hardcoded bio for Mhaskar if you haven't moved it to constants yet
-  if (name.includes("Mhaskar") && !provider.bio) {
-    return {
-      cardName,
-      cardTitle,
-      credentials,
-      bio: "Dr Mhaskar joined Renal Physicians in 2007 and is a founding partner of Dayton Kidney. He served as the President of Renal Physicians from 2019-2025 and Chairman of Dayton Kidney from 2026-2027. His interests include General Nephrology, Hypertension, and Chronic Dialysis",
-      education: [
-        "High School: Fountain Valley High School, California - GO BARONS!",
-        "Undergraduate: University of California, Berkeley",
-        "Medical School: University of Southern California",
-        "Residency: New York Presbyterian Hospital- Cornell",
-        "Fellowship: New York Presbyterian Hospital- Cornell",
-      ],
-      interests: [
-        "Doing the New York Times Crossword Puzzle",
-        "Cooking and Baking",
-        "Taking walks with my dogs",
-        "Traveling with my family",
-      ],
-    };
-  }
-
   return {
     cardName,
     cardTitle,
@@ -414,8 +391,6 @@ const ProviderCard: React.FC<{ provider: Provider }> = ({ provider }) => {
             style={{
               objectPosition: isMgmt
                 ? "center center"
-                : provider.name.includes("Mhaskar")
-                ? "center 50%"
                 : provider.imagePosition || "center top",
               transform: "translateZ(0)",
               WebkitTransform: "translateZ(0)",

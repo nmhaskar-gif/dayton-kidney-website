@@ -100,7 +100,9 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "MD",
     role: "MD",
     specialties: ["Interventional Nephrology", "Vascular Access"],
-    imageUrl: "",
+    imageUrl: "/images/chukwuma-eze.png",
+    imagePosition: "center 40%",
+    bio: "Dr. Eze joined Nephrology Associates in 2008. He is a founding member of Dayton Kidney. His clinical interests include interventional nephrology including the placement of peritoneal dialysis catheters.",
   },
   {
     id: "md-jackson",
@@ -139,7 +141,15 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "DO",
     role: "MD",
     specialties: ["General Nephrology"],
-    imageUrl: "",
+    imageUrl: "/images/jake-lane.jpg",
+    bio: "Dr. Lane joined the practice in August 2025. Dr. Lane will be joining our Vascular Access team as well as Clinical Nephrology. His clinical interests include Chronic Kidney Disease, Home Dialysis, and Dialysis Vascular Access.",
+    education: [
+      "Undergraduate: Bachelor of Science, Wright State University ",
+      "Medical School: West Virginia School of Osteopathic Medicine",
+      "Residency: Grandview Medical Center (Kettering Health Dayton)",
+      "Fellowship: Medical University of South Carolina",
+    ],
+    interests: ["Traveling", "Cooking", "Spending time with family"],
   },
   {
     id: "md-maroz",
@@ -149,6 +159,7 @@ export const PROVIDERS_DATA: Provider[] = [
     role: "MD",
     specialties: ["General Nephrology", "Plasmapheresis"],
     imageUrl: "/images/natallia-maroz.png",
+    imagePosition: "center 40%",
     bio: "Dr. Maroz joined Renal Physicians in 2012. She is a founding partner of Dayton Kidney. She is a Specialist in Clinical Hypertension through the American Society of Hypertension. Her clinical interests include Resistant Hypertension, Nephrolithiasis,Peritoneal Dialysis, and Plasmapheresis.",
     education: [
       "Medical School: Belarusian State Medical University",
@@ -165,7 +176,21 @@ export const PROVIDERS_DATA: Provider[] = [
     role: "MD",
     specialties: ["General Nephrology", "Plasmapheresis"],
     imageUrl: "/images/nilesh-mhaskar2.png",
-    imagePosition: "center 60%",
+    imagePosition: "center 95%",
+    bio: "Dr Mhaskar joined Renal Physicians in 2007 and is a founding partner of Dayton Kidney. He served as the President of Renal Physicians from 2019-2025 and Chairman of Dayton Kidney from 2026-2027. His interests include General Nephrology, Hypertension, and Chronic Dialysis",
+    education: [
+      "High School: Fountain Valley High School, California - GO BARONS!",
+      "Undergraduate: University of California, Berkeley",
+      "Medical School: University of Southern California",
+      "Residency: New York Presbyterian Hospital- Cornell",
+      "Fellowship: New York Presbyterian Hospital- Cornell",
+    ],
+    interests: [
+      "Doing the New York Times Crossword Puzzle",
+      "Cooking and Baking",
+      "Taking walks with my dogs",
+      "Traveling with my family",
+    ],
   },
   {
     id: "md-mirza",
@@ -195,7 +220,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "MD",
     role: "MD",
     specialties: ["General Nephrology"],
-    imageUrl: "",
+    imageUrl: "/images/swe-oo.jpeg",
     education: [
       "Medical School: University of Medicine (1), Yangon, Myanmar",
       "Residency: Easton Hospital, Easton, PA",
@@ -230,7 +255,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "MD",
     role: "MD",
     specialties: ["General Nephrology"],
-    imageUrl: "",
+    imageUrl: "/images/shashi-patel.jpeg",
     bio: "Dr. Patel joined Nephrology Associates of Dayton in July 2014 but has lived in Dayton since 2007 when he started his Internal Medicine Residency. He is a founding partner of Dayton Kidney. His clinical interests include Glomerular Diseases, Autosomal Dominant Polycystic Kidney Disease, and Acute Kidney Injury.",
     education: [
       "Medical School: BJ Medical College, Ahmedabad, India",
@@ -294,7 +319,8 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "MD",
     role: "MD",
     specialties: ["General Nephrology"],
-    imageUrl: "/images/sampath-thiruveedi.jpg",
+    imageUrl: "/images/sampath-thiruveedi2.JPG",
+    imagePosition: "center 60%",
     bio: "Dr. Sampath Thiruveedi joined Renal Physicians August 2014. He is a founding member of Dayton Kidney.",
     education: [
       "Medical School: Kempegowda Institute of Medical Sciences, Bangalore, India",
@@ -310,11 +336,15 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "CNP",
     role: "APP",
     specialties: ["Advanced Practice"],
-    imageUrl: "",
+    imageUrl: "/images/esther-bassaw2.jpeg",
+    bio: "Esther Bassaw joined the practice in 2021. Her interests include the care of patients with End Stage Kidney Disease.",
+    education: [
+      "Masters: Family Practice Nurse Practitioner, Otterbein University",
+    ],
   },
   {
     id: "app-bindu",
-    name: "Sajay Bindu",
+    name: "Bindu Sajay",
     title: "CNP",
     role: "APP",
     specialties: ["Advanced Practice"],
@@ -344,7 +374,17 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "PA",
     role: "APP",
     specialties: ["Advanced Practice"],
-    imageUrl: "/images/elizabeth-pavlica.jpg",
+    imageUrl: "/images/elizabeth-pavlica2.jpg",
+    bio: "Elizabeth Pavlica joined the practice in January 2022. She focuses on End Stage Kidney Disease and its encompassing lifestyle management.",
+    education: [
+      "Undergraduate: Bachelor of Science, Univery of Toledo",
+      "Masters: Master of Physician Assistant Studies, Kettering College",
+    ],
+    interests: [
+      "Hiking",
+      "Reading",
+      "Spending time with her husband and two dogs",
+    ],
   },
   {
     id: "app-simpson",
@@ -366,7 +406,19 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "PA",
     role: "APP",
     specialties: ["Advanced Practice"],
-    imageUrl: "",
+    imageUrl: "/images/jayla-treadwell.jpg",
+    bio: "Jayla Treadwell joined the practice in July 2025. Her clinical interests include Chronic Kidney Disease, End Stage Kidney Disease, and Hypertension.",
+    education: [
+      "Undergraduate: Bachelor in Health Sciences, The Ohio State University ",
+      "Masters: Master of Physcian Assistant Studies, University of Dayton",
+    ],
+    interests: [
+      "Working Out",
+      "Shopping",
+      "Traveling",
+      "Spending time with friends and family",
+    ],
+    imagePosition: "center 60%",
   },
   {
     id: "app-vincent",
@@ -374,7 +426,16 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "CNP",
     role: "APP",
     specialties: ["Advanced Practice"],
-    imageUrl: "",
+    imageUrl: "/images/christen-vincent.jpg",
+    bio: "Christen Vincent joined the practice in August 2020 initially as a plasmapheresis nurse. She continues this important work now as part of Southwestern Ohio Apheresis Services as well as a nephrology nurse practitioner. Her clinical interests include improving patient outcomes by educating about healthy diet and lifestyle. ",
+    education: [
+      "Masters: Masters of Science in Nursing, University of Cincinnati",
+    ],
+    interests: [
+      "Volunteering through her Church",
+      "Hiking and Biking",
+      "Spending time with her husband, three kids and two cats",
+    ],
   },
   {
     id: "app-wenzke",
