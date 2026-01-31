@@ -51,6 +51,7 @@ const FadeInItem: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
 interface TimelineNodeProps {
   date: string;
+  dateLabel?: string;
   title: string;
   children: React.ReactNode;
   align?: "left" | "right";
@@ -59,6 +60,9 @@ interface TimelineNodeProps {
   /** NEW: optional image fields (so the node can do text-left / image-right, etc.) */
   imgSrc?: string;
   imgAlt?: string;
+  // NEW: logo next to the date pill
+  dateLogoSrc?: string;
+  dateLogoAlt?: string;
 }
 
 /**
@@ -69,12 +73,15 @@ interface TimelineNodeProps {
  */
 const TimelineNode: React.FC<TimelineNodeProps> = ({
   date,
+  dateLabel,
   title,
   children,
   align = "left",
   icon: Icon,
   imgSrc,
   imgAlt,
+  dateLogoSrc,
+  dateLogoAlt,
 }) => {
   const isReversed = align === "right";
 
@@ -89,10 +96,18 @@ const TimelineNode: React.FC<TimelineNodeProps> = ({
           >
             {/* TEXT SIDE */}
             <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
-              <div className="mb-6">
+              <div className="mb-6 flex items-center gap-3">
                 <span className="inline-block px-4 py-1 bg-teal-50/80 border border-teal-100 text-teal-900 text-sm font-bold rounded-full shadow-sm">
-                  {date}
+                  {dateLabel ?? date}
                 </span>
+
+                {dateLogoSrc && (
+                  <img
+                    src={dateLogoSrc}
+                    alt={dateLogoAlt || `${title} logo`}
+                    className="h-9 md:h-10 w-auto object-contain"
+                  />
+                )}
               </div>
 
               <h3 className="text-3xl font-bold text-blue-900 mb-6">{title}</h3>
@@ -154,11 +169,14 @@ const AboutView: React.FC = () => {
         {/* --- 1972 --- */}
         <TimelineNode
           date="1972"
+          dateLabel="Established 1972"
           title="The Foundation"
           align="left"
           icon={Flag}
           imgSrc="/images/about-us-Feller.jpg"
           imgAlt="Dr. Allen Feller"
+          dateLogoSrc="/images/RPI-Logo.png"
+          dateLogoAlt="Renal Physicians"
         >
           <p className="text-slate-700 leading-relaxed">
             <strong className="text-teal-700">Dr. Allen Feller</strong> founded
@@ -185,11 +203,14 @@ const AboutView: React.FC = () => {
         {/* --- 1980 --- */}
         <TimelineNode
           date="1980"
+          dateLabel="Since 1980"
           title="A New Standard"
           align="right"
           icon={Users}
           imgSrc="/images/about-us-Mark-and-Larry.jpg"
           imgAlt="Nephrology Associates Team"
+          dateLogoSrc="/images/NAOD-Logo.jpg"
+          dateLogoAlt="Nephrology Associates of Dayton"
         >
           <p className="text-slate-700 leading-relaxed">
             <strong className="text-teal-700">Dr. Larry Klein</strong>{" "}

@@ -8,10 +8,14 @@ import { FastForward } from "lucide-react";
 type Phase = "JOURNEY" | "FADING" | "REVEAL";
 
 const FADE_MS = 350;
+const ENABLE_SCROLLSTORY = false;
 
 const App: React.FC = () => {
   const [scrollY, setScrollY] = useState(0);
-  const [phase, setPhase] = useState<Phase>("JOURNEY");
+  const [phase, setPhase] = useState<Phase>(
+    ENABLE_SCROLLSTORY ? "JOURNEY" : "REVEAL"
+  );
+
   const [hasStartedScrolling, setHasStartedScrolling] = useState(false);
 
   // RAF-gated scroll tracking (prevents render storms)
@@ -48,9 +52,14 @@ const App: React.FC = () => {
     if ("scrollRestoration" in history) history.scrollRestoration = "manual";
     window.scrollTo(0, 0);
 
+    // HARD DISABLE scrollstory
+    if (!ENABLE_SCROLLSTORY) {
+      setPhase("REVEAL");
+      return;
+    }
+
     const hasSeenStory = localStorage.getItem("dk_story_seen");
     if (hasSeenStory === "true") {
-      // If they've seen it, go straight to REVEAL (no fade needed)
       setPhase("REVEAL");
     }
   }, []);
