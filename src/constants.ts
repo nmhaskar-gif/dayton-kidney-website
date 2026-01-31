@@ -198,7 +198,14 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "MD",
     role: "MD",
     specialties: ["General Nephrology"],
-    imageUrl: "",
+    imageUrl: "/images/khurram-mirza.jpg",
+    bio: "Dr. Mirza joined the practice in 2024. Before coming to Dayton, he was an Instructor in Medicine at Washington University in St Louis where he also did a fellowship in Geriatrics. He was also an Assistant Professor or Medicine at University of Nebraska, Omaha. His clinical interests include geriatric nephrology and kidney transplantation.",
+    education: [
+      "Medical School: King Edward Medical College, Lahore, Pakistan",
+      "Residency: St Luke's Hospital, St Louis, MO",
+      "Fellowship: University of Cincinnati",
+    ],
+    interests: ["Gardening", "Watching his son play soccer"],
   },
   {
     id: "md-odunsi",
