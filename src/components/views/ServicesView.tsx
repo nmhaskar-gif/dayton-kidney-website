@@ -161,7 +161,7 @@ const ServicesView: React.FC = () => {
               {/* Azura Logo */}
               <div className="mb-6 h-16">
                 <img
-                  src="https://i.ibb.co/S1qtNJs/Screenshot-2025-12-04-at-10-43-28-PM.png"
+                  src="/images/Screenshot-2025-12-04-at-10-43-28-PM_result.webp"
                   alt="Azura Vascular Care"
                   className="h-full w-auto object-contain"
                 />
@@ -202,7 +202,7 @@ const ServicesView: React.FC = () => {
               {/* Pre-Op Area Photo - No Overlay */}
               <div className="relative h-64 w-full rounded-2xl overflow-hidden shadow-lg border-4 border-white/50 bg-white">
                 <img
-                  src="https://i.ibb.co/Tq0w6qN7/Screenshot-2025-12-04-at-10-44-34-PM.png"
+                  src="/images/Screenshot-2025-12-04-at-10-44-34-PM_result.webp"
                   alt="Vascular Access Center Pre-Op Area"
                   className="absolute inset-0 w-full h-full object-cover object-top"
                 />
@@ -215,7 +215,7 @@ const ServicesView: React.FC = () => {
         <div className="bg-white/90 backdrop-blur-lg rounded-3xl p-8 shadow-xl border border-white/50 flex flex-col md:flex-row items-center gap-8 md:gap-12 max-w-5xl mx-auto">
           <div className="w-full md:w-1/3 flex justify-center md:justify-start">
             <img
-              src="https://i.ibb.co/jZDFxdSp/SWAP1.png"
+              src="/images/SWAP1 (1)_result.webp"
               alt="Southwest Ohio Apheresis"
               className="max-h-32 w-auto object-contain mix-blend-multiply"
             />

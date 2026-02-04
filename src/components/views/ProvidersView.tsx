@@ -388,6 +388,8 @@ const ProviderCard: React.FC<{ provider: Provider }> = ({ provider }) => {
           <img
             src={provider.imageUrl}
             alt={provider.name}
+            loading="lazy"
+            decoding="async"
             style={{
               objectPosition: isMgmt
                 ? "center center"

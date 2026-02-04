@@ -52,12 +52,12 @@ export const SATELLITES: SatelliteItem[] = [
 
 export const ASSETS = {
   // High-Res Skyline
-  skyline: "/images/dayton-skyline.webp",
+  skyline: "/images/dayton-skyline_result.webp",
   // New logo URL from request
-  logo: "/images/DK-Logo.png",
+  logo: "/images/DK-Logo_result.webp",
   // Updated Renal Physicians logo
-  renalLogo: "/images/RPI-Logo.png",
-  nephrologyLogo: "/images/NAOD Logo.jpg",
+  renalLogo: "/images/RPI-Logo_result.webp",
+  nephrologyLogo: "/images/NAOD Logo_result.webp",
 };
 
 // --- NEW DATA ---
@@ -70,7 +70,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "MD",
     role: "MD",
     specialties: ["General Nephrology"],
-    imageUrl: "/images/ashok-ammula.jpeg",
+    imageUrl: "/images/ashok-ammula_result.webp",
     bio: "Dr. Ammula joined Nephrology Associates of Dayton in July 2008. He is a founding partner of Dayton Kidney. His clinical interests include Home Dialysis, Glomerulonephritis, Hypertension, and Autosomal Polycystic Kidney Disease.",
     education: [
       "Medical School: Osmania Medical College, Hyderabad, India",
@@ -85,7 +85,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "MD",
     role: "MD",
     specialties: ["Transplant Nephrology", "CKD Management"],
-    imageUrl: "/images/augustus-eduafo.jpg",
+    imageUrl: "/images/augustus-eduafo_result.webp",
     bio: "Dr. Eduafo joined Renal Physicians in 1997. He is a founding partner of Dayton Kidney. He served as Medical Director of the Miami Valley Transplant Program until its closure in 2013. His clinical interests include General Nephrology and Kidney Transplantation.",
     education: [
       "Medical School: University of Ghana Medical School, Accra, Ghana",
@@ -100,9 +100,14 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "MD",
     role: "MD",
     specialties: ["Interventional Nephrology", "Vascular Access"],
-    imageUrl: "/images/chukwuma-eze.png",
+    imageUrl: "/images/chukwuma-eze_result.webp",
     imagePosition: "center 40%",
     bio: "Dr. Eze joined Nephrology Associates in 2008. He is a founding member of Dayton Kidney. His clinical interests include interventional nephrology including the placement of peritoneal dialysis catheters.",
+    education: [
+      "Medical School: Eastern Virginia Medical School, Norfolk, Virginia",
+      "Residency: Tulane University School of Medicine, New Orleans, Louisiana",
+      "Fellowship: Tulane University School of Medicine, New Orleans, Louisiana",
+    ],
   },
   {
     id: "md-jackson",
@@ -110,7 +115,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "MD",
     role: "MD",
     specialties: ["General Nephrology"],
-    imageUrl: "/images/jennifer-jackson.jpeg",
+    imageUrl: "/images/jennifer-jackson_result.webp",
     bio: "Dr. Kaufhold joined Nephrology Associates in 2004. She is a founding member of Dayton Kidney. Her clinical interests include all aspects of nephrology especially Chronic Kidney Disease and Cardiorenal Syndrome.",
     education: [
       "Medical School: Ohio University College of Osteopathic Medicine",
@@ -125,7 +130,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "DO",
     role: "MD",
     specialties: ["General Nephrology", "Hypertension"],
-    imageUrl: "/images/jeffrey-kaufhold.png",
+    imageUrl: "/images/jeffrey-kaufhold_result.webp",
     bio: "Dr. Kaufhold joined Nephrology Associates in 1997. He is a founding member of Dayton Kidney. He continues to actively teach, becoming a Master Faculty at Ohio University in 2010. His clinical interests include ethics which he also teaches at Wright State, Ohio University, and Miami University of Ohio",
     education: [
       "Undergraduate: University of Dayton",
@@ -141,7 +146,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "DO",
     role: "MD",
     specialties: ["General Nephrology"],
-    imageUrl: "/images/jake-lane.jpg",
+    imageUrl: "/images/jake-lane_result.webp",
     bio: "Dr. Lane joined the practice in August 2025. Dr. Lane will be joining our Vascular Access team as well as Clinical Nephrology. His clinical interests include Chronic Kidney Disease, Home Dialysis, and Dialysis Vascular Access.",
     education: [
       "Undergraduate: Bachelor of Science, Wright State University ",
@@ -158,7 +163,7 @@ export const PROVIDERS_DATA: Provider[] = [
     suffixes: ["FASN", "FACP"],
     role: "MD",
     specialties: ["General Nephrology", "Plasmapheresis"],
-    imageUrl: "/images/natallia-maroz.png",
+    imageUrl: "/images/natallia-maroz_result.webp",
     imagePosition: "center 40%",
     bio: "Dr. Maroz joined Renal Physicians in 2012. She is a founding partner of Dayton Kidney. She is a Specialist in Clinical Hypertension through the American Society of Hypertension. Her clinical interests include Resistant Hypertension, Nephrolithiasis,Peritoneal Dialysis, and Plasmapheresis.",
     education: [
@@ -175,7 +180,7 @@ export const PROVIDERS_DATA: Provider[] = [
     suffixes: ["FASN"],
     role: "MD",
     specialties: ["General Nephrology", "Plasmapheresis"],
-    imageUrl: "/images/nilesh-mhaskar2.png",
+    imageUrl: "/images/nilesh-mhaskar2_result.webp",
     imagePosition: "center 95%",
     bio: "Dr Mhaskar joined Renal Physicians in 2007 and is a founding partner of Dayton Kidney. He served as the President of Renal Physicians from 2019-2025 and Chairman of Dayton Kidney from 2026-2027. His interests include General Nephrology, Hypertension, and Chronic Dialysis",
     education: [
@@ -198,7 +203,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "MD",
     role: "MD",
     specialties: ["General Nephrology"],
-    imageUrl: "/images/khurram-mirza.jpg",
+    imageUrl: "/images/khurram-mirza_result.webp",
     bio: "Dr. Mirza joined the practice in 2024. Before coming to Dayton, he was an Instructor in Medicine at Washington University in St Louis where he also did a fellowship in Geriatrics. He was also an Assistant Professor or Medicine at University of Nebraska, Omaha. His clinical interests include geriatric nephrology and kidney transplantation.",
     education: [
       "Medical School: King Edward Medical College, Lahore, Pakistan",
@@ -213,7 +218,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "MD",
     role: "MD",
     specialties: ["Interventional Nephrology", "Access Care"],
-    imageUrl: "/images/adedayo-odunsi.jpg",
+    imageUrl: "/images/adedayo-odunsi_result.webp",
     bio: "Dr. Odunsi joined Renal Physicians in 2011. He is a founding partner of Dayton Kidney.",
     education: [
       "Medical School: University of Ibadan, College of Medicine, Ibadan, Nigeria",
@@ -227,7 +232,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "MD",
     role: "MD",
     specialties: ["General Nephrology"],
-    imageUrl: "/images/swe-oo.jpeg",
+    imageUrl: "/images/swe-oo_result.webp",
     education: [
       "Medical School: University of Medicine (1), Yangon, Myanmar",
       "Residency: Easton Hospital, Easton, PA",
@@ -241,7 +246,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "DO",
     role: "MD",
     specialties: ["General Nephrology"],
-    imageUrl: "/images/mark-oxman.jpg",
+    imageUrl: "/images/mark-oxman_result.webp",
     bio: "Dr. Oxman was a founding member and President of Nephrology Associates since 1990. He is a founding member of Dayton Kidney. He has been recognized for his dedication to education, receiving the Outstanding Faculty Award from the Ohio University College of Osteopathic Medicine.",
     education: [
       "Undergraduate: Dickerson College, Pennsylvania",
@@ -262,7 +267,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "MD",
     role: "MD",
     specialties: ["General Nephrology"],
-    imageUrl: "/images/shashi-patel.jpeg",
+    imageUrl: "/images/shashi-patel_result.webp",
     bio: "Dr. Patel joined Nephrology Associates of Dayton in July 2014 but has lived in Dayton since 2007 when he started his Internal Medicine Residency. He is a founding partner of Dayton Kidney. His clinical interests include Glomerular Diseases, Autosomal Dominant Polycystic Kidney Disease, and Acute Kidney Injury.",
     education: [
       "Medical School: BJ Medical College, Ahmedabad, India",
@@ -282,7 +287,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "DO",
     role: "MD",
     specialties: ["General Nephrology"],
-    imageUrl: "/images/katrina-rohlfs1.png",
+    imageUrl: "/images/katrina-rohlfs1_result.webp",
     bio: "Dr. Katrina Rohlfs joined the practice in September 2024. Dr. Rohlfs focuses on the clinical care of patients with Chronic Kidney Disease, Glomerulonephritis, and Resistant Hypertension.",
     education: [
       "Medical School: American University of the Caribbean",
@@ -297,7 +302,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "DO",
     role: "MD",
     specialties: ["General Nephrology"],
-    imageUrl: "/images/nicholas-salupo.jpg",
+    imageUrl: "/images/nicholas-salupo_result.webp",
     bio: "Dr. Nicholas Salupo joined the practice in August 2025. His clinical interests include Glomerulonephritis, Renal Nutrition, and Bioethics.",
     education: [
       "Medical School: Marian University College of Osteopathic Medicine",
@@ -312,7 +317,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "MD",
     role: "MD",
     specialties: ["General Nephrology", "Plasmapheresis"],
-    imageUrl: "/images/melissa-schnell.jpg",
+    imageUrl: "/images/melissa-schnell_result.webp",
     bio: "Dr. Melissa Schnell joined Renal Physicians in 2005. She is a founding member of Dayton Kidney.",
     education: [
       "Medical School: Wright State University, Dayton, Ohio",
@@ -326,7 +331,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "MD",
     role: "MD",
     specialties: ["General Nephrology"],
-    imageUrl: "/images/sampath-thiruveedi2.JPG",
+    imageUrl: "/images/sampath-thiruveedi2_result.webp",
     imagePosition: "center 60%",
     bio: "Dr. Sampath Thiruveedi joined Renal Physicians August 2014. He is a founding member of Dayton Kidney.",
     education: [
@@ -343,7 +348,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "CNP",
     role: "APP",
     specialties: ["Advanced Practice"],
-    imageUrl: "/images/esther-bassaw2.jpeg",
+    imageUrl: "/images/esther-bassaw2_result.webp",
     bio: "Esther Bassaw joined the practice in 2021. Her interests include the care of patients with End Stage Kidney Disease.",
     education: [
       "Masters: Family Practice Nurse Practitioner, Otterbein University",
@@ -363,7 +368,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "CNP",
     role: "APP",
     specialties: ["Advanced Practice"],
-    imageUrl: "/images/stephen-langley.jpg",
+    imageUrl: "/images/stephen-langley_result.webp",
     bio: "Stephen Langley joined the practice in July 2025. Stephen's clinical interests include Management of End Stage Kidney Disease and Inpatient Nephrology Care.",
     education: [
       "Undergraduate: Bachelor of Science in Nursing, Ohio University",
@@ -381,7 +386,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "PA",
     role: "APP",
     specialties: ["Advanced Practice"],
-    imageUrl: "/images/elizabeth-pavlica2.jpg",
+    imageUrl: "/images/elizabeth-pavlica2_result.webp",
     bio: "Elizabeth Pavlica joined the practice in January 2022. She focuses on End Stage Kidney Disease and its encompassing lifestyle management.",
     education: [
       "Undergraduate: Bachelor of Science, Univery of Toledo",
@@ -399,7 +404,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "PA",
     role: "APP",
     specialties: ["Advanced Practice"],
-    imageUrl: "/images/katie-simpson.jpg",
+    imageUrl: "/images/katie-simpson_result.webp",
     bio: "Kathrine Simpson joined the practice in July 2020. She focuses on end stage kidney disease and likes working with patients so that they feel knowledgeable about their condition and motivated to stay consistent with their treatments, medications, and lifestyle.",
     education: [
       "Undergraduate: University of Dayton, Bachelor of Science in Biochemistry. ",
@@ -413,7 +418,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "PA",
     role: "APP",
     specialties: ["Advanced Practice"],
-    imageUrl: "/images/jayla-treadwell.jpg",
+    imageUrl: "/images/jayla-treadwell_result.webp",
     bio: "Jayla Treadwell joined the practice in July 2025. Her clinical interests include Chronic Kidney Disease, End Stage Kidney Disease, and Hypertension.",
     education: [
       "Undergraduate: Bachelor in Health Sciences, The Ohio State University ",
@@ -433,7 +438,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "CNP",
     role: "APP",
     specialties: ["Advanced Practice"],
-    imageUrl: "/images/christen-vincent.jpg",
+    imageUrl: "/images/christen-vincent_result.webp",
     bio: "Christen Vincent joined the practice in August 2020 initially as a plasmapheresis nurse. She continues this important work now as part of Southwestern Ohio Apheresis Services as well as a nephrology nurse practitioner. Her clinical interests include improving patient outcomes by educating about healthy diet and lifestyle. ",
     education: [
       "Masters: Masters of Science in Nursing, University of Cincinnati",
@@ -450,7 +455,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "CNP",
     role: "APP",
     specialties: ["Advanced Practice"],
-    imageUrl: "/images/gillian-wenzke.jpg",
+    imageUrl: "/images/gillian-wenzke_result.webp",
   },
 
   // --- MANAGEMENT ---
@@ -460,7 +465,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "Practice Administrator",
     role: "MGMT",
     specialties: ["Administration"],
-    imageUrl: "/images/lisa-pouliot.png",
+    imageUrl: "/images/lisa-pouliot_result.webp",
   },
   {
     id: "mgmt-ary",
@@ -468,7 +473,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "Practice Manager",
     role: "MGMT",
     specialties: ["Operations"],
-    imageUrl: "/images/rachel-ary.png",
+    imageUrl: "/images/rachel-ary_result.webp",
     imagePosition: "center 40%",
   },
   {
@@ -477,7 +482,7 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "Practice Manager",
     role: "MGMT",
     specialties: ["Operations"],
-    imageUrl: "/images/jill-combs.png",
+    imageUrl: "/images/jill-combs_result.webp",
     imagePosition: "center 40%",
   },
 ];

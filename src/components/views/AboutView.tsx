@@ -179,9 +179,9 @@ const AboutView: React.FC = () => {
           title="The Foundation"
           align="left"
           icon={Flag}
-          imgSrc="/images/about-us-Feller.jpg"
+          imgSrc="/images/about-us-Feller_result.webp"
           imgAlt="Dr. Allen Feller"
-          dateLogoSrc="/images/RPI-Logo.png"
+          dateLogoSrc="/images/RPI-Logo_result.webp"
           dateLogoAlt="Renal Physicians"
         >
           <p className="text-slate-700 leading-relaxed">
@@ -213,9 +213,9 @@ const AboutView: React.FC = () => {
           title="A New Standard"
           align="right"
           icon={Users}
-          imgSrc="/images/about-us-Mark-and-Larry.jpg"
+          imgSrc="/images/about-us-Mark-and-Larry_result.webp"
           imgAlt="Nephrology Associates Team"
-          dateLogoSrc="/images/NAOD-Logo.jpg"
+          dateLogoSrc="/images/NAOD-Logo_result.webp"
           dateLogoAlt="Nephrology Associates of Dayton"
         >
           <p className="text-slate-700 leading-relaxed">
@@ -277,7 +277,7 @@ const AboutView: React.FC = () => {
           title="Transplant Legacy"
           align="right"
           icon={Stethoscope}
-          imgSrc="/images/about-us-transplant.png"
+          imgSrc="/images/about-us-transplant_result.webp"
           imgAlt="Kidney Transplant Program"
         >
           <p className="text-slate-700 leading-relaxed">
@@ -313,7 +313,7 @@ const AboutView: React.FC = () => {
           title="Interventional Nephrology"
           align="left"
           icon={Activity}
-          imgSrc="/images/about-us-interventional-nephrology.png"
+          imgSrc="/images/about-us-interventional-nephrology_result.webp"
           imgAlt="Interventional Nephrology Procedure"
         >
           <p className="text-slate-700 leading-relaxed">
