@@ -61,6 +61,7 @@ export interface FormItem {
   title: string;
   fileSize: string;
   type: string;
+  href: string;
 }
 
 export interface LocationItem {

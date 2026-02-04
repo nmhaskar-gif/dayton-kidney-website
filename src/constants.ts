@@ -542,15 +542,25 @@ export const PODCAST_DATA: PodcastItem[] = [
 ];
 
 export const FORMS_DATA: FormItem[] = [
-  { title: "New Patient Packet", fileSize: "2.4 MB", type: "PDF" },
-  { title: "Medical History Form", fileSize: "1.1 MB", type: "PDF" },
   {
-    title: "Authorization for Release of Records",
-    fileSize: "0.5 MB",
+    title: "Medical History Form",
+    fileSize: "1.1 MB",
     type: "PDF",
+    href: "/forms/health-questionnaire.pdf",
   },
-  { title: "Privacy Policy (HIPAA)", fileSize: "0.8 MB", type: "PDF" },
-  { title: "Financial Policy", fileSize: "0.4 MB", type: "PDF" },
+
+  {
+    title: "Privacy Policy (HIPAA)",
+    fileSize: "0.8 MB",
+    type: "PDF",
+    href: "/forms/privacy-notice.pdf",
+  },
+  {
+    title: "Acknowledgement of Privacy Policy",
+    fileSize: "0.4 MB",
+    type: "PDF",
+    href: "/forms/acknowledgement-of-privacy-notice.pdf",
+  },
 ];
 export const OFFICES_DATA: LocationItem[] = [
   {

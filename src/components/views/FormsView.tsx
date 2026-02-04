@@ -37,15 +37,21 @@ const FormsView: React.FC = () => {
                 </div>
               </div>
 
-              <button className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-teal-700 bg-teal-50 rounded-full hover:bg-teal-600 hover:text-white transition-all">
+              <a
+                href={form.href}
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-teal-700 bg-teal-50 rounded-full hover:bg-teal-600 hover:text-white transition-all"
+              >
                 <Download size={16} />
                 Download
-              </button>
+              </a>
             </div>
           ))}
         </div>
 
-        <div className="mt-8 flex gap-4 p-4 bg-blue-900/5 rounded-xl border border-blue-900/10">
+        <div className="mt-8 flex gap-4 p-4 bg-white/70 backdrop-blur-md rounded-xl border border-white/40 shadow-sm">
           <ShieldCheck className="text-blue-900 flex-shrink-0" size={24} />
           <p className="text-sm text-blue-900/80">
             <strong>Your Privacy Matters:</strong> All forms are compliant with

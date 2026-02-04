@@ -97,7 +97,11 @@ const TimelineNode: React.FC<TimelineNodeProps> = ({
             {/* TEXT SIDE */}
             <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
               <div className="mb-6 flex items-start justify-between gap-4">
-                <span className="inline-block px-4 py-1 bg-teal-50/80 border border-teal-100 text-teal-900 text-sm font-bold rounded-full shadow-sm">
+                <span
+                  className={`relative inline-block px-4 py-1 bg-teal-50/80 border border-teal-100 text-teal-900 text-sm font-bold rounded-full shadow-sm ${
+                    dateLabel === "Established 1972" ? "top-[-0.5rem]" : ""
+                  }`}
+                >
                   {dateLabel ?? date}
                 </span>
 
@@ -105,7 +109,9 @@ const TimelineNode: React.FC<TimelineNodeProps> = ({
                   <img
                     src={dateLogoSrc}
                     alt={dateLogoAlt || `${title} logo`}
-                    className="h-9 md:h-10 w-auto object-contain ml-auto"
+                    className={`relative h-9 md:h-10 w-auto object-contain ml-auto ${
+                      dateLabel === "Established 1972" ? "top-[-0.5rem]" : ""
+                    }`}
                   />
                 )}
               </div>
