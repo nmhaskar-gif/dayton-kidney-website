@@ -86,13 +86,17 @@ export const PROVIDERS_DATA: Provider[] = [
     role: "MD",
     specialties: ["Transplant Nephrology", "CKD Management"],
     imageUrl: "/images/augustus-eduafo_result.webp",
-    bio: "Dr. Eduafo joined Renal Physicians in 1997. He is a founding partner of Dayton Kidney. He served as Medical Director of the Miami Valley Transplant Program until its closure in 2013. His clinical interests include General Nephrology and Kidney Transplantation.",
+    bio: "Dr. Eduafo joined Renal Physicians in 1997. He is a founding partner of Dayton Kidney. He served as Medical Director of the Miami Valley Transplant Program until its closure in 2013. His clinical interests include ICU Nephrology, Acid/Base Disorders, and Kidney Transplantation.",
     education: [
       "Medical School: University of Ghana Medical School, Accra, Ghana",
       "Residency: Internal Medicine, State University of New York Science Center, Brooklyn, New York",
       "Fellowship: Nephrology and Kidney Transplantation, New York Hospital/Cornell University, New York",
     ],
-    interests: ["Reading Fiction", "Hiking", "Gardening", "Cooking"],
+    interests: [
+      "Watching Soccer",
+      "Reading Thriller Novels",
+      "Listening to Music",
+    ],
   },
   {
     id: "md-eze",
