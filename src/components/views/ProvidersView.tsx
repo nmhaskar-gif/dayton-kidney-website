@@ -241,15 +241,6 @@ const ProvidersView: React.FC = () => {
       ref={gridWrapperRef}
       className="w-full h-full overflow-y-auto relative custom-scrollbar"
     >
-      {/* BACKGROUND */}
-      <div className="fixed inset-0 -z-30">
-        <img
-          src="https://i.ibb.co/93YdWhP4/i-Stock-529983003.jpg"
-          alt="Dayton Skyline"
-          className="w-full h-full object-cover"
-        />
-      </div>
-      <div className="fixed inset-0 bg-white/40 backdrop-blur-[1px] -z-20" />
       <div className="w-full flex flex-col pt-24 pb-20 animate-fade-in relative">
         {/* HEADER */}
         <div
