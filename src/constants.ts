@@ -120,7 +120,7 @@ export const PROVIDERS_DATA: Provider[] = [
     role: "MD",
     specialties: ["General Nephrology"],
     imageUrl: "/images/jennifer-jackson_result.webp",
-    bio: "Dr. Kaufhold joined Nephrology Associates in 2004. She is a founding member of Dayton Kidney. Her clinical interests include all aspects of nephrology especially Chronic Kidney Disease and Cardiorenal Syndrome.",
+    bio: "Dr. Jackson joined Nephrology Associates in 2004. She is a founding member of Dayton Kidney. Her clinical interests include all aspects of nephrology especially Chronic Kidney Disease and Cardiorenal Syndrome.",
     education: [
       "Medical School: Ohio University College of Osteopathic Medicine",
       "Residency: Grandview Hospital, Dayton, OH",
