@@ -12,6 +12,51 @@ import FormsView from "./views/FormsView";
 import ServicesView from "./views/ServicesView";
 import ContactView from "./views/ContactView";
 
+type ViewParam =
+  | "home"
+  | "about"
+  | "services"
+  | "providers"
+  | "locations"
+  | "education"
+  | "forms"
+  | "contact";
+
+const VIEW_PARAM_TO_STATE: Record<ViewParam, ViewState> = {
+  home: ViewState.HOME,
+  about: ViewState.ABOUT,
+  services: ViewState.SERVICES,
+  providers: ViewState.PROVIDERS,
+  locations: ViewState.LOCATIONS,
+  education: ViewState.EDUCATION,
+  forms: ViewState.FORMS,
+  contact: ViewState.CONTACT,
+};
+
+const STATE_TO_VIEW_PARAM: Record<ViewState, ViewParam> = {
+  [ViewState.HOME]: "home",
+  [ViewState.ABOUT]: "about",
+  [ViewState.SERVICES]: "services",
+  [ViewState.PROVIDERS]: "providers",
+  [ViewState.LOCATIONS]: "locations",
+  [ViewState.EDUCATION]: "education",
+  [ViewState.FORMS]: "forms",
+  [ViewState.CONTACT]: "contact",
+};
+
+function getViewFromUrl(): ViewState {
+  const params = new URLSearchParams(window.location.search);
+  const raw = (params.get("view") || "").toLowerCase() as ViewParam;
+  return VIEW_PARAM_TO_STATE[raw] ?? ViewState.HOME;
+}
+
+function setViewInUrl(view: ViewState, replace = false) {
+  const url = new URL(window.location.href);
+  url.searchParams.set("view", STATE_TO_VIEW_PARAM[view] ?? "home");
+  if (replace) window.history.replaceState({}, "", url.toString());
+  else window.history.pushState({}, "", url.toString());
+}
+
 interface V1RevealOverlayProps {
   setView: (view: ViewState) => void;
   opacity: number;
@@ -24,7 +69,9 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
   pointerEvents,
   isActive,
 }) => {
-  const [currentView, setCurrentView] = useState<ViewState>(ViewState.HOME);
+  const [currentView, setCurrentView] = useState<ViewState>(() =>
+    getViewFromUrl()
+  );
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -37,9 +84,20 @@ const V1RevealOverlay: React.FC<V1RevealOverlayProps> = ({
       img.decode?.().catch(() => {});
     });
   }, []);
+  // 🔽 ADD THIS RIGHT HERE
+  useEffect(() => {
+    setViewInUrl(getViewFromUrl(), true);
 
+    const onPopState = () => {
+      setCurrentView(getViewFromUrl());
+    };
+
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
   const navigateTo = (view: ViewState) => {
     setCurrentView(view);
+    setViewInUrl(view);
     setIsMobileMenuOpen(false);
   };
 

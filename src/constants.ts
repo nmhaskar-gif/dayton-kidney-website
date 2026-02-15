@@ -364,7 +364,16 @@ export const PROVIDERS_DATA: Provider[] = [
     title: "CNP",
     role: "APP",
     specialties: ["Advanced Practice"],
-    imageUrl: "",
+    imageUrl: "/images/bindu_sajay.webp",
+    imagePosition: "center 5%",
+    bio: "Bindu Sajay joined the practice in 2024. Her interests include the care of patients with Acute Kidney Injury and End Stage Kidney Disease.",
+    education: [
+      "Masters Adult Gerontology Acute Care Nurse Practitioner, University of Cincinnati",
+      "Post Masters Family Nurse Practitioner, University of Cincinnati",
+      "Master of Science in Nursing - Adult Clinical Nurse Specialist, Wright State University, Dayton",
+      "Bachelor of Science in Nursing, Govt: College of Nursing, Medical College, Thiruvananthapuram, India",
+    ],
+    interests: ["Spending time with family", "Watching TV", "Cooking"],
   },
   {
     id: "app-langley",

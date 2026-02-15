@@ -385,8 +385,12 @@ const ProviderCard: React.FC<{ provider: Provider }> = ({ provider }) => {
               objectPosition: isMgmt
                 ? "center center"
                 : provider.imagePosition || "center top",
-              transform: "translateZ(0)",
-              WebkitTransform: "translateZ(0)",
+              transform: provider.imageZoom
+                ? `translateZ(0) scale(${provider.imageZoom})`
+                : "translateZ(0)",
+              WebkitTransform: provider.imageZoom
+                ? `translateZ(0) scale(${provider.imageZoom})`
+                : "translateZ(0)",
               backfaceVisibility: "hidden",
               WebkitBackfaceVisibility: "hidden",
             }}

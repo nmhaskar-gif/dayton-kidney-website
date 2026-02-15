@@ -36,6 +36,7 @@ export interface Provider {
   specialties: string[];
   imageUrl: string;
   imagePosition?: string;
+  imageZoom?: number;
   suffixes?: string[];
 
   // New detailed fields
