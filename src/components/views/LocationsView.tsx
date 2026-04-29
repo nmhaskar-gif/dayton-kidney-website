@@ -52,7 +52,7 @@ const OFFICE_LOCATIONS: LocationItem[] = [
   {
     id: "off-eat",
     name: "Eaton",
-    address: "450 Washington Jackson Rd, Suite 101",
+    address: "450C Washington Jackson Rd",
     city: "Eaton, OH",
     zip: "45320",
     phone: "(937) 235-2757",
