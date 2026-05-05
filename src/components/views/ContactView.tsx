@@ -27,7 +27,7 @@ const CONTACT_DATA = [
   },
   {
     city: "Eaton",
-    address: "450 Washington Jackson Rd",
+    address: "450C Washington Jackson Rd",
     phone: "(937) 235-2757",
     fax: "(937) 235-2851",
   },
